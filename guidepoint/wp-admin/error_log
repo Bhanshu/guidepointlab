@@ -1,0 +1,2 @@
+[16-Feb-2016 09:36:34 UTC] PHP Fatal error:  Allowed memory size of 41943040 bytes exhausted (tried to allocate 288912 bytes) in /home/imarkclients/public_html/guide/dev/wp-includes/wp-db.php on line 1255
+[27-Apr-2016 12:33:54 UTC] PHP Fatal error:  Allowed memory size of 67108864 bytes exhausted (tried to allocate 67108864 bytes) in /home/imarkclients/public_html/guide/dev/wp-content/plugins/contact-form-7/settings.php on line 55

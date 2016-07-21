@@ -1,0 +1,3 @@
+[05-Feb-2016 10:52:38 UTC] PHP Fatal error:  Call to undefined function wp_head() in /home/imarkclients/public_html/guide/dev/wp-content/themes/guidepoint/productfilter.php on line 1
+[05-Feb-2016 10:52:41 UTC] PHP Fatal error:  Call to undefined function wp_head() in /home/imarkclients/public_html/guide/dev/wp-content/themes/guidepoint/productfilter.php on line 1
+[05-Feb-2016 10:52:43 UTC] PHP Fatal error:  Call to undefined function wp_head() in /home/imarkclients/public_html/guide/dev/wp-content/themes/guidepoint/productfilter.php on line 1
