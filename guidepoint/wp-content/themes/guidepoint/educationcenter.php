@@ -31,6 +31,13 @@ get_header(); ?>
                 </div>
             </div>
         </section>
+
+<section class="education-search">
+    <h2>SEARCH BOLG OR WEBSITE</h2>
+    <span class="fa fa-search" aria-hidden="true"></span><input name="s" class="education-search-block" type="text" placeholder="Search">
+    
+</section>
+
         <section class="education-center">
             <div class="container">
                 <div class="education-center-inner">
@@ -68,7 +75,9 @@ get_header(); ?>
             <div class="container">
                 <div class="medical-news-inner">
                     <div class="heading">
-                        <h4>Medical News</h4></div>
+                        <h4>Medical News</h4>
+					<p><?php the_field('medical'); ?></p>
+						</div>
                     <div class="row">
 					<?php   $args = array( 'numberposts' => '3' );
 							$recent_posts = wp_get_recent_posts( $args );

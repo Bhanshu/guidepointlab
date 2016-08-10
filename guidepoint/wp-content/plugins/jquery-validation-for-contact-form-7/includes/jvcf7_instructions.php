@@ -32,6 +32,12 @@
             
             <li><strong>US Phone number validation</strong> : When you need to validate US Phone number.<br/>
             Use class <strong>phoneUS</strong>. Validates: 837-345-3456</li>
+            
+            <li><strong>IBAN (International Bank Acccount number)</strong> : When you need to validate international bank account number.<br/>
+            Use class <strong>iban</strong>. Validates: AL47212110090000000235698741</li>
+            
+            <li><strong>Letters Only</strong> : When you need to validate alphabets only.<br/>
+            Use class <strong>lettersonly</strong>. Validates: abcdefghijkl</li>
         </ol>
         
         <h4>Following validation methods are only available in Pro version.</h4>        

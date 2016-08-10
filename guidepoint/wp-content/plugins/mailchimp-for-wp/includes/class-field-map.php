@@ -84,8 +84,8 @@ class MC4WP_Field_Map {
 		$this->extract_list_fields();
 
 		// 4. Add all leftover fields to data but make sure not to overwrite known fields
-		$this->formatted_data = array_merge( $this->custom_fields, $this->formatted_data );
-		$this->pretty_data = array_merge( $this->custom_fields, $this->pretty_data );
+		$this->formatted_data = $this->merge( $this->custom_fields, $this->formatted_data );
+		$this->pretty_data = $this->merge( $this->custom_fields, $this->pretty_data );
 	}
 
 	/**
@@ -112,7 +112,6 @@ class MC4WP_Field_Map {
 	 */
 	protected function extract_list_fields() {
 		array_walk( $this->lists, array( $this, 'extract_fields_for_list' ) );
-		$this->list_fields = array_filter( $this->list_fields );
 		$this->formatted_data[ '_MC4WP_LISTS' ] = wp_list_pluck( $this->lists, 'name' );
 		$this->pretty_data[ 'Lists' ] = $this->formatted_data[ '_MC4WP_LISTS' ];
 	}
@@ -136,12 +135,8 @@ class MC4WP_Field_Map {
 		$this->list_fields[ $list->id ]['GROUPINGS'] = array_filter( $this->list_fields[ $list->id ]['GROUPINGS'] );
 		$this->list_fields[ $list->id ] = array_filter( $this->list_fields[ $list->id ] );
 
-		// if we have values at this point, add global fields
-		if( ! empty( $this->list_fields[ $list->id ] ) ) {
-			// add global fields (fields belong to ALL lists automatically)
-			$this->list_fields[ $list->id ] = array_merge( $this->list_fields[ $list->id ], $this->global_fields );
-		}
-
+		// add global fields (fields belong to ALL lists automatically)
+		$this->list_fields[ $list->id ] = $this->merge( $this->list_fields[ $list->id ], $this->global_fields );
 	}
 
 	/**
@@ -232,11 +227,17 @@ class MC4WP_Field_Map {
 
 		foreach( $global_field_names as $field_name ) {
 			if( isset( $this->raw_data[ $field_name ] ) ) {
+			    $value = $this->raw_data[ $field_name ];
 
-				$this->global_fields[ $field_name ] = $this->raw_data[ $field_name ];
-				unset( $this->custom_fields[ $field_name ] );
+                // MC_LANGUAGE expects a 2 char code.
+                if( $field_name === 'MC_LANGUAGE' ) {
+                    $value = substr( $value, 0, 2 );
+                }
 
-				$this->formatted_data[ $field_name ] = $this->raw_data[ $field_name ];
+				$this->global_fields[ $field_name ] = $value;
+				$this->formatted_data[ $field_name ] = $value;
+
+                unset( $this->custom_fields[ $field_name ] );
 			}
 		}
 	}
@@ -269,6 +270,22 @@ class MC4WP_Field_Map {
 		$field_value = apply_filters( 'mc4wp_format_field_value', $field_value, $field_type );
 
 		return $field_value;
+	}
+
+	/**
+	 * @param array $one
+	 * @param array $two
+	 *
+	 * @return array
+	 */
+	protected function merge( array $one, array $two ) {
+
+		// fallback for PHP 5.2
+		if( ! function_exists( 'array_replace_recursive' ) ) {
+			return array_merge( $one, $two );
+		}
+
+		return array_replace_recursive( $one, $two );
 	}
 
 }

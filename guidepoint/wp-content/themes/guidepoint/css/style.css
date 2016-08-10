@@ -70,8 +70,8 @@ h4:before {
     content: "";
     position: absolute;
     bottom: 0;
-    left: 0;
-    width: 90px;
+    
+    width: 167px;
     height: 1px;
     background-color: #2986e2;
 }
@@ -253,6 +253,7 @@ select {
     line-height: 22px;
     text-align: center;
 }
+
 
 .top-info > ul > li a:hover,
 .top-info > ul > li a:focus {
@@ -608,7 +609,7 @@ nav.navbar-default .navbar-nav > li.sub-open .sub-menu {
 .banner .figcaption {
     height: 100%;
 }
-
+.banner-caption .text { visibility: hidden;}
 .banner .title {
     color: #fff;
     font-size: 48px;
@@ -616,6 +617,8 @@ nav.navbar-default .navbar-nav > li.sub-open .sub-menu {
     margin-bottom: 5px;
     text-shadow: 0 1px 0 #000;
     text-transform: uppercase;
+        transition: all 0.9s ease-in-out;
+    -webkit-transition: all 0.9s ease-in-out;
 }
 
 .banner p {
@@ -1095,6 +1098,38 @@ nav.navbar-default .navbar-nav > li.sub-open .sub-menu {
     color: #404d5f;
 }
 
+.featured-tests-list-testimonial li{
+    list-style: none;
+}
+
+.featured-tests-list-testimonial li .featured-tests-list-box-testimonial p:before{
+    content: "\f10d";
+    font-family: FontAwesome;
+    position: relative;
+        top: -15px;
+    left: -5px;
+    color: grey;
+}
+
+.featured-tests-list-testimonial li .featured-tests-list-box-testimonial p:after{
+    content: "\f10e";
+    font-family: FontAwesome;
+    position: relative;
+    top: 15px;
+    left: 5px;
+    color: grey;
+}
+
+
+.featured-tests-list-box-testimonial{
+    margin-top: 40px;
+        height: 65px;
+    background-color: #85b044;
+    border-radius: 25px;
+        color: #fff;
+    padding-top: 2px;
+}
+
 .health-consulting {
     margin: 84px auto 0;
     max-width: 1200px;
@@ -1156,7 +1191,7 @@ nav.navbar-default .navbar-nav > li.sub-open .sub-menu {
 .woocommerce button.button.alt,
 .woocommerce input.button.alt,
 .woocommerce a.button.checkout,
-.sc-popup .wpcf7-form .wpcf7-submit {
+.sc-popup .wpcf7-form .wpcf7-submit, .test-categories-list-button {
     background-color: #85b044 !important;
     min-width: 164px;
     padding: 13px 20px;
@@ -1174,8 +1209,7 @@ nav.navbar-default .navbar-nav > li.sub-open .sub-menu {
     position: relative;
 }
 
-.button-green:hover,
-.button-green:focus,
+.button-green:hover, .test-categories-list-button:hover, .button-green:focus,
 .subscribe-form input[type="submit"]:hover,
 .subscribe-form input[type="submit"]:focus,
 .woocommerce #respond input#submit.alt:hover,
@@ -1385,6 +1419,7 @@ footer.footer {
     padding: 58px 0 36px;
     display: inline-block;
     width: 100%;
+
 }
 
 .widgets h6 {
@@ -1476,7 +1511,7 @@ footer.footer {
 
 .widgets .social,
 .widgets .social ul {
-    margin: 26px 0 0 30px;
+    margin: 15px 0 0 30px;
     width: auto;
 }
 
@@ -1534,10 +1569,28 @@ footer.footer {
 
 /*****  For Patients Page  *****/
 
+
+.for-paragraph{
+    text-align: center;
+}
+
+.for-paragraph p{
+    padding: 2px 80px;
+}
+
+
+
 .for-patients-points {
-    background: url("../images/for-patients-points-bg.jpg") no-repeat 0 0 fixed;
+    background: url("../images/for-patients-banner.jpg") no-repeat 0 0 fixed;
     background-size: cover;
-    padding: 72px 0 84px;
+    padding: 20px 0 84px;
+        background-position: center center;
+    margin-top: 50px;
+}
+
+.for-patients-points h2{
+        color: #fff;
+    text-align: center;
 }
 
 .for-patients-points-box {
@@ -1842,6 +1895,55 @@ footer.footer {
     top: 0;
 }
 
+.support-services-box-btn{
+    background-color: #85b044 !important;
+    min-width: 164px;
+    padding: 13px 20px;
+    border: none;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.support-services-box-btn:hover{
+    background-color: #35404f !important;
+    color: #fff;
+}
+
+.education-search{
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #f4f4f4;
+}
+
+.education-search h2{
+        font-size: 24px;
+    color: #404d5f;
+    font-weight: 700;
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.education-search span.fa.fa-search{
+    position: relative;
+    top: 16px;
+    right: -30px;
+    font-size: 19px;
+}
+
+.education-search-block{
+    border: 1px solid lightgrey;
+    min-height: 53px;
+    padding: 15px 42px;
+    vertical-align: top;
+    width: 40%;
+}
+
 .support-services ul,
 .education-center ul,
 .directions-gainesville ul {
@@ -2007,11 +2109,11 @@ footer.footer {
 }
 
 .patient-stories {
-    background: url("../images/patient-stories-bg.jpg") no-repeat #e2e2e0;
+    background: url("../images/banner-2.jpg") no-repeat #e2e2e0;
     background-position: left bottom;
     padding: 95px 0 72px;
 }
-
+s
 .patient-stories-inner {
     float: right;
     max-width: 950px;
@@ -2189,10 +2291,11 @@ footer.footer {
 .heading {
     display: inline-block;
     vertical-align: top;
+        margin-bottom: 20px;
 }
 
 .medical-news h4 {
-    margin-bottom: 60px;
+    margin-bottom: 0px;
 }
 
 .medical-news-box,
@@ -2219,6 +2322,10 @@ footer.footer {
 .our-Partners-3box h5 a:hover,
 .our-Partners-3box h5 a:focus {
     color: #85b044;
+}
+
+.medical-news .medical-news-inner .heading p{
+        margin-top: 18px;
 }
 
 .medical-news-box .meta,
@@ -2378,12 +2485,116 @@ footer.footer {
     margin-bottom: 66px;
 }
 
-.heading-line {
+.contact-page-inner .contact-heading .contact-heading{
+        background-color: rgb(255, 255, 255);
+    height: 4px;
+    margin-right: 5px;
+    margin-top: 25px;
+    width: 84px;
+}
+
+.contact-page-inner .wpcf7{
+    text-align: center;
+}
+
+.contact7-form{
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.contact-heading p{
+        color: #ffffff;
+    font-size: 15px;
+}
+
+.contact-page-inner .wpcf7 p{
+    display: inline-block;
+        color: #fff;
+    width: 33%;
+}
+
+.contact-page-inner .wpcf7 p:nth-child(5){
+    display:block;
+        color: #fff;
+    width: 100%;
+}
+
+
+.contact-page-inner .wpcf7 p input.wpcf7-form-control.wpcf7-submit{
+    background-color: #85b044 !important;
+    width: 145px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    height: 45px;
+    text-transform: uppercase;
+}
+
+.contact-page-inner .wpcf7 p input.wpcf7-form-control.wpcf7-submit:hover{
+    background-color: #35404f !important;
+    color: #fff;
+}
+
+.contact-page-inner .wpcf7 p input::-webkit-input-placeholder {
+   color: #fff;
+}
+
+.contact-page-inner .wpcf7 p input:-moz-placeholder { /* Firefox 18- */
+   color:#fff;  
+}
+
+.contact-page-inner .wpcf7 p input::-moz-placeholder {  /* Firefox 19+ */
+   color: #fff;  
+}
+
+
+.contact-page-inner .wpcf7 span.wpcf7-form-control-wrap.subject textarea{
+    background-color: transparent;
+    border-bottom: 2px solid #fff;
+    border-left: 0;
+    border-radius: 0;
+    margin-top: 15px;
+    border-top: 0;
+    width: 100%;
+    resize: none;
+    text-align: center;
+        height: 45px;
+    border-right: 0;
+}
+
+
+
+.contact-page-inner .wpcf7 span.wpcf7-form-control-wrap.subject textarea::-webkit-input-placeholder {
+   color: #fff;
+}
+
+.contact-page-inner .wpcf7 span.wpcf7-form-control-wrap.subject textarea:-moz-placeholder {
+   color: #fff;
+}
+
+.contact-page-inner .wpcf7 span.wpcf7-form-control-wrap.subject textarea::-moz-placeholder {
+   color: #fff;
+}
+
+
+.contact-page-inner .wpcf7 p input{
+    background-color: transparent;
+    border: none;
+    height: 75px;
+    border-bottom: 2px solid #fff;
+    width: 95%;
+}
+
+.contact-heading .heading-line {
     background-color: #fff;
     height: 4px;
     margin-right: 5px;
     margin-top: 25px;
-    width: 100%;
+    width: 84px;
 }
 
 .contact-heading h4 {
@@ -2532,9 +2743,9 @@ footer.footer {
 div.wpcf7-response-output {
     border-radius: 2px;
     border-width: 1px;
-    color: #333333;
+    color: #fff;
     font-weight: 600;
-    margin: 0;
+     margin: 15px 0 20px;
     padding: 5px 10px;
     width: 100%;
 }
@@ -2563,9 +2774,11 @@ div.wpcf7-response-output {
     padding-left: 30px;
 }
 
-.ajax-loader {
-    margin: 16px 0 0 7px;
+div#wpcf7-f388-o1 span.wpcf7-form-control-wrap.your-name .wpcf7-form label.error{
+    display: none; 
 }
+
+
 
 .directions-gainesville h5 {
     color: #ffffff;
@@ -2658,6 +2871,40 @@ div.wpcf7-response-output {
 .our-awards-box .text p {
     color: #404d5f;
     margin-bottom: 26px;
+}
+
+/*****   FAQ *****/
+
+.main-class{
+    margin: 50px 65px;
+    padding: 20px 20px;
+}
+
+.faq-questions-class h2:before{
+    color:#85b044;
+    font-family: FontAwesome;
+    content: "\f086";
+    display: inline-block;
+    height: 43px;
+    margin-right: 10px;
+    font-size: 35px;
+    text-align: center;
+    vertical-align: middle;
+    width: 50px;
+}
+
+.faq-questions-class h2{
+    margin: 0;
+}
+
+.faq-questions-class h2{
+    font-size: 22px;
+}
+
+.faq-inner-class .faq-answers-class{
+        background-color: #ededed;
+    padding: 0px 60px;
+    margin-bottom: 30px;
 }
 
 
@@ -3412,12 +3659,36 @@ ul.products li .product-box .price ins,
 }
 
 .video-heading {
-    color: #404d5f;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 26px;
-    margin: 46px 0 38px;
+background-color: #85b044 !important;
+    width: 164px;
+    padding: 13px 20px;
+    margin: 0 auto;
+    margin-top: 32px;
+    border: none;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
     text-transform: uppercase;
+  -webkit-transition: all 0.3s ease 0s;
+        -moz-transition: all 0.3s ease 0s;
+        -ms-transition: all 0.3s ease 0s;
+        -o-transition: all 0.3s ease 0s;
+        transition: all 0.3s ease 0s;
+}
+
+.video-heading:hover{
+        background-color: #35404f !important;
+    color: #fff;
+      -webkit-transition: all 0.3s ease 0s;
+        -moz-transition: all 0.3s ease 0s;
+        -ms-transition: all 0.3s ease 0s;
+        -o-transition: all 0.3s ease 0s;
+        transition: all 0.3s ease 0s;
+}
+
+.video-heading a{
+    color: #fff;
 }
 
 .video-box-main h3 {
@@ -5291,6 +5562,15 @@ mark {
         font-size: 13px;
         margin-top: 25px;
     }
+	.woocommerce .cart-collaterals .cross-sells, .woocommerce-page .cart-collaterals .cross-sells {
+      width: 100%;
+      float: left;
+    }
+	.woocommerce .cart-collaterals .cart_totals, .woocommerce-page .cart-collaterals .cart_totals {
+    float: right;
+    width: 100%;
+   }
+	
 }
 
 @media (max-width: 767px) {
@@ -5778,7 +6058,95 @@ mark {
     .single-post-page .post-thumbnail img {
         width: 100%;
     }
+	.woocommerce table.cart {
+      min-width:inherit;
+    }
+	.woocommerce table.cart tr {
+     display: block;
+   }
+.woocommerce table.cart td {
+    display: inline-block !important;
+    width: 100%;
+    vertical-align: middle;
+    padding-left: 53%;
+    text-align: left !important;
+    position: relative;
 }
+  .woocommerce table.cart th {
+     display:none !important;
+  }	
+ .woocommerce table.cart td:before {
+	 background-color:#54667a;
+	 color:#fff;
+    content: '';
+	font-size:15px;
+	font-weight:600;
+    width: 50%;
+	    padding: 10px 20px 10px 0;
+    position: absolute;
+    left: 0;
+    text-align:right;
+    top: 0;
+    bottom: 0;
+  }
+ .woocommerce table.cart td.product-remove::before{
+	  content:'Remove Test'; 
+   } 
+  .woocommerce table.cart td.product-thumbnail::before{
+	  content:'Image'; 
+   } 
+   .woocommerce table.cart td.product-name::before{
+	  content:'Test Name'; 
+   }
+  .woocommerce table.cart td.product-price::before{
+	  content:'Price'; 
+   }
+   .woocommerce table.cart td.product-subtotal::before{
+	  content:'Total'; 
+   }   
+ .woocommerce table.cart td.product-remove{
+   border-top:0 none;	 
+  }
+ .table-responsive{
+	  border:0 none;
+	  margin-bottom:0; 
+	 }
+  .cart_totals table tr td,
+  .cart_totals table tr.order-total td{
+    border-right: 1px solid #ddd;
+  }
+  .woocommerce table.cart tr:last-child td{
+	  padding-left:10px;
+  }
+  .woocommerce table.cart tr:last-child td::before{
+	 display:none;
+  }  
+  .coupon input#coupon_code {
+    width: 50%;
+   }
+  .woocommerce table.cart .coupon input.button{
+	width: 48.2% !important;  
+   } 
+ .woocommerce table.cart .coupon + input[type="submit"]{
+  width:100% !important;	 
+  }
+	
+}
+
+@media(max-width:480px){
+  .woocommerce table.cart .coupon input.button {
+    width: 100% !important;
+    margin-top: 8px !important;
+    display: inline-block;
+  }
+  .coupon input#coupon_code {
+    width: 100%;
+    margin: 0;
+  }
+  
+  	
+}
+
 
 @media (max-width: 479px) {
     h1 {
@@ -5912,4 +6280,18 @@ mark {
     .woocommerce a.added_to_cart {
         margin: 0 15px 1em;
     }
+}
+
+/* 3-8-16*/
+#myfield1_field .input-checkbox {
+    margin-top: 10px;
+}
+#myfield1_field .checkbox {
+    width: 100%;
+}
+#myfield1_field .checkbox span {
+    display: inline-block;
+    padding-left: 29px;
+    vertical-align: middle;
+    margin-top: 2px;
 }

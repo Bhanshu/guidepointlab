@@ -1,17 +1,17 @@
 <?php
 /*
 Plugin Name: Multilanguage by BestWebSoft
-Plugin URI: http://bestwebsoft.com/products/
-Description: This plugin allows you to display the content in different languages.
+Plugin URI: http://bestwebsoft.com/products/multilanguage/
+Description: Translate WordPress website content to other languages manually. Create multilingual pages, posts, widgets, menus, etc.
 Author: BestWebSoft
 Text Domain: multilanguage
 Domain Path: /languages
-Version: 1.1.3
+Version: 1.1.8
 Author URI: http://bestwebsoft.com/
 License: GPLv3 or later
 */
 
-/*  © Copyright 2015  BestWebSoft  ( http://support.bestwebsoft.com )
+/*  © Copyright 2016  BestWebSoft  ( http://support.bestwebsoft.com )
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License, version 2, as
@@ -27,15 +27,14 @@ License: GPLv3 or later
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-require_once( dirname( __FILE__ ) . '/include/table.php' );
-require_once( dirname( __FILE__ ) . '/include/languages.php' );
-require_once( dirname( __FILE__ ) . '/include/for_oembed.php' );
+require_once( dirname( __FILE__ ) . '/includes/table.php' );
+require_once( dirname( __FILE__ ) . '/includes/languages.php' );
 
 /* Function add menu pages */
 if ( ! function_exists( 'mltlngg_admin_menu' ) ) {
 	function mltlngg_admin_menu() {
 		bws_general_menu();
-		$settings = add_submenu_page( 'bws_plugins', 'Multilanguage', 'Multilanguage', 'manage_options', "mltlngg_settings", 'mltlngg_settings_page' );
+		$settings = add_submenu_page( 'bws_panel', 'Multilanguage', 'Multilanguage', 'manage_options', "mltlngg_settings", 'mltlngg_settings_page' );
 		mltlngg_add_menu_items();
 		add_action( 'load-' . $settings, 'mltlngg_add_tabs' );
 	}
@@ -50,14 +49,13 @@ if ( ! function_exists( 'mltlngg_init' ) ) {
 		bws_include_init( plugin_basename( __FILE__ ) );
 
 		if ( empty( $mltlngg_plugin_info ) ) {
-			if ( ! function_exists( 'get_plugin_data' ) ) {
+			if ( ! function_exists( 'get_plugin_data' ) )
 				require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-			}
 			$mltlngg_plugin_info = get_plugin_data( __FILE__ );
 		}
 
 		/* check WordPress version */
-		bws_wp_min_version_check( plugin_basename( __FILE__ ), $mltlngg_plugin_info, '3.8', '3.7' );
+		bws_wp_min_version_check( plugin_basename( __FILE__ ), $mltlngg_plugin_info, '3.8' );
 
 		$mltlngg_table_translate = $wpdb->prefix . 'mltlngg_translate';
 		$mltlngg_terms_table_translate = $wpdb->prefix . 'mltlngg_terms_translate';
@@ -81,16 +79,6 @@ if ( ! function_exists( 'mltlngg_admin_init' ) ) {
 		}		
 
 		/* Actions for categories & tags translation */
-		mltlngg_taxonomies();
-
-		/* add Multilanguage to global $bws_shortcode_list  */
-		$bws_shortcode_list['mltlngg'] = array( 'name' => 'Multilanguage' );
-	}
-}
-
-/* Actions for categories & tags translation */
-if ( ! function_exists( 'mltlngg_taxonomies' ) ) {
-	function mltlngg_taxonomies() {
 		$mltlngg_taxonomies = get_object_taxonomies( 'post' );
 		if ( is_array( $mltlngg_taxonomies ) ) {
 			foreach ( $mltlngg_taxonomies as $mltlngg_taxonomy ) {
@@ -99,15 +87,31 @@ if ( ! function_exists( 'mltlngg_taxonomies' ) ) {
 				add_action( $mltlngg_taxonomy . '_edit_form_fields', 'mltlngg_terms_translate' );
 				add_action( 'edited_' . $mltlngg_taxonomy, 'mltlngg_terms_update' );
 				add_action( 'delete_' . $mltlngg_taxonomy, 'mltlngg_delete_term' );
+
+				/* Add language column in the taxonomy wp_list_table to display if language is translated */
+				add_filter( 'manage_edit-' . $mltlngg_taxonomy . '_columns', 'mltlngg_add_term_column' );
+				add_filter( 'manage_' . $mltlngg_taxonomy . '_custom_column', 'mltlngg_term_column', 10, 3 );
 			}
 		}
+		/* Add language column in the post wp_list_table to display if language is translated */
+		add_filter( 'manage_edit-post_columns', 'mltlngg_add_post_column' );
+		add_filter( 'manage_post_posts_custom_column', 'mltlngg_post_column', 10, 3 );
+		add_filter( 'manage_edit-page_columns', 'mltlngg_add_post_column' );
+		add_filter( 'manage_page_posts_custom_column', 'mltlngg_post_column', 10, 3 );
+
+		/* add Multilanguage to global $bws_shortcode_list  */
+		$bws_shortcode_list['mltlngg'] = array( 'name' => 'Multilanguage' );
+
+		/* add 'Multilanguage switcher' into the Menu */
+		add_action( 'wp_update_nav_menu_item', 'mltlngg_wp_update_nav_menu_item', 10, 2 );
+		add_meta_box( 'mltlngg_language_switcher_box', __( 'Multilanguage switcher', 'multilanguage' ), 'mltlngg_language_switcher_box', 'nav-menus', 'side', 'high' );
 	}
 }
 
 /* Default Plugin settings */
 if ( ! function_exists( 'mltlngg_register_settings' ) ) {
 	function mltlngg_register_settings() {
-		global $mltlngg_plugin_info, $mltlngg_options, $mltlngg_languages, $mltlngg_language_default, $mltlngg_list_of_languages, $mltlngg_default_options;
+		global $mltlngg_plugin_info, $mltlngg_options, $mltlngg_languages, $mltlngg_language_default, $mltlngg_list_of_languages, $mltlngg_default_options, $wp_version;
 		$mltlngg_db_version = '0.3';
 		
 		/* Set the default language is the same as the language of the Wordpress localization */
@@ -136,6 +140,7 @@ if ( ! function_exists( 'mltlngg_register_settings' ) ) {
 		$mltlngg_default_options = array(
 			'plugin_option_version'		=> $mltlngg_plugin_info["Version"],
 			'plugin_db_version' 		=> $mltlngg_db_version,
+			'wp_version'				=> $wp_version,
 			'default_language'			=> $mltlngg_language_default[1],
 			'list_of_languages'			=> $mltlngg_list_of_languages,
 			'enabled_new_language'		=> false,
@@ -144,7 +149,11 @@ if ( ! function_exists( 'mltlngg_register_settings' ) ) {
 			'language_switcher'			=> 'drop-down-list',
 			'first_install'				=> strtotime( "now" ),
 			'display_settings_notice'	=> 1,
-			'search'		 			=> 'single'
+			'search'		 			=> 'single',
+			'video_providers'			=> array(),
+			'display_alternative_link'	=> false,
+			'hide_link_slug'			=> false,
+			'suggest_feature_banner'	=> 1,
 		);
 
 		/* Add options to database */
@@ -172,6 +181,12 @@ if ( ! function_exists( 'mltlngg_register_settings' ) ) {
 				$wpdb->query( 'ALTER TABLE `' . $wpdb->prefix . 'mltlngg_translate` ADD `post_excerpt` TEXT NOT NULL AFTER `post_content`' );
 			
 			$mltlngg_options['plugin_db_version'] = $mltlngg_db_version;
+			$update_option = true;
+		}
+
+		if ( ! isset( $mltlngg_options['wp_version'] ) || $mltlngg_options['wp_version'] != $wp_version ) {
+			$mltlngg_options['wp_version'] = $wp_version;
+			mltlngg_update_video_options();
 			$update_option = true;
 		}
 
@@ -223,6 +238,8 @@ if ( ! function_exists( '_mltlngg_plugin_activate' ) ) {
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		$mltlngg_table_translate = $wpdb->prefix . 'mltlngg_translate';
 		$mltlngg_terms_table_translate = $wpdb->prefix . 'mltlngg_terms_translate';
+
+		mltlngg_register_settings();
 
 		$mltlngg_sql =
 			"CREATE TABLE IF NOT EXISTS `" . $mltlngg_table_translate . "` (
@@ -320,8 +337,10 @@ if ( ! function_exists( '_mltlngg_plugin_activate' ) ) {
 			}
 
 			unset( $mltlngg_options['deactivation'] );
-			update_option( 'mltlngg_options', $mltlngg_options );
 		}
+
+		mltlngg_update_video_options();
+		update_option( 'mltlngg_options', $mltlngg_options );
 	}
 }
 
@@ -336,10 +355,10 @@ if ( ! function_exists( 'mltlngg_plugin_load' ) ) {
 			$mltlngg_get_default_language = $mltlngg_options['default_language'];
 			$mltlngg_enabled_languages = array(); /* Array with all enabled languages */
 			$mltlngg_enabled_languages_locale = array(); /* Array with codes of all enabled languages */
-			foreach ( $mltlngg_options['list_of_languages'] as $mltlngg_one_language ) {
-				if ( true === $mltlngg_one_language['enable'] ) {
-					$mltlngg_enabled_languages[] = $mltlngg_one_language;
-					$mltlngg_enabled_languages_locale[] = $mltlngg_one_language['locale'];
+			foreach ( $mltlngg_options['list_of_languages'] as $item ) {
+				if ( true === $item['enable'] ) {
+					$mltlngg_enabled_languages[]        = $item;
+					$mltlngg_enabled_languages_locale[] = $item['locale'];
 				}
 			}
 
@@ -354,11 +373,13 @@ if ( ! function_exists( 'mltlngg_plugin_load' ) ) {
 			/* Internationalization */
 			load_plugin_textdomain( 'multilanguage', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
-			/* Do not redirect if is admin/login/logout/ page */
-			if ( ! is_admin() && ! preg_match( "/\/?\w+\.{1}[a-z]{3,4}/", $_SERVER['REQUEST_URI'] ) ) {
-				/* Redirect to URL with language code */
-				mltlngg_redirect();				
-			}
+			/*
+			 * if we not in admin panel
+			 * or we not on login/logout/ page
+			 * redirect to URL with language code 
+			 */
+			if ( ! is_admin() && ! preg_match( "/\/?\w+\.{1}[a-z]{3,4}/", $_SERVER['REQUEST_URI'] ) )
+				mltlngg_redirect();
 		}
 	}
 }
@@ -371,10 +392,8 @@ if ( ! function_exists( 'mltlngg_is_subfolder' ) ) {
 		$homeurl = get_option( 'home' );
 		$homeurl = str_replace( 'http://', '', $homeurl );
 		$homeurl = str_replace( 'https://', '', $homeurl );
-		if ( false == strpos( $homeurl, '/' ) )
-			return false;
-		return true;
-	}	
+		return false == strpos( $homeurl, '/' ) ? false : true;
+	}
 }
 
 /* Function for change display language */
@@ -384,24 +403,37 @@ if ( ! function_exists( 'mltlngg_get_display_language' ) ) {
 		/* Do not change the language on the admin page if language changed in the frontend */
 		if ( is_admin() ) {
 			$wp_locale = get_locale();
-			$mltlngg_current_language = ( ! empty( $wp_locale ) && in_array( $wp_locale, $mltlngg_enabled_languages_locale ) ) ? $wp_locale : 'en_US';
+			$mltlngg_current_language = ! empty( $wp_locale ) && in_array( $wp_locale, $mltlngg_enabled_languages_locale ) ? $wp_locale : 'en_US';
 		} else {
 			/* The language is changed via widget */
 			if ( isset( $_POST['mltlngg_change_display_lang'] ) ) {
 				if ( empty( $mltlngg_old_language ) && isset( $_SESSION['language'] ) )
 					$mltlngg_old_language = $_SESSION['language']; /* Language before changing */
 				$mltlngg_current_language = $_POST['mltlngg_change_display_lang']; /* Language after changing */
-				$_SESSION['language'] = $mltlngg_current_language;
+				$_SESSION['language']     = $mltlngg_current_language;
 				/* The language is entered in the url */
-			} elseif ( preg_match( '(' . implode( '|', $mltlngg_enabled_languages_locale ) . ')', $_SERVER['REQUEST_URI'], $matches ) ) {
-				$mltlngg_current_language = $matches[0];
-				$_SESSION['language'] = $mltlngg_current_language;
+			} elseif ( isset( $_GET['lang'] ) && ! empty( $_GET['lang'] ) && in_array( $_GET['lang'], $mltlngg_enabled_languages_locale ) ) {
+				$mltlngg_current_language = $_GET['lang'];
+				$_SESSION['language']     = $mltlngg_current_language;
+			} elseif ( preg_match( '(\/' . implode( '\/|\/', $mltlngg_enabled_languages_locale ) . '\/)', $_SERVER['REQUEST_URI'], $matches ) ) {
+				$mltlngg_current_language = trim( $matches[0], '/');
+				$_SESSION['language']     = $mltlngg_current_language;
 				/* The language is not changed, leave the current language from session */
 			} elseif ( isset( $_SESSION['language'] ) && NULL != $_SESSION['language'] && in_array( $_SESSION['language'], $mltlngg_enabled_languages_locale ) && count( $mltlngg_enabled_languages ) > 1 ) {
 				$mltlngg_current_language = $_SESSION['language'];
 				/* The language is never chosen, assign the default language from options */
 			} else {
 				$mltlngg_current_language = $mltlngg_get_default_language;
+				$params = explode( '/', trim( $_SERVER['REQUEST_URI'], '/' ) );
+				if ( is_array( $params ) && ! empty( $params ) ) {
+					foreach ( $mltlngg_enabled_languages_locale as $locale ) {
+						$key = array_search( $locale, $params );
+						if ( $key ) {
+							$mltlngg_current_language = $params[ $key ];
+							break;
+						}
+					}
+				}
 				$_SESSION['language'] = $mltlngg_current_language;
 			}
 		}
@@ -416,132 +448,292 @@ if ( ! function_exists( 'mltlngg_switch_wp_locale' ) ) {
 	}
 }
 
+if ( ! function_exists( 'mltlngg_home_url' ) ) {
+	function mltlngg_home_url() {
+		/* for multisites based on subdomains */
+		if ( is_multisite() && ! is_subdomain_install() ) {
+			global $current_blog;
+			$home_url = ( is_ssl() ? "https://" : "http://" ) . $current_blog->domain;
+			if ( '/' == $current_blog->path )
+				$home_url = esc_url( $home_url ); /* for first site we have not subfolder */
+			else
+				$home_url = array( esc_url( $home_url ), true );
+		/* if WP have been installed in subfolder */
+		} elseif ( mltlngg_is_subfolder() ) {
+			$home_url = get_option( 'home' );
+			$home_dir = str_replace( 'http://www.', '', $home_url );
+			$home_dir = str_replace( 'https://www.', '', $home_dir );
+			$home_dir = str_replace( 'http://', '', $home_dir );
+			$home_dir = str_replace( 'https://', '', $home_dir );
+			$server_name = $_SERVER['SERVER_NAME'];
+			if ( 'www.' == substr( $server_name, 0, 4 ) )
+				$server_name = substr( $server_name, 4 );
+			$home_dir = str_replace( $server_name . ':' . $_SERVER['SERVER_PORT'], '', $home_dir );
+			$home_dir = str_replace( $server_name, '', $home_dir );
+			$home_dir = rtrim( $home_dir, '/ ' );
+			$home_dir_count = strlen( $home_dir );
+			$home_url = array( substr( $home_url, 0, - $home_dir_count ), true );
+		/* in other cases */
+		} else {
+			$home_url = get_option( 'home' );
+		}
+		return $home_url;
+	}
+}
+
+if ( ! function_exists( 'mltlngg_alternate_links' ) ) {
+	function mltlngg_alternate_links() {
+		global $mltlngg_enabled_languages, $mltlngg_current_language, 
+			$mltlngg_get_default_language, $mltlngg_options, 
+			$mltlngg_old_language, $mltlngg_enabled_languages_locale;
+
+		if ( ! $mltlngg_options['display_alternative_link'] )
+			return false;
+
+		$home_url = mltlngg_home_url();
+		if ( is_array( $home_url ) ) {
+			$home_url       = $home_url[0];
+			$is_subfolder   = true;
+		} else {
+			$is_subfolder   = false;
+		}
+		$html                = '';
+		$is_custom_permalink = get_option( 'permalink_structure' );
+		$old_link_param      = is_null( $mltlngg_old_language ) ? false : $mltlngg_old_language;
+		$cur_link_param      = is_null( $mltlngg_current_language ) ? false : $mltlngg_current_language;
+		$defaults            = array( 'x-default', $mltlngg_get_default_language );
+		$link_attr_args      = array(
+			array( 
+				'hreflang'   => 'x-default',
+				'link_param' => $mltlngg_get_default_language
+			)
+		);
+		foreach ( $mltlngg_enabled_languages as $lang ) {
+			$link_attr_args[] = array(
+				'hreflang'   => $lang['locale'],
+				'link_param' => $lang['locale']
+			);
+		}
+
+		/**
+		 * You can add, edit or remove some links
+		 */
+		$link_attr_args = apply_filters( 'bwsplgns_mltlngg_add_alt_links', $link_attr_args );
+
+		if ( empty( $link_attr_args ) || ! is_array( $link_attr_args ) )
+			return false;
+
+		foreach ( $link_attr_args as $item ) {
+			if ( empty( $item['hreflang'] ) || empty( $item['link_param'] ) )
+				continue;
+			
+			if ( $is_custom_permalink ) {
+				if ( ( $is_subfolder || true === $mltlngg_options['hide_link_slug'] ) && $mltlngg_current_language == $mltlngg_get_default_language ) {
+					$params = explode( '/', trim( $_SERVER['REQUEST_URI'], '/' ) );
+					if ( is_array( $params ) && ! empty( $params ) ) {
+						if ( $is_subfolder ) {
+							$folder = '/' . $params[0];
+							unset( $params[0] );
+						} else {
+							$folder = '';
+						}
+						foreach ( $mltlngg_enabled_languages_locale as $locale ) {
+							$key = array_search( $locale, $params );
+							if ( $key ) {
+								unset( $params[ $key ] );
+								break;
+							}
+						}
+						$params = empty( $params ) ? '' : implode( '/', $params );
+					}
+					$link_param    = in_array( $item['hreflang'], $defaults ) && true === $mltlngg_options['hide_link_slug'] ? '' : '/' . $item['link_param'];
+					$language_link = $home_url . $folder . $link_param . '/' . $params;
+				} else {
+					if ( in_array( $item['hreflang'], $defaults ) && true === $mltlngg_options['hide_link_slug'] ) {
+						/* display link without language prefix for default language */
+						$needle     = $cur_link_param . '/';
+						$haystack   = '';
+					} else {
+						$needle     = $cur_link_param;
+						$haystack   = $item['link_param'];
+					}
+					$language_link = $home_url . mltlngg_str_replace_once( $needle, $haystack, $_SERVER['REQUEST_URI'] );
+				}
+			} else {
+				$language_link = 
+						in_array( $item['hreflang'], $defaults ) && true === $mltlngg_options['hide_link_slug']
+					? 
+						remove_query_arg( 'lang', $home_url . $_SERVER['REQUEST_URI'] ) 
+					: 
+						add_query_arg( 'lang', $item['link_param'], $home_url . $_SERVER['REQUEST_URI'] );
+			}
+			$html .= '<link rel="alternate" hreflang="' . strtolower( str_replace( '_', '-', esc_attr( $item['hreflang'] ) ) ) . '" href="'. esc_url( rtrim( $language_link, '/' ) ) .'" />';
+		}
+		echo $html;
+	}
+}
+
 /* Function for redirect when display language is changed */
 if ( ! function_exists( 'mltlngg_redirect' ) ) {
 	function mltlngg_redirect() {
-		global $current_blog, $mltlngg_current_language, $mltlngg_old_language, $mltlngg_enabled_languages;
+		global $mltlngg_current_language,  $mltlngg_old_language, $mltlngg_enabled_languages, 
+			$mltlngg_get_default_language, $mltlngg_enabled_languages_locale, $mltlngg_options;
+
+		if ( empty( $mltlngg_options ) )
+			$mltlngg_options = get_option( 'mltlngg_options' );
+
 		if ( ! function_exists( 'is_plugin_active' ) )
 			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
-		if ( ( isset( $_POST['wp_customize'] ) && $_POST['wp_customize'] == 'on' ) || ( is_plugin_active('nextgen-gallery/nggallery.php') && isset( $_REQUEST['photocrati_ajax'] ) ) ) {
+		if (
+			( isset( $_POST['wp_customize'] ) && $_POST['wp_customize'] == 'on' ) || 
+			( is_plugin_active( 'nextgen-gallery/nggallery.php') && isset( $_REQUEST['photocrati_ajax'] ) ) ||
+			1 >= count( $mltlngg_enabled_languages )
+		) 
 			return;
+
+		if ( is_plugin_active( 'woocommerce/woocommerce.php' ) && preg_match( "/\/wc-api\/v([1-3]{1})(.*)?/", $_SERVER['REQUEST_URI'] ) ) {
+			/* WooCommerce REST API */
+			return;		
 		}
 
-		$home = get_option( 'home' );
-		$mltlngg_permalink = get_option( 'permalink_structure' );
-
-		$mltlngg_is_subfolder = mltlngg_is_subfolder();
-		if ( ( is_multisite() && ! is_subdomain_install() ) || $mltlngg_is_subfolder ) {
-			if ( ! $mltlngg_is_subfolder )	{		
-				if ( $current_blog ) {
-					$home_main = ( ( isset( $_SERVER["HTTPS"] ) && $_SERVER["HTTPS"] == "on" ) ? "https://" : "http://" ) . $current_blog->domain;
-					$home_main = esc_url( $home_main );
-				}
-			} else {
-				$home_dir = str_replace( 'http://www.', '', $home );
-				$home_dir = str_replace( 'https://www.', '', $home_dir );
-				$home_dir = str_replace( 'http://', '', $home_dir );
-				$home_dir = str_replace( 'https://', '', $home_dir );
-				$server_name = $_SERVER['SERVER_NAME'];
-				if ( 'www.' == substr( $server_name, 0, 4 ) )
-					$server_name = substr( $server_name, 4 );
-				$home_dir = str_replace( $server_name . ':' . $_SERVER['SERVER_PORT'], '', $home_dir );
-				$home_dir = str_replace( $server_name, '', $home_dir );
-				$home_dir = rtrim( $home_dir, '/ ' );
-				$home_dir_count = strlen( $home_dir );
-				$home_main = substr( $home, 0, - $home_dir_count );
-			}
-
-			if ( ! empty( $mltlngg_old_language ) && ! empty( $mltlngg_current_language ) && $mltlngg_old_language != $mltlngg_current_language ) {
-				if ( false === strpos( $_SERVER['REQUEST_URI'], $mltlngg_old_language ) ) {
-					if ( $mltlngg_permalink != '' ) {
-						$href = str_replace( $home, ( $home . '/' . $mltlngg_current_language ), ( $home_main . $_SERVER['REQUEST_URI'] ) );
-					} else {
-						$href = $home_main . $_SERVER['REQUEST_URI'];
-						if ( 'page' == get_option( 'show_on_front' ) && false === strpos( $_SERVER['REQUEST_URI'], '?' ) ) {
-							$front_page_id = get_option( 'page_on_front' );
-							$href .= ( false === strpos( str_replace( 'lang=' . $mltlngg_old_language, '', $_SERVER['REQUEST_URI'] ), '=' ) ) ? '?page_id=' . $front_page_id : '&page_id=' . $front_page_id;
-							$href .= '&lang=' . $mltlngg_current_language;
-						} else {
-							$href .= ( false === strpos( $_SERVER['REQUEST_URI'], '?' ) ) ? '?lang=' . $mltlngg_current_language : '&lang=' . $mltlngg_current_language;
-						}
-					}
-				} else {
-					$href = $home_main . str_replace( $mltlngg_old_language, $mltlngg_current_language, $_SERVER['REQUEST_URI'] );
-				}
-				wp_redirect( $href );
-				exit();			
-			} elseif ( empty( $mltlngg_old_language ) && count( $mltlngg_enabled_languages ) > 1 && false === strpos( $_SERVER['REQUEST_URI'], $mltlngg_current_language ) ) {
-				if ( $mltlngg_permalink != '' ) {
-					$href = str_replace( $home, ( $home . '/' . $mltlngg_current_language ), ( $home_main . $_SERVER['REQUEST_URI'] ) );
-				} else {
-					$href = $home_main . $_SERVER['REQUEST_URI'];
-					if ( 'page' == get_option( 'show_on_front' ) && false === strpos( $_SERVER['REQUEST_URI'], '?' ) ) {
-						$front_page_id = get_option( 'page_on_front' );
-						$href .= ( false === strpos( $_SERVER['REQUEST_URI'], '?' ) ) ? '?page_id=' . $front_page_id : '&page_id=' . $front_page_id;
-						$href .= '&lang=' . $mltlngg_current_language;
-					} else {
-						$href .= ( false === strpos( $_SERVER['REQUEST_URI'], '?' ) ) ? '?lang=' . $mltlngg_current_language : '&lang=' . $mltlngg_current_language;
-					}
-				}
-				wp_redirect( $href );
-				exit();
-			} elseif ( $mltlngg_permalink == '' ) {	
-				if ( 'page' == get_option( 'show_on_front' ) && false === strpos( str_replace( 'lang=' . $mltlngg_current_language, '', $_SERVER['REQUEST_URI'] ), '=' ) ) {
-					$front_page_id = get_option( 'page_on_front' );
-					$href = trim( $home_main . $_SERVER['REQUEST_URI'] , '/' );
-					$href .= ( false === strpos( $_SERVER['REQUEST_URI'], '?' ) ) ? '?page_id=' . $front_page_id : '&page_id=' . $front_page_id;
-					if ( false === strpos( $_SERVER['REQUEST_URI'], $mltlngg_current_language ) )
-						$href .= '&lang=' . $mltlngg_current_language;
-					wp_redirect( $href );
-					exit();
-				} 
-			}
+		$redirect_url = false;
+		$home_url     = mltlngg_home_url();
+		if ( is_array( $home_url ) ) {
+			$home_url       = $home_url[0];
+			$is_subfolder   = true;
 		} else {
-			if ( ! empty( $mltlngg_old_language ) && ! empty( $mltlngg_current_language ) && $mltlngg_old_language != $mltlngg_current_language ) {
-				if ( false === strpos( $_SERVER['REQUEST_URI'], $mltlngg_old_language ) ) {
-					if ( $mltlngg_permalink != '' ) {
-						$href = str_replace( $home, ( $home . '/' . $mltlngg_current_language ), ( $home . $_SERVER['REQUEST_URI'] ) );
-					} else {
-						$href = $home . $_SERVER['REQUEST_URI'];
-						if ( 'page' == get_option( 'show_on_front' ) && false === strpos( $_SERVER['REQUEST_URI'], '?' ) ) {
-							$front_page_id = get_option( 'page_on_front' );
-							$href .= ( false === strpos( str_replace( 'lang=' . $mltlngg_old_language, '', $_SERVER['REQUEST_URI'] ), '=' ) ) ? '?page_id=' . $front_page_id : '&page_id=' . $front_page_id;
-							$href .= '&lang=' . $mltlngg_current_language;
+			$is_subfolder   = false;
+		}
+		$full_url  = $home_url . $_SERVER['REQUEST_URI'];
+		$reg_exp   = '#\/' . implode( '\/|\/', $mltlngg_enabled_languages_locale ) . '\/#';
+		$is_custom_permalinks = get_option( 'permalink_structure' );
+		$old_link_param       = is_null( $mltlngg_old_language ) ? false : $mltlngg_old_language;
+		$cur_link_param       = is_null( $mltlngg_current_language ) ? false : $mltlngg_current_language;
+
+		/* 
+		 * skip redirection by double-clicking on the same language or
+		 * if user surfs by site without language switching or
+		 * we can not get current language
+		 */
+		if ( $old_link_param === $cur_link_param )
+			return;
+
+		/*
+		 * remove link slug for the default language 
+		 * if 'hide_link_slug' has been enabled
+		 */
+		if ( $mltlngg_current_language === $mltlngg_get_default_language && true === $mltlngg_options['hide_link_slug'] ) {
+			
+			if ( $full_url == $home_url . '/' || $full_url == $home_url )
+				return;
+
+			if ( $is_custom_permalinks ) {
+				/* on internal pages */
+				if ( preg_match( $reg_exp, $_SERVER['REQUEST_URI'], $matches ) ) {
+					$redirect_url = $home_url . str_replace( $matches[0], '/', $_SERVER['REQUEST_URI'] );
+				} else {
+					$params = explode( '/', trim( $_SERVER['REQUEST_URI'], '/' ) );
+
+					if ( is_array( $params ) && ! empty( $params ) ) {
+						if ( $is_subfolder ) {
+							$folder =  '/' . $params[0];
+							unset( $params[0] );
 						} else {
-							$href .= ( false === strpos( $_SERVER['REQUEST_URI'], '?' ) ) ? '?lang=' . $mltlngg_current_language : '&lang=' . $mltlngg_current_language;
+							$folder = '';
 						}
+						foreach ( $mltlngg_enabled_languages_locale as $locale ) {
+							$key = array_search( $locale, $params );
+							if ( $key ) {
+								unset( $params[ $key ] );
+								break;
+							}
+						}
+
+						$params = empty( $params ) ? '' : implode( '/', $params );
+
+						if ( ! preg_match( '|' . $folder  . '/' . $params . '|', $_SERVER['REQUEST_URI'] ) )
+							$redirect_url = $home_url . $folder . '/' . $params;
 					}
-				} else {
-					$href = $home . mltlngg_str_replace_once( $mltlngg_old_language, $mltlngg_current_language, $_SERVER['REQUEST_URI'] );
 				}
-				wp_redirect( $href );
-				exit();			
-			} elseif ( empty( $mltlngg_old_language ) && count( $mltlngg_enabled_languages ) > 1 && false === strpos( $_SERVER['REQUEST_URI'], $mltlngg_current_language ) ) {
-				if ( $mltlngg_permalink != '' ) {
-					$href = str_replace( $home, ( $home . '/' . $mltlngg_current_language ), ( $home . $_SERVER['REQUEST_URI'] ) );
+			/* if custom structure of permalinks not used on site */
+			} else {
+				$redirect_url = preg_match( '|lang=|', $full_url ) ? remove_query_arg( 'lang', $full_url ) : false;
+			}
+
+		/*
+		 * forming links with language slug
+		 */
+		} else {
+
+			if ( $is_custom_permalinks ) { 
+				$server = trim( $_SERVER['REQUEST_URI'], '/' );
+				/* 
+				 * redirecton from link without any parameters or
+				 * switching between languages on home page
+				 */
+				if ( empty( $server ) ) {
+					$redirect_url = $home_url . '/' . $cur_link_param;
 				} else {
-					$href = $home . $_SERVER['REQUEST_URI'];
-					if ( 'page' == get_option( 'show_on_front' ) && false === strpos( $_SERVER['REQUEST_URI'], '?' ) ) {
-						$front_page_id = get_option( 'page_on_front' );
-						$href .= ( false === strpos( $_SERVER['REQUEST_URI'], '?' ) ) ? '?page_id=' . $front_page_id : '&page_id=' . $front_page_id;
-						$href .= '&lang=' . $mltlngg_current_language;
+					/**
+					 * switching between languages on internal pages
+					 */
+					if ( preg_match( $reg_exp, $_SERVER['REQUEST_URI'], $matches ) ) {
+						$redirect_url = trim( $matches[0], '/' ) == $cur_link_param ? false : $home_url . str_replace( $matches[0], '/' . $cur_link_param . '/' , $_SERVER['REQUEST_URI'] );
 					} else {
-						$href .= ( false === strpos( $_SERVER['REQUEST_URI'], '?' ) ) ? '?lang=' . $mltlngg_current_language : '&lang=' . $mltlngg_current_language;
+
+						$params = explode( '/', $server );
+
+						if ( is_array( $params ) ) {
+							if ( $is_subfolder ) {
+								$folder = '/' . $params[0];
+								unset( $params[0] );
+							} else {
+								$folder = '';
+							}
+							
+							foreach ( $mltlngg_enabled_languages_locale as $locale ) {
+								$key = array_search( $locale, $params );
+								if ( $key ) {
+									unset( $params[ $key ] );
+									break;
+								}
+							}
+
+							$params = empty( $params ) ? '' : implode( '/', $params );
+						} else {
+							$folder = '';
+						}
+
+						if ( ! preg_match( '|' . $folder . '/' . $cur_link_param . '/|', $_SERVER['REQUEST_URI'] ) && $params != $cur_link_param )
+							$redirect_url = $home_url . $folder . '/' . $cur_link_param . '/' . $params;
 					}
 				}
-				wp_redirect( $href );
+			/*
+			 * add $_GET parameter to the link 
+			 * if custom structure of permalinks not used on site
+			 */
+			} else {
+				$link_param = array( 'lang' => $cur_link_param );
+				if ( 'page' == get_option( 'show_on_front' ) ) {
+					parse_str( str_replace( '/?', '', $_SERVER['REQUEST_URI'] ), $params );
+					if ( 
+						! empty( $params ) && 
+						array_key_exists( 'lang', $params ) &&
+						! array_key_exists( 'page_id', $params ) && 
+						1 == count( $params ) 
+					)
+						$link_param['page_id'] = get_option( 'page_on_front' );
+				}
+				$redirect_url = add_query_arg( $link_param, $full_url );
+			}
+		}
+
+		if ( $redirect_url ) {
+			$redirect_url = rtrim( $redirect_url, '/' );
+			if ( $redirect_url != $full_url ) {
+				wp_redirect( $redirect_url );
 				exit();
-			} elseif ( $mltlngg_permalink == '' ) {
-				if ( 'page' == get_option( 'show_on_front' ) && false === strpos( str_replace( 'lang=' . $mltlngg_current_language, '', $_SERVER['REQUEST_URI'] ), '=' ) ) {
-					$front_page_id = get_option( 'page_on_front' );
-					$href = $home . $_SERVER['REQUEST_URI'];
-					$href .= ( false === strpos( $_SERVER['REQUEST_URI'], '?' ) ) ? '?page_id=' . $front_page_id : '&page_id=' . $front_page_id;
-					if ( false === strpos( $_SERVER['REQUEST_URI'], $mltlngg_current_language ) )
-						$href .= '&lang=' . $mltlngg_current_language;
-					wp_redirect( $href );
-					exit();
-				} 
 			}
 		}
 	}
@@ -549,7 +741,7 @@ if ( ! function_exists( 'mltlngg_redirect' ) ) {
 
 /* to search for the first occurrence of slug language */
 if ( ! function_exists( 'mltlngg_str_replace_once' ) ) {
-	function mltlngg_str_replace_once( $needle , $replace , $haystack ) { 
+	function mltlngg_str_replace_once( $needle, $replace, $haystack ) { 
 		/* Looks for the first occurence of $needle in $haystack */
 		/* and replaces it with $replace. */
 		$pos = strpos( $haystack, $needle ); 
@@ -571,21 +763,29 @@ if ( ! function_exists( 'mltlngg_add_query_vars' ) ) {
 /* Add rewrite rules for available languages */
 if ( ! function_exists( 'mltlngg_rewrite_rules' ) ) {
 	function mltlngg_rewrite_rules() {
-		global $wp_rewrite;
-		$mltlngg_options = get_option( 'mltlngg_options' );
+		global $wp_rewrite, $mltlngg_options;
+
+		if ( empty( $mltlngg_options ) )
+			$mltlngg_options = get_option( 'mltlngg_options' );
+
 		$mltlngg_enabled_languages_locale = array(); /* Array with codes of all enabled languages */
-		foreach ( $mltlngg_options['list_of_languages'] as $mltlngg_one_language ) {
-			if ( true === $mltlngg_one_language['enable'] ) {
-				$mltlngg_enabled_languages_locale[] = $mltlngg_one_language['locale'];
+		foreach ( $mltlngg_options['list_of_languages'] as $item ) {
+			if ( 
+				true === $item['enable'] && 
+				( $item['locale'] != $mltlngg_options['default_language'] || ! $mltlngg_options['hide_link_slug'] )
+			) {
+				$mltlngg_enabled_languages_locale[] = $item['locale'];
 			}
 		}
-		$mltlngg_lang_regular = '(' . implode( '|', $mltlngg_enabled_languages_locale ) . ')';
-		add_rewrite_tag( '%lang%', $mltlngg_lang_regular, 'lang=' );
-		$new_rules = array( $mltlngg_lang_regular . '/?$' => 'index.php?lang=$matches[1]' );
-		foreach ( $wp_rewrite->rules as $left => $right ) {
-			$new_rules[ $mltlngg_lang_regular . '/' . $left ] = preg_replace_callback( '/matches\[(\d{1,2})\]/', 'mltlngg_replace_matched_rule', $right ) . '&lang=$matches[1]';
+		if ( ! empty( $mltlngg_enabled_languages_locale ) ) {
+			$mltlngg_lang_regular = '(' . implode( '|', $mltlngg_enabled_languages_locale ) . ')';
+			add_rewrite_tag( '%lang%', $mltlngg_lang_regular, 'lang=' );
+			$new_rules = array( $mltlngg_lang_regular . '/?$' => 'index.php?lang=$matches[1]' );
+			foreach ( $wp_rewrite->rules as $left => $right ) {
+				$new_rules[ $mltlngg_lang_regular . '/' . $left ] = preg_replace_callback( '/matches\[(\d{1,2})\]/', 'mltlngg_replace_matched_rule', $right ) . '&lang=$matches[1]';
+			}
+			$wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
 		}
-		$wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
 		return $wp_rewrite->rules;
 	}
 }
@@ -599,18 +799,32 @@ if ( ! function_exists( 'mltlngg_replace_matched_rule' ) ) {
 /* Adding language code to url after home_url */
 if ( ! function_exists( 'mltlngg_get_url_translated' ) ) {
 	function mltlngg_get_url_translated( $url ) {
-		global $mltlngg_current_language, $mltlngg_enabled_languages;
-		if ( count( $mltlngg_enabled_languages ) > 1 && ! is_admin() && false === strpos( $_SERVER['REQUEST_URI'], 'wp-login.php' ) ) {	
+		global $mltlngg_current_language, $mltlngg_enabled_languages, $mltlngg_options;
+
+		if ( empty( $mltlngg_options ) )
+			$mltlngg_options = get_option( 'mltlngg_options' );
+
+		if ( ! function_exists( 'is_plugin_active' ) )
+			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+		if ( 
+			count( $mltlngg_enabled_languages ) > 1 && 
+			! is_admin() && 
+			false === strpos( $_SERVER['REQUEST_URI'], 'wp-login.php' ) &&
+			( $mltlngg_current_language !== $mltlngg_options['default_language'] || false === $mltlngg_options['hide_link_slug'] ) && 
+			! ( is_plugin_active( 'woocommerce/woocommerce.php' ) && preg_match( "/\/wc-api\/v([1-3]{1})(.*)?/", $_SERVER['REQUEST_URI'] ) )
+		) {
 			$is_content = strpos( $url, content_url() );
 			$is_includes = strpos( $url, includes_url() );
-			$mltlngg_permalink = get_option( 'permalink_structure' );
+			$is_custom_permalink = get_option( 'permalink_structure' );
 
 			if ( false == $is_content && false === $is_includes ) {
-				if ( $mltlngg_permalink == '' ) {
-					$url .= ( false === strpos( $url, '?' ) ) ? '?lang=' . $mltlngg_current_language : '&amp;lang=' . $mltlngg_current_language;
-				} else {
+				if ( $is_custom_permalink ) {
 					$homeurl = get_option( 'home' );
-					$url = str_replace( $homeurl, $homeurl . '/' . $mltlngg_current_language, $url );
+					$url     = str_replace( $homeurl, $homeurl . '/' . $mltlngg_current_language, $url );
+				} else {
+					$param = $mltlngg_current_language;
+					$url   = add_query_arg( 'lang', $param, $url );
 				}
 			}
 		}
@@ -621,13 +835,46 @@ if ( ! function_exists( 'mltlngg_get_url_translated' ) ) {
 /* Load scripts and styles */
 if ( ! function_exists( 'mltlngg_script_style' ) ) {
 	function mltlngg_script_style() {
+		global $hook_suffix;
 		wp_enqueue_style( 'mltlngg_stylesheet', plugins_url( 'css/style.css', __FILE__ ) );
-		wp_enqueue_script( 'mltlngg_script', plugins_url( 'js/script.js', __FILE__ ), array( 'jquery' ) );
-		wp_localize_script( 'mltlngg_script', 'mltlngg_vars',
-			array(
-				'update_post_error' => __( 'Attention!!! The changes will not be saved because Title and Content fields are empty on the current tab! It is recommended to fill in at least one field or switch to the tab with the fields that are already filled.', 'multilanguage' )
-			)
-		);
+		if ( is_admin() ) {
+			wp_enqueue_script( 'mltlngg_script', plugins_url( 'js/script.js', __FILE__ ), array( 'jquery' ) );
+			wp_localize_script( 'mltlngg_script', 'mltlngg_vars',
+				array(
+					'update_post_error' => __( 'Attention!!! The changes will not be saved because Title and Content fields are empty on the current tab! It is recommended to fill in at least one field or switch to the tab with the fields that are already filled.', 'multilanguage' )
+				)
+			);
+
+			if ( 'nav-menus.php' == $hook_suffix ) {
+				wp_enqueue_script( 'mltlngg_nav_menu', plugins_url( 'js/nav-menu.js', __FILE__ ), array( 'jquery' ) );
+
+				$items = get_posts( array(
+					'numberposts' => -1,
+					'nopaging'    => true,
+					'post_type'   => 'nav_menu_item',
+					'fields'      => 'ids',
+					'meta_key'    => '_mltlngg_menu_item',
+				) );
+				/* the options values for the language switcher */
+				$data['value'] = array();
+				foreach ( $items as $item ) {
+					$data['value'][ $item ] = get_post_meta( $item, '_mltlngg_menu_item', true );
+				}
+				$data['switcher'] = array(
+					'input' => array( 
+						'aligned-list' 		=> __( 'Aligned languages list', 'multilanguage' ),
+						'aligned-icons' 	=> __( 'Aligned flag icons', 'multilanguage' ),
+						'drop-down-list' 	=> __( 'Drop-down languages list', 'multilanguage' ),
+						'drop-down-icons' 	=> __( 'Drop-down flag icons', 'multilanguage' )
+					)
+				);
+				$data['title'] = __( 'Multilanguage switcher', 'multilanguage' );
+				wp_localize_script( 'mltlngg_nav_menu', 'mltlngg_var', $data );
+			}
+
+			if ( isset( $_GET['page'] ) && 'mltlngg_settings' == $_GET['page'] && isset( $_GET['tab'] ) && 'custom_code' == $_GET['tab'] )
+				bws_plugins_include_codemirror();
+		}
 	}
 }
 
@@ -667,7 +914,7 @@ if ( ! class_exists( 'Mltlngg_Widget' ) ) {
 		public function widget( $args, $instance ) {
 			global $mltlngg_options;
 			$mltlngg_language_switcher = ( isset( $instance['mltlngg_language_switcher'] ) ) ? $instance['mltlngg_language_switcher'] : $mltlngg_options['language_switcher'];
-			$title = ( ! empty( $instance['title'] ) ) ? apply_filters( 'widget_title', $instance['title'] ) : '';
+			$title = ( ! empty( $instance['title'] ) ) ? apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) : '';
 			echo $args['before_widget'];
 			echo $args['before_title'];
 			echo $title;
@@ -694,24 +941,24 @@ if ( ! class_exists( 'Mltlngg_Widget' ) ) {
 				</label>
 			</p>
 			<div style="clear: both;">
-				<label style="float: left">
-					<input id="drop-down-list" name="<?php echo $this->get_field_name( 'mltlngg_language_switcher' ); ?>" type="radio" value="drop-down-list" <?php echo ( ( $mltlngg_language_switcher == 'drop-down-list' ) ? 'checked' : '' ); ?>><?php _e( 'Drop-down languages list', 'multilanguage' ) ?>
+				<label class="mltlngg_widget_label">
+					<input id="<?php echo $this->get_field_id( 'drop-down-list' ); ?>" name="<?php echo $this->get_field_name( 'mltlngg_language_switcher' ); ?>" type="radio" value="drop-down-list" <?php echo ( ( $mltlngg_language_switcher == 'drop-down-list' ) ? 'checked' : '' ); ?>><?php _e( 'Drop-down languages list', 'multilanguage' ) ?>
 				</label>
 				<div class="bws_help_box dashicons dashicons-editor-help">
 					<div class="bws_hidden_help_text"><img title="" src="<?php echo plugins_url( 'images/tooltip_drop_down_list.png', __FILE__ ); ?>" alt=""></div>
 				</div>
 			</div>
 			<div style="clear: both;">
-				<label style="float: left">
-					<input id="drop-down-icons" name="<?php echo $this->get_field_name( 'mltlngg_language_switcher' ); ?>" type="radio" value="drop-down-icons" <?php echo ( ( $mltlngg_language_switcher == 'drop-down-icons' ) ? 'checked' : '' ); ?>><?php _e( 'Drop-down flag icons', 'multilanguage' ) ?>
+				<label class="mltlngg_widget_label">
+					<input id="<?php echo $this->get_field_id( 'drop-down-icons' ); ?>" name="<?php echo $this->get_field_name( 'mltlngg_language_switcher' ); ?>" type="radio" value="drop-down-icons" <?php echo ( ( $mltlngg_language_switcher == 'drop-down-icons' ) ? 'checked' : '' ); ?>><?php _e( 'Drop-down flag icons', 'multilanguage' ) ?>
 				</label>
 				<div class="bws_help_box dashicons dashicons-editor-help">
 					<div class="bws_hidden_help_text"><img title="" src="<?php echo plugins_url( 'images/tooltip_drop_down_icons.png', __FILE__ ); ?>" alt=""></div>
 				</div>
 			</div>
 			<div style="clear: both;">
-				<label style="float: left">
-					<input id="flags-icons" name="<?php echo $this->get_field_name( 'mltlngg_language_switcher' ); ?>" type="radio" value="flags-icons" <?php echo ( ( $mltlngg_language_switcher == 'flags-icons' ) ? 'checked' : '' ); ?>><?php _e( 'Flag icons', 'multilanguage' ) ?>
+				<label class="mltlngg_widget_label">
+					<input id="<?php echo $this->get_field_id( 'flags-icons' ); ?>" name="<?php echo $this->get_field_name( 'mltlngg_language_switcher' ); ?>" type="radio" value="flags-icons" <?php echo ( ( $mltlngg_language_switcher == 'flags-icons' ) ? 'checked' : '' ); ?>><?php _e( 'Flag icons', 'multilanguage' ) ?>
 				</label>
 				<div class="bws_help_box dashicons dashicons-editor-help">
 					<div class="bws_hidden_help_text"><img title="" src="<?php echo plugins_url( 'images/tooltip_flags_icons.png', __FILE__ ); ?>" alt=""></div>
@@ -749,82 +996,68 @@ if ( ! function_exists( 'register_mltlngg_widget' ) ) {
 
 if ( ! function_exists( 'mltlngg_get_switcher_block' ) ) {
 	function mltlngg_get_switcher_block( $mltlngg_language_switcher = false ) {
-		global $mltlngg_current_language, $mltlngg_enabled_languages, $current_blog, $mltlngg_options;
-
-		$switcher = '<div class="mltlngg_switcher"><noscript><p style="color:red;">' . __( 'Please enable JavaScript to use the option', 'multilanguage' ) . '</p></noscript>';
+		global $mltlngg_current_language, $mltlngg_get_default_language, $mltlngg_enabled_languages, $current_blog, $mltlngg_options, $wp_customize;
 
 		if ( ! $mltlngg_language_switcher )
 			$mltlngg_language_switcher = $mltlngg_options['language_switcher'];
 
+		$switcher = '<form class="mltlngg_switcher" name="mltlngg_change_language" method="post" action="">';
+
 		/* Language switcher style */
 		switch ( $mltlngg_language_switcher ) {
 			case 'drop-down-list':
-				$switcher .= '<select style="background-image: url(' . plugins_url( 'images/flags/' , __FILE__ ) . $mltlngg_current_language . '.png ); background-repeat: no-repeat; background-position: left center; padding-left: 20px; display: block !important;" name="mltlngg_change_display_lang" onchange="document.location.href=this.options[this.selectedIndex].value;">';
-					foreach ( $mltlngg_enabled_languages as $mltlngg_one_language ) {
-						$mltlngg_selected = ( $mltlngg_one_language['locale'] == $mltlngg_current_language ) ? 'selected="selected"' : '';
-						$mltlngg_option_display = ( $mltlngg_one_language['locale'] == $mltlngg_current_language && count( $mltlngg_enabled_languages ) > 1 ) ? ' display: none;' : '';
-						$home = get_option( 'home' );
-						$mltlngg_is_subfolder = mltlngg_is_subfolder(); 
-						if ( ( is_multisite() && ! is_subdomain_install() ) || $mltlngg_is_subfolder ) {
-							if ( ! $mltlngg_is_subfolder ) {
-								if ( $current_blog ) {
-									$home_main = ( ( isset( $_SERVER["HTTPS"] ) && $_SERVER["HTTPS"] == "on" ) ? "https://" : "http://" ) . $current_blog->domain;
-									$home_main = esc_url( $home_main );
-								}
-							} else {
-								$home_dir = str_replace( 'http://www.', '', $home );
-								$home_dir = str_replace( 'https://www.', '', $home_dir );
-								$home_dir = str_replace( 'http://', '', $home_dir );
-								$home_dir = str_replace( 'https://', '', $home_dir );
-								$server_name = $_SERVER['SERVER_NAME'];
-								if ( 'www.' == substr( $server_name, 0, 4 ) )
-									$server_name = substr( $server_name, 4 );
-								$home_dir = str_replace( $server_name . ':' . $_SERVER['SERVER_PORT'], '', $home_dir );
-								$home_dir = str_replace( $server_name, '', $home_dir );
-								$home_dir = rtrim( $home_dir, '/ ' );
-								$home_dir_count = strlen( $home_dir );
-								$home_main = substr( $home, 0, - $home_dir_count );
-							}
-							$language_link = $home_main . mltlngg_str_replace_once( $mltlngg_current_language, $mltlngg_one_language['locale'], $_SERVER['REQUEST_URI'] );
-						} else
-							$language_link = $home . mltlngg_str_replace_once( $mltlngg_current_language, $mltlngg_one_language['locale'], $_SERVER['REQUEST_URI'] );
-						$switcher .= '<option ' . $mltlngg_selected . ' value="' . $language_link . '" style="background-image: url(' . plugins_url( 'images/flags/' , __FILE__ ) . $mltlngg_one_language['locale'] . '.png); background-repeat: no-repeat; background-position: left center; padding-left: 20px;' . $mltlngg_option_display . '">' . $mltlngg_one_language['name'] . '</option>';
+				$options = '';
+				foreach ( $mltlngg_enabled_languages as $item ) {
+					if ( $item['locale'] != $mltlngg_current_language ) {
+						$options .= '<li>
+							<button class="mltlngg-lang-button-icons" name="mltlngg_change_display_lang" value="' . $item['locale'] . '" title="' . $item['name'] . '">
+								<img class="mltlngg-lang" src="' . plugins_url( 'images/flags/' , __FILE__ ) . $item['locale'] . '.png" alt="' . $item['name'] . '"> ' . $item['name'] . 
+							'</button>
+						</li>';
+					} else {
+						$current_language_name = $item['name'];
 					}
-				$switcher .= '</select>';
+				}
+				$switcher .=
+					'<ul class="mltlngg-lang-switch mltlngg-lang-switch-names">
+						<li>
+							<a href="#">
+								<img src="' . plugins_url( 'images/flags/' , __FILE__ ) . $mltlngg_current_language . '.png"> ' . $current_language_name . 
+							'</a>
+							<ul>' . $options . '</ul>
+						</li>
+					</ul>';
 				break;
 			case 'drop-down-icons':
-				$switcher .= '<form name="mltlngg_change_language" method="post" action="">
-					<ul class="mltlngg-lang-switch">
+				$switcher .=
+					'<ul class="mltlngg-lang-switch">
 						<li>
 							<img src="' . plugins_url( 'images/flags/' , __FILE__ ) . $mltlngg_current_language . '.png">
 							<ul>';
-								foreach ( $mltlngg_enabled_languages as $mltlngg_one_lang ) {
-									if ( $mltlngg_one_lang['locale'] != $mltlngg_current_language ) {
+								foreach ( $mltlngg_enabled_languages as $item ) {
+									if ( $item['locale'] != $mltlngg_current_language ) {
 										$switcher .= '<li>
-											<button class="mltlngg-lang-button" name="mltlngg_change_display_lang" value="' . $mltlngg_one_lang['locale'] . '" title="' . $mltlngg_one_lang['name'] . '">
-												<img class="mltlngg-lang" src="' . plugins_url( 'images/flags/' , __FILE__ ) . $mltlngg_one_lang['locale'] . '.png" alt="' . $mltlngg_one_lang['name'] . '">
+											<button class="mltlngg-lang-button-icons" name="mltlngg_change_display_lang" value="' . $item['locale'] . '" title="' . $item['name'] . '">
+												<img class="mltlngg-lang" src="' . plugins_url( 'images/flags/' , __FILE__ ) . $item['locale'] . '.png" alt="' . $item['name'] . '">
 											</button>
 										</li>';
 									}
 								}
 							$switcher .= '</ul>
 						</li>
-					</ul>
-				</form>';
+					</ul>';
 				break;
+			default:
 			case 'flags-icons':
-				$switcher .= '<form name="mltlngg_change_language" method="post" action="">';
-					foreach ( $mltlngg_enabled_languages as $mltlngg_one_lang ) {
-						$switcher .= '<button class="mltlngg-lang-button-icons" name="mltlngg_change_display_lang" value="' . $mltlngg_one_lang['locale'] . '" title="' . $mltlngg_one_lang['name'] . '">
-							<img class="';
-							$switcher .= ( $mltlngg_one_lang['locale'] == $mltlngg_current_language ) ? 'mltlngg-current-lang' : 'mltlngg-lang';
-							$switcher .= '" src="' . plugins_url( 'images/flags/' , __FILE__ ) . $mltlngg_one_lang['locale'] . '.png" alt="' . $mltlngg_one_lang['name'] . '">
+				foreach ( $mltlngg_enabled_languages as $item ) {
+					$switcher .= 
+						'<button class="mltlngg-lang-button-icons" name="mltlngg_change_display_lang" value="' . $item['locale'] . '" title="' . $item['name'] . '">
+							<img class="' . ( $item['locale'] == $mltlngg_current_language ? 'mltlngg-current-lang' : 'mltlngg-lang' ) . '" src="' . plugins_url( 'images/flags/' , __FILE__ ) . $item['locale'] . '.png" alt="' . $item['name'] . '">
 						</button>';
-					}
-				$switcher .= '</form>';
+				}
 				break;
 		}
-		$switcher .= '</div>';
+		$switcher .= '</form>';
 		return $switcher;
 	}
 }
@@ -838,27 +1071,38 @@ if ( ! function_exists( 'mltlngg_display_switcher' ) ) {
 /* Display settings page of plugin */
 if ( ! function_exists( 'mltlngg_settings_page' ) ) {
 	function mltlngg_settings_page() {
-		global $mltlngg_options, $mltlngg_default_options, $mltlngg_plugin_info, $wp_version;
+		global $mltlngg_options, $mltlngg_default_options, $mltlngg_plugin_info, $mltlngg_languages, $wp_version;
+		$mltlngg_message_value = array(
+			'success' => '',
+			'error'   => ''
+		);
 		/* Change settings options */
 		if ( isset( $_POST['mltlngg_settings_form_was_send'] ) && check_admin_referer( 'mltlngg_settings_form', 'mltlngg_settings_form_field' ) ) {
 			if ( isset( $_POST['bws_hide_premium_options'] ) ) {
 				$hide_result = bws_hide_premium_options( $mltlngg_options );
-				$mltlngg_options = $hide_result['options'];				
+				$mltlngg_options = $hide_result['options'];
 			}
-			$mltlngg_options['enabled_new_language']	= ( ! isset( $_POST['mltlngg_new_language_enable'] ) ) ? false : true;
-			$mltlngg_options['autosave_editor_content'] = ( ! isset( $_POST['mltlngg_autosave_editor_content'] ) ) ? false : true;
-			$mltlngg_options['wp_localization']			= ( ! isset( $_POST['mltlngg_wp_localization'] ) ) ? false : true;
-			$mltlngg_options['language_switcher']		= ( isset( $_POST['mltlngg_language_switcher'] ) ) ? $_POST['mltlngg_language_switcher'] : 'drop-down-list';
-			$mltlngg_options['search']					= $_POST['mltlngg_search'];
+			$mltlngg_options['enabled_new_language']		= isset( $_POST['mltlngg_new_language_enable'] ) ? true : false;
+			$mltlngg_options['autosave_editor_content']		= isset( $_POST['mltlngg_autosave_editor_content'] ) ? true : false;
+			$mltlngg_options['display_alternative_link']	= isset( $_POST['mltlngg_display_alternative_link'] ) ? true : false;
+			$mltlngg_options['hide_link_slug']				= isset( $_POST['mltlngg_hide_link_slug'] ) ? true : false;
+			$mltlngg_options['wp_localization']				= isset( $_POST['mltlngg_wp_localization'] ) ? true : false;
+			$mltlngg_options['language_switcher']			= isset( $_POST['mltlngg_language_switcher'] ) ? $_POST['mltlngg_language_switcher'] : 'drop-down-list';
+			$mltlngg_options['search']						= $_POST['mltlngg_search'];
 			update_option( 'mltlngg_options', $mltlngg_options );
 			
 			$mltlngg_message_value['success'] = __( 'Settings saved', 'multilanguage' );
 		}
 		/* Adding language */
-		if ( isset( $_POST['mltlngg_add_new_language_form_was_send'] ) && ! empty( $_POST['mltlngg_lang_list'] ) && check_admin_referer( 'mltlngg_add_new_language_form', 'mltlngg_add_new_language_field' ) ) {
+		if ( 
+			isset( $_POST['mltlngg_add_new_language_form_was_send'] ) && 
+			! empty( $_POST['mltlngg_lang_list'] ) && 
+			check_admin_referer( 'mltlngg_add_new_language_form', 'mltlngg_add_new_language_field' ) 
+		) {
 			if ( preg_match( '/^([a-z]{2,3}|[a-z]{2,3}[_][A-Z]{2,3})-(.+?)$/u', $_POST['mltlngg_lang_list'], $matches ) ) { /* If language data is correct */
-				mltlngg_add_language( $matches[1], $matches[2] ); /* Add new language (locale, name) */
-				$mltlngg_message_value['success'] = __( 'Language added', 'multilanguage' );
+				$done = mltlngg_add_language( $matches[1], $matches[2] ); /* Add new language (locale, name) */
+				if ( $done )
+					$mltlngg_message_value['success'] = __( 'Language added', 'multilanguage' );
 			} else { /* If language data is incorrect */
 				$mltlngg_message_value['error'] = __( 'Incorrect language data', 'multilanguage' );
 			}
@@ -871,41 +1115,60 @@ if ( ! function_exists( 'mltlngg_settings_page' ) ) {
 						$mltlngg_options['list_of_languages'][ $key ]['priority'] = $_POST[ $mltlngg_language_to_action['locale'] ];
 					$mltlngg_priority[ $key ] = $mltlngg_options['list_of_languages'][ $key ]['priority'];
 				}
-				if ( isset( $_POST['mltlngg_default_lang'] ) && NULL != $_POST['mltlngg_default_lang'] )
-					$mltlngg_options['default_language'] = $_POST['mltlngg_default_lang'];
+				/* change default langguage */
+				if ( isset( $_POST['mltlngg_default_lang'] ) && ! is_null( $_POST['mltlngg_default_lang'] ) ) {
+					foreach ( $mltlngg_options['list_of_languages'] as $key => $language ) {
+						/* if language data have been finded */
+						if ( array_search( $_POST['mltlngg_default_lang'], $language, true ) ) {
+							$mltlngg_options['default_language'] = $_POST['mltlngg_default_lang'];
+							$mltlngg_options['list_of_languages'][ $key ]['enable'] = true;
+							break;
+						}
+					}
+				}
 				/* Sorting list of language by priority */
 				array_multisort( $mltlngg_priority, SORT_ASC, $mltlngg_options['list_of_languages'] );
 				update_option( 'mltlngg_options', $mltlngg_options );
 				$mltlngg_message_value['success'] = __( 'Settings saved', 'multilanguage' );
-		
 			}
 		}
-		/* Actions for table */
-		if ( isset( $_GET['action'] ) && isset( $_GET['locale'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'mltlngg-action' ) ) {
-			if ( preg_match( '/[a-z]{2,3}|[a-z]{2,3}[_][A-Z]{2,3}/', $_GET['locale'] ) && preg_match( '(enable|disable|delete)', $_GET['action'], $matches ) )
-				mltlngg_actions( $matches[0], $_GET['locale'] );
-		}
-		/* Bulk actions part */
-		if ( ( ( isset( $_POST['action'] ) && -1 != $_POST['action'] ) || ( isset( $_POST['action2'] ) && -1 != $_POST['action2'] ) ) && isset( $_POST['language'] ) && ! isset( $_POST['mltlngg_language_form_submit'] ) && check_admin_referer( 'mltlngg_current_languages_form', 'mltlngg_current_languages_field' ) ) {
-			foreach ( $_POST['language'] as $mltlngg_language_to_action ) {
-				if ( -1 != $_POST['action'] ) {
-					mltlngg_actions( $_POST['action'], $mltlngg_language_to_action );
-				} elseif ( -1 != $_POST['action2'] ) {
-					mltlngg_actions( $_POST['action2'], $mltlngg_language_to_action );
+		/* Actions for table of languages */
+		if ( ! isset( $_POST['mltlngg_language_form_submit'] ) ) {
+			if( isset( $_POST['mltlngg_language'] ) && check_admin_referer( 'mltlngg_current_languages_form', 'mltlngg_current_languages_field' ) ) {
+				if ( isset( $_POST['action'] ) && -1 != $_POST['action'] ) {
+					$action   = $_POST['action'];
+					$language = $_POST['mltlngg_language'];
+				} elseif ( isset( $_POST['action2'] ) && -1 != $_POST['action2'] ) {
+					$action   = $_POST['action2'];
+					$language = $_POST['mltlngg_language'];
 				}
+			} elseif ( isset( $_GET['mltlngg_language'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'mltlngg-action' ) ) {
+				$action   = $_GET['action'];
+				$language = $_GET['mltlngg_language'];
 			}
+
+			$action_result = 
+					isset( $action ) && in_array( $action, array( 'enable', 'disable', 'delete' ) )
+				?
+					mltlngg_actions( $action, $language )
+				: 
+					array();
+			if ( isset( $action_result['error'] ) )
+				$mltlngg_message_value['error'] .= $action_result['error'];
+			if ( isset( $action_result['success'] ) )
+				$mltlngg_message_value['success'] .= $action_result['success'];
 		}
 
 		if ( isset( $_REQUEST['bws_restore_confirm'] ) && check_admin_referer( plugin_basename( __FILE__ ), 'bws_settings_nonce_name' ) ) {
 			$mltlngg_options = $mltlngg_default_options;
 			update_option( 'mltlngg_options', $mltlngg_options );
-			$mltlngg_message_value['success'] =  __( 'All plugin settings were restored.', 'multilanguage' );
+			$mltlngg_message_value['success'] = __( 'All plugin settings were restored.', 'multilanguage' );
 		}
 
 		$bws_hide_premium_options_check = bws_hide_premium_options_check( $mltlngg_options );
 
 		/* GO PRO */
-		if ( isset( $_GET['action'] ) && 'go_pro' == $_GET['action'] ) {
+		if ( isset( $_GET['tab'] ) && 'go_pro' == $_GET['tab'] ) {
 			$go_pro_result = bws_go_pro_tab_check( plugin_basename( __FILE__ ), 'mltlngg_options' );
 			if ( ! empty( $go_pro_result['error'] ) )
 				$mltlngg_message_value['error'] = $go_pro_result['error'];
@@ -914,27 +1177,28 @@ if ( ! function_exists( 'mltlngg_settings_page' ) ) {
 		} ?>
 		<div class="wrap" id="mltlngg-settings">
 			<h1><?php _e( 'Multilanguage Settings', 'multilanguage' ); 
-				if ( ! isset( $_GET['action'] ) || isset( $_GET['action'] ) && 'go_pro' != $_GET['action'] ) { ?>
-					<a class="add-new-h2" href="#" id="mltlngg-add-lang-link"><?php _e( 'Add language', 'multilanguage' ); ?></a>
+				if ( ! ( isset( $_GET['tab'] ) && in_array( $_GET['tab'], array( 'settings', 'go_pro' ) ) ) ) { ?>
+					<a class="page-title-action hide-if-no-js" href="#" id="mltlngg-add-lang-link"><?php _e( 'Add language', 'multilanguage' ); ?></a>
 				<?php } ?>
 			</h1>
 			<!-- Display language tab on setting page -->
-			<h2 class="nav-tab-wrapper">				
-				<a class="nav-tab<?php if ( ! isset( $_GET['action'] ) || ( 'go_pro' != $_GET['action'] && 'settings' != $_GET['action'] ) ) echo ' nav-tab-active'; ?>" href="<?php echo admin_url( 'admin.php?page=mltlngg_settings', '' ); ?>"><?php _e( 'Languages', 'multilanguage' ); ?></a>
-				<a class="nav-tab<?php if ( isset( $_GET['action'] ) && 'settings' == $_GET['action'] ) echo ' nav-tab-active'; ?>" href="<?php echo admin_url( 'admin.php?page=mltlngg_settings&action=settings', '' ); ?>"><?php _e( 'Settings', 'multilanguage' ); ?></a>
-				<a class="nav-tab bws_go_pro_tab<?php if ( isset( $_GET['action'] ) && 'go_pro' == $_GET['action'] ) echo ' nav-tab-active'; ?>" href="admin.php?page=mltlngg_settings&amp;action=go_pro"><?php _e( 'Go PRO', 'multilanguage' ); ?></a>
+			<h2 class="nav-tab-wrapper">
+				<a class="nav-tab<?php if ( ! isset( $_GET['tab'] ) ) echo ' nav-tab-active'; ?>" href="<?php echo admin_url( 'admin.php?page=mltlngg_settings', '' ); ?>"><?php _e( 'Languages', 'multilanguage' ); ?></a>
+				<a class="nav-tab<?php if ( isset( $_GET['tab'] ) && 'settings' == $_GET['tab'] ) echo ' nav-tab-active'; ?>" href="<?php echo admin_url( 'admin.php?page=mltlngg_settings&tab=settings', '' ); ?>"><?php _e( 'Settings', 'multilanguage' ); ?></a>
+				<a class="nav-tab <?php if ( isset( $_GET['tab'] ) && 'custom_code' == $_GET['tab'] ) echo ' nav-tab-active'; ?>" href="admin.php?page=mltlngg_settings&amp;tab=custom_code"><?php _e( 'Custom code', 'multilanguage' ); ?></a>
+				<a class="nav-tab bws_go_pro_tab<?php if ( isset( $_GET['tab'] ) && 'go_pro' == $_GET['tab'] ) echo ' nav-tab-active'; ?>" href="admin.php?page=mltlngg_settings&amp;tab=go_pro"><?php _e( 'Go PRO', 'multilanguage' ); ?></a>
 			</h2><!-- .nav-tab-wrapper -->
 			<?php if ( ! empty( $mltlngg_message_value['error'] ) ) { ?>
-				<div class="error"><p><strong><?php echo $mltlngg_message_value['error']; ?></strong></p></div>
+				<div class="error below-h2"><p><strong><?php echo $mltlngg_message_value['error']; ?></strong></p></div>
 			<?php } elseif ( ! empty( $mltlngg_message_value['success'] ) ) { ?>
-				<div class="updated fade"><p><strong><?php echo $mltlngg_message_value['success']; ?></strong></p></div>
+				<div class="updated fade below-h2"><p><strong><?php echo $mltlngg_message_value['success']; ?></strong></p></div>
 			<?php }
 			if ( ! empty( $hide_result['message'] ) ) { ?>
-				<div class="updated fade"><p><strong><?php echo $hide_result['message']; ?></strong></p></div>
+				<div class="updated fade below-h2"><p><strong><?php echo $hide_result['message']; ?></strong></p></div>
 			<?php }
 			bws_show_settings_notice();
 			/* Display tab of setting page */
-			if ( ! isset( $_GET['action'] ) || ( 'go_pro' != $_GET['action'] && 'settings' != $_GET['action'] ) ) {
+			if ( ! isset( $_GET['tab'] ) ) {
 				/* Form for adding new language */
 				mltlngg_add_language_form(); ?>
 				<!-- /form for adding new language -->
@@ -948,7 +1212,7 @@ if ( ! function_exists( 'mltlngg_settings_page' ) ) {
 					<input type="hidden" name="mltlngg_language_form_was_send" value="1" />
 				</form><!-- #mltlngg_current_languages_form -->
 				<div><p>&nbsp;</p></div>
-			<?php } elseif ( 'settings' == $_GET['action'] ) {
+			<?php } elseif ( 'settings' == $_GET['tab'] ) {
 				if ( isset( $_REQUEST['bws_restore_default'] ) && check_admin_referer( plugin_basename( __FILE__ ), 'bws_settings_nonce_name' ) ) {
 					bws_form_restore_default_confirm( plugin_basename( __FILE__ ) );
 				} else { ?>
@@ -968,27 +1232,24 @@ if ( ! function_exists( 'mltlngg_settings_page' ) ) {
 						</div>						
 					</div>
 					<p><?php _e( 'Also, you can paste the following strings into the template source code', 'multilanguage' ); ?> <code>&#60;?php if ( function_exists( 'mltlngg_display_switcher' ) ) mltlngg_display_switcher(); ?&#62;</code>
-					<!-- form for adding new language -->
-					<?php mltlngg_add_language_form(); ?>
-					<!-- /form for adding new language -->
 					<!-- Table with options form -->
 					<form class="bws_form" name="mltlngg_settings_form" method="post" action="" id="mltlngg-current-languages-form">
 						<table class="form-table" style="max-width: 700px;">
 							<tr valign="middle">
 								<th scope="row"><?php _e( 'Enable new language', 'multilanguage' ); ?></th>
 								<td>
-									<input id="mltlngg_new_language_enable" name="mltlngg_new_language_enable" type="checkbox" value="true" <?php echo ( ( true == $mltlngg_options['enabled_new_language'] ) ? ' checked' : '' ); ?>> <span style="color: #888888;font-size: 10px;"><?php _e( "The newly added language will be enabled automatically", 'multilanguage' ); ?></span>
+									<input id="mltlngg_new_language_enable" name="mltlngg_new_language_enable" type="checkbox" value="true" <?php echo ( ( true == $mltlngg_options['enabled_new_language'] ) ? ' checked' : '' ); ?>> <span class="bws_info"><?php _e( "The newly added language will be enabled automatically", 'multilanguage' ); ?></span>
 								</td>
 							</tr>
 							<tr valign="middle">
 								<th scope="row"><?php _e( 'Autosave translation in the editor', 'multilanguage' ); ?></th>
 								<td>
-									<input name="mltlngg_autosave_editor_content" type="checkbox" value="true" <?php echo ( ( true == $mltlngg_options['autosave_editor_content'] ) ? ' checked' : '' ); ?>> <span style="color: #888888;font-size: 10px;"><?php _e( "When switching edit posts/pages translation tab, the changes made in the previous tab will be saved automatically (only when the Javascript is enabled)", 'multilanguage' ); ?></span>
+									<input name="mltlngg_autosave_editor_content" type="checkbox" value="true" <?php echo ( ( true == $mltlngg_options['autosave_editor_content'] ) ? ' checked' : '' ); ?>> <span class="bws_info"><?php _e( "When switching edit posts/pages translation tab, the changes made in the previous tab will be saved automatically (only when the Javascript is enabled)", 'multilanguage' ); ?></span>
 								</td>
 							</tr>
 							<tr valign="middle">
 								<th scope="row"><?php _e( 'Switch Wordpress localization', 'multilanguage' ); ?></th>
-								<td><input name="mltlngg_wp_localization" type="checkbox" value="true" <?php echo ( ( true == $mltlngg_options['wp_localization'] ) ? ' checked' : '' ); ?>> <span style="color: #888888;font-size: 10px;"><?php _e( "When changing the language in the frontend, WordPress localization will also be changed (only in case additional WordPress language packs are installed)", 'multilanguage' ); ?></span></td>
+								<td><input name="mltlngg_wp_localization" type="checkbox" value="true" <?php echo ( ( true == $mltlngg_options['wp_localization'] ) ? ' checked' : '' ); ?>> <span class="bws_info"><?php _e( "When changing the language in the frontend, WordPress localization will also be changed (only in case additional WordPress language packs are installed)", 'multilanguage' ); ?></span></td>
 							</tr>
 							<tr valign="middle">
 								<th scope="row"><?php _e( 'Language switcher', 'multilanguage' ); ?></th>
@@ -1023,8 +1284,25 @@ if ( ! function_exists( 'mltlngg_settings_page' ) ) {
 										</div>
 									</fieldset>
 								</td>
-							</tr>	
-							<tr valign="middle">						
+							</tr>
+							<tr valign="middle">
+								<th scope="row"><?php _e( "Display alternative page links", 'multilanguage' ); ?></th>
+								<td>
+									<input type="checkbox" id="mltlngg_display_alternative_link" name="mltlngg_display_alternative_link" value="1" <?php echo ( true == $mltlngg_options['display_alternative_link'] ) ? ' checked="checked"' : ''; ?> />
+									<div class="bws_help_box dashicons dashicons-editor-help mltlngg_thumb_block">
+										<div class="bws_hidden_help_text" style="width: 200px;">
+											<p><?php printf( __( 'With this option, there will be added links to your current page for each language from your site into the tag %s', 'multilanguage' ), '&lt;head>' ); ?></p>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr valign="middle">
+								<th scope="row"><?php _e( "Hide link slug for default language", 'multilanguage' ); ?></th>
+								<td>
+									<input type="checkbox" id="mltlngg_hide_link_slug" name="mltlngg_hide_link_slug" value="1" <?php echo ( true == $mltlngg_options['hide_link_slug'] ) ? ' checked="checked"' : ''; ?> />
+								</td>
+							</tr>
+							<tr valign="middle">
 								<th scope="row"><?php _e( 'Default searching by', 'multilanguage' ); ?></th>
 								<td>
 									<fieldset>
@@ -1041,7 +1319,7 @@ if ( ! function_exists( 'mltlngg_settings_page' ) ) {
 							</tr>				
 						</table><!-- .form-table -->
 						<?php if ( ! $bws_hide_premium_options_check ) { ?>
-							<div class="bws_pro_version_bloc">
+							<div class="bws_pro_version_bloc" style="overflow: visible;">
 								<div class="bws_pro_version_table_bloc">
 									<button type="submit" name="bws_hide_premium_options" class="notice-dismiss bws_hide_premium_options" title="<?php _e( 'Close', 'multilanguage' ); ?>"></button>
 									<div class="bws_table_bg"></div>											
@@ -1052,13 +1330,33 @@ if ( ! function_exists( 'mltlngg_settings_page' ) ) {
 												<input type="checkbox" disabled id="mltlngg_determining_locale" name="mltlngg_determining_locale" value="true" />
 											</td>
 										</tr>
-										<tr valign="middle" class="mltlngg_display_add_block" >
-											<th scope="row"><?php _e( 'Automatic country table update every', 'multilanguage' ); ?></th>	
+										<tr valign="middle" class="mltlngg_display_add_block">
+											<th><?php _e( 'Update GeoIP', 'multilanguage' ); ?></th>
 											<td>
-												<input type="number" disabled min="1" max="370" name="mltlngg_loading_country" value="<?php echo '30';?>" />
-												<?php _e( 'day', 'multilanguage' ); ?>
-												<div class="clear"></div>
-												<div><span class="bws_info"><?php _e( 'on the developers site the data is updated on the first Tuesday of every month', 'multilanguage' ); ?> </span></div>
+												<label style="display: inline-block;margin-right: 20px;"><?php _e( 'every', 'multilanguage' ) ?>&nbsp;<input type="number" value="3" style="width: 50px;" disabled="disabled" />&nbsp;<?php _e( 'months', 'multilanguage' ); ?></label>
+												<div style="display: inline-block;position: relative;">
+													<input type="submit" class="button bwsplgns_need_disable" value="<?php _e( 'Update now', 'multilanguage' ) ?>" disabled="disabled" />
+												</div>
+												<div class="bws_help_box bws_help_box_left dashicons dashicons-editor-help" style="position: relative;z-index: 10;">
+													<div class="bws_hidden_help_text" style="min-width: 220px;">
+														<p style="text-indent: 15px;">
+															<?php _e( 'This option allows you to download lists with registered IP addresses all over the world to the database (from', 'multilanguage' ); ?>&nbsp;<a href="https://www.maxmind.com" target="_blank">https://www.maxmind.com</a>).
+														</p>
+														<p style="text-indent: 15px;">
+															<?php _e( 'With this, you receive an information about each IP address, and to which country it belongs to. You can select the desired frequency for IP database updating', 'multilanguage' ); ?>.
+														</p>
+														<p style="text-indent: 15px;">
+															<?php _e( 'If you need to update GeoIP immediately, please click on the "Update now" button and wait until the operation is finished', 'multilanguage' ); ?>.
+														</p>
+														<noscript>
+															<div class="update-nag" style="margin-top: 0;"><?php _e( 'Due to the fact that JavaScript is disabled, GeoIP will be updated via wp_cron', 'multilanguage' ); ?>.</div>
+														</noscript>
+														<p style="text-indent: 15px;">
+															<?php _e( 'Read more about', 'multilanguage' ); ?>&nbsp;<a href="https://www.maxmind.com/en/geoip2-services-and-databases" target="_blank">GeoIp</a>.
+														</p>
+													</div>
+												</div>
+												<p id="bwscntrtbl_message"><?php _e( 'Last update was carried out', 'multilanguage' ); ?>&nbsp;2016-01-22 12:59:04</p>
 											</td>
 										</tr>
 										<tr valign="top">
@@ -1086,7 +1384,9 @@ if ( ! function_exists( 'mltlngg_settings_page' ) ) {
 					<!-- /table with options form -->
 					<?php bws_form_restore_default_settings( plugin_basename( __FILE__ ) );
 				}
-			} elseif ( 'go_pro' == $_GET['action'] ) {
+			} elseif ( 'custom_code' == $_GET['tab'] ) {
+				bws_custom_code_tab();			
+			} elseif ( 'go_pro' == $_GET['tab'] ) {
 				bws_go_pro_tab_show( $bws_hide_premium_options_check, $mltlngg_plugin_info, plugin_basename( __FILE__ ), 'mltlngg_settings', 'mltlnggpr_settings', 'multilanguage-pro/multilanguage-pro.php', 'multilanguage', 'fa164f00821ed3a87e6f78cb3f5c277b', '143', isset( $go_pro_result['pro_plugin_is_activated'] ) ); 
 			}
 			bws_plugin_reviews_block( $mltlngg_plugin_info['Name'], 'multilanguage' ); ?>
@@ -1138,32 +1438,38 @@ if ( ! function_exists( 'mltlngg_add_language_form' ) ) {
 
 /* Function for adding new language */
 if ( ! function_exists( 'mltlngg_add_language' ) ) {
-	function mltlngg_add_language( $mltlngg_locale, $mltlngg_lang_name ) {
+	function mltlngg_add_language( $locale, $lang_name ) {
 		global $mltlngg_options;
-		$mltlngg_new_lang = array(
-			'locale'	=> $mltlngg_locale,
-			'name'		=> $mltlngg_lang_name,
-			'enable'	=> ( true == $mltlngg_options['enabled_new_language'] ) ? true : false,
+		$new_lang = array(
+			'locale'	=> $locale,
+			'name'		=> $lang_name,
+			'enable'	=> true == $mltlngg_options['enabled_new_language'] ? true : false,
 			'priority'	=> count( $mltlngg_options['list_of_languages'] ) + 1
 		);
-		$mltlngg_options['list_of_languages'][] = $mltlngg_new_lang;
+		if ( ! empty( $mltlngg_options['list_of_languages'] ) ) {
+			foreach ( $mltlngg_options['list_of_languages'] as $item ) {
+				if ( $item['locale'] == $locale )
+					return false;
+			}
+		}
+		$mltlngg_options['list_of_languages'][] = $new_lang;
 		update_option( 'mltlngg_options', $mltlngg_options );
+		return true;
 	}
 }
 
 /* Adding to post/page editor tabs in enabled languages */
 if ( ! function_exists( 'mltlngg_showup_language_tabs_in_editor' ) ) {
 	function mltlngg_showup_language_tabs_in_editor() {
-		global $wpdb, $post, $mltlngg_options, $mltlngg_language, $mltlngg_active_language, $mltlngg_current_language, $mltlngg_table_translate, $mltlngg_enabled_languages, $mltlngg_get_default_language, $mltlngg_enabled_languages_locale;
+		global $wpdb, $post, $mltlngg_options, $mltlngg_language, $mltlngg_active_language, $mltlngg_current_language, $mltlngg_table_translate, $mltlngg_enabled_languages, $mltlngg_get_default_language;
 		$mltlngg_post_type = get_post_type( $post->ID );
 		if ( $mltlngg_post_type == 'post' || $mltlngg_post_type == 'page' ) {
-			$mltlngg_sql = $wpdb->prepare(
+			$mltlngg_original_data = $wpdb->get_row( $wpdb->prepare(
 				"SELECT `post_content`, `post_title`, `post_excerpt`
 						 FROM $wpdb->posts
 						 WHERE `ID` = %d
 						", $post->ID
-			);
-			$mltlngg_original_data = $wpdb->get_row( $mltlngg_sql, 'ARRAY_A' ); /* Get original Content & Title for save to hidden fields */ ?>
+			), ARRAY_A ); /* Get original Content & Title for save to hidden fields */ ?>
 			<!-- Display tabs in editor for all enabled languages -->
 			<h2 id="get-lang-content" class="mltlngg-nav-tab-wrapper nav-tab-wrapper">
 				<?php foreach ( $mltlngg_enabled_languages as $mltlngg_language ) {
@@ -1190,9 +1496,9 @@ if ( ! function_exists( 'mltlngg_showup_language_tabs_in_editor' ) ) {
 				$excerpt = $wpdb->get_var( $wpdb->prepare( "SELECT `post_excerpt` FROM $mltlngg_table_translate WHERE `post_ID` = %d AND `language` = '%s'", $post->ID, $mltlngg_active_language['locale'] ) );
 			} else
 				$excerpt = $mltlngg_original_data['post_excerpt']; ?>
-			<input id="title-<?php echo $mltlngg_options['default_language']; ?>" type="hidden" value="<?php echo $mltlngg_original_data['post_title']; ?>" name="title_<?php echo $mltlngg_options['default_language']; ?>">
-			<textarea id="content-<?php echo $mltlngg_options['default_language']; ?>" style="display: none;" name="content_<?php echo $mltlngg_options['default_language']; ?>"><?php echo $mltlngg_original_data['post_content']; ?></textarea>
-			<input id="excerpt-<?php echo $mltlngg_active_language['locale'] ?>" type="hidden" value="<?php echo $excerpt ?>" name="excerpt_<?php echo $mltlngg_active_language['locale'] ?>">
+			<input id="title-<?php echo $mltlngg_options['default_language']; ?>" type="hidden" value="<?php echo esc_html( $mltlngg_original_data['post_title'] ); ?>" name="title_<?php echo $mltlngg_options['default_language']; ?>">
+			<textarea id="content-<?php echo $mltlngg_options['default_language']; ?>" style="display: none;" name="content_<?php echo $mltlngg_options['default_language']; ?>"><?php echo esc_html( $mltlngg_original_data['post_content'] ); ?></textarea>
+			<input id="excerpt-<?php echo $mltlngg_active_language['locale'] ?>" type="hidden" value="<?php echo esc_html( $excerpt ) ?>" name="excerpt_<?php echo $mltlngg_active_language['locale'] ?>">
 			<input id="mltlngg-active-language" type="hidden" value="<?php echo $mltlngg_active_language['locale']; ?>" name="mltlngg_active_language">
 		<?php }
 	}
@@ -1271,7 +1577,7 @@ if ( ! function_exists( 'mltlngg_save_post' ) ) {
 				$mltlngg_result = $wpdb->get_row( $mltlngg_sql, 'ARRAY_A' ); /* Get translation data for current language from database */
 				$excerpt = isset( $_POST['post_excerpt'] ) ? $_POST['post_excerpt'] : '';
 				if ( isset( $mltlngg_result['post_content'] ) && isset( $mltlngg_result['post_title'] ) ) { /* If translation is exist in database, update translation */
-					if ( $_POST['content'] != $mltlngg_result['post_content'] || $_POST['post_title'] != $mltlngg_result['post_title'] || $_POST['post_excerpt'] != $mltlngg_result['post_excerpt'] ) {
+					if ( $_POST['content'] != $mltlngg_result['post_content'] || $_POST['post_title'] != $mltlngg_result['post_title'] || $excerpt != $mltlngg_result['post_excerpt'] ) {
 						$wpdb->update(
 							$mltlngg_table_translate,
 							array(
@@ -1306,9 +1612,9 @@ if ( ! function_exists( 'mltlngg_save_post' ) ) {
 					$default_excerpt = isset( $_POST['excerpt_' . $mltlngg_options['default_language'] ] ) ? $_POST['excerpt_' . $mltlngg_options['default_language'] ] : '';
 					$post = array(
 						'ID'			=> $post_id,
-						'post_title'	=> wp_unslash( $_POST['title_' . $mltlngg_options['default_language'] ] ),
-						'post_excerpt'	=> wp_unslash( $default_excerpt ),
-						'post_content'	=> wp_unslash( sanitize_post_field( 'post_content', $_POST['content_' . $mltlngg_options['default_language'] ], 0, 'db' ) )
+						'post_title'	=> wp_unslash( wp_specialchars_decode( $_POST['title_' . $mltlngg_options['default_language'] ], ENT_COMPAT ) ),
+						'post_excerpt'	=> wp_unslash( wp_specialchars_decode( $default_excerpt, ENT_COMPAT ) ),
+						'post_content'	=> wp_unslash( sanitize_post_field( 'post_content',  wp_specialchars_decode( $_POST['content_' . $mltlngg_options['default_language'] ], ENT_COMPAT ), 0, 'db' ) )
 					);
 				} else {
 					$post = array(
@@ -1372,7 +1678,7 @@ if ( ! function_exists( 'mltlngg_ajax_languages_tab' ) ) {
 						$( this ).addClass( 'nav-tab-active' ); /* Change current language tab from inactive to active */
 						/* Get content from previous language tab */
 						if ( inputContent.is( ":hidden" ) ) { /* If TinyMCE editor is active */
-							mltlnggOldContent = tinymce.activeEditor.getContent(); /* Get content from TinyMCE */
+							mltlnggOldContent = tinymce.get('content').getContent(); /* Get content from TinyMCE */
 						} else { /* If Text editor is active */
 							mltlnggOldContent = inputContent.val(); /* Get content from Text editor */
 						}
@@ -1383,7 +1689,7 @@ if ( ! function_exists( 'mltlngg_ajax_languages_tab' ) ) {
 							inputTitle.val( inputTitleNewLang.val() ); /* Set title to current language tab */
 							/* Set content to current language tab */
 							if ( inputContent.is( ":hidden" ) ) { /* If TinyMCE editor is active */
-								tinymce.activeEditor.setContent( $( 'textarea#content-' + newLang ).val() ); /* Set content to TinyMCE */
+								tinymce.get('content').setContent( $( 'textarea#content-' + newLang ).val() ); /* Set content to TinyMCE */
 							} else { /* If Text editor is active */
 								inputContent.val( $( 'textarea#content-' + newLang ).val() ); /* Set content to Text editor */
 							}
@@ -1425,7 +1731,14 @@ if ( ! function_exists( 'mltlngg_ajax_languages_tab' ) ) {
 								'security': '<?php echo $ajax_nonce; ?>'
 							};
 							$.post( ajaxurl, data, function ( response ) {
-								var mltlnggNew = eval( "(" + response + ")" );
+								/* get only content in multilanguage comments */
+								var regExp = /<!--mltlngg-ajax-results-->([^]+)<!--end-mltlngg-ajax-results-->/;
+								var matches = regExp.exec( response );
+								if ( matches ) {
+									response = matches[1];
+								}
+
+								var mltlnggNew = $.parseJSON( response );
 								$( '#post-body-content' ).append(
 									$( '<input/>' ) /* Create hidden field with Title */
 										.attr( 'type', 'hidden' )
@@ -1446,7 +1759,7 @@ if ( ! function_exists( 'mltlngg_ajax_languages_tab' ) ) {
 								inputTitle.val( mltlnggNew.post_title ); /* Set title to current language tab */
 								/* Set content to current language tab */
 								if ( inputContent.is( ":hidden" ) ) { /* If TinyMCE editor is active */
-									tinymce.activeEditor.setContent( mltlnggNew.post_content );
+									tinymce.get('content').setContent( mltlnggNew.post_content );
 								} else { /* If Text editor is active */
 									inputContent.val( mltlnggNew.post_content );
 								}
@@ -1561,7 +1874,8 @@ if ( ! function_exists( 'mltlngg_ajax_callback' ) ) {
 				if ( ! empty( $mltlngg_new_cat_mame ) )
 					$mltlngg_new_cat_data = array( "cat_translate" => $mltlngg_new_cat_mame );
 			}
-
+			/* add comments before our results */
+			echo '<!--mltlngg-ajax-results-->';
 			if ( isset( $mltlngg_post_data['post_content'] ) && isset( $mltlngg_post_data['post_title'] ) ) { /* If translation is exist, send translation to ajax */
 				echo json_encode( array_merge( $mltlngg_post_data, $mltlngg_new_cat_data ) );
 			} else { /* If translation is not exist, send empty translation to ajax */
@@ -1571,6 +1885,8 @@ if ( ! function_exists( 'mltlngg_ajax_callback' ) ) {
 				);
 				echo json_encode( array_merge( $mltlngg_post_data, $mltlngg_new_cat_data ) );
 			}
+			/* add comments after our results */
+			echo '<!--end-mltlngg-ajax-results-->';
 		}
 		die();
 	}
@@ -1741,6 +2057,17 @@ if ( ! function_exists( 'mltlngg_delete_term' ) ) {
 	}
 }
 
+/* add a class with language name */
+if ( ! function_exists ( 'mltlngg_add_body_classes' ) ) {
+	function mltlngg_add_body_classes( $classes ) {
+		global $mltlngg_current_language;
+		if ( ! empty( $mltlngg_current_language ) ) {
+			$classes[] = 'mltlngg-' . $mltlngg_current_language;
+		}
+		return $classes;
+	}
+}
+
 /* Display post_title in the selected language */
 if ( ! function_exists( 'mltlngg_the_title_filter' ) ) {
 	function mltlngg_the_title_filter( $title, $id = null ) {
@@ -1774,10 +2101,23 @@ if ( ! function_exists( 'mltlngg_the_title_filter' ) ) {
 	}
 }
 
-/* Display nav_menu title in the selected language */
+/*
+* Display nav_menu title in the selected language  && Add language switcher to the menu
+*
+* @param array $items menu items
+* @return array modified items
+*/
 if ( ! function_exists( 'mltlngg_nav_menu_items_filter' ) ) {
 	function mltlngg_nav_menu_items_filter( $items ) {
-		global $mltlngg_options, $wpdb, $mltlngg_table_translate, $mltlngg_current_language, $mltlngg_terms_table_translate;
+		if ( function_exists( 'doing_action' ) && doing_action( 'customize_register' ) )
+			return $items;
+		
+		global $mltlngg_options, $wpdb, $mltlngg_table_translate, $mltlngg_current_language, $mltlngg_terms_table_translate, $mltlngg_enabled_languages, $mltlngg_get_default_language, $mltlngg_enabled_languages_locale;
+		
+		$is_admin = is_admin();
+		$new_items = array();
+		$offset = 0;
+
 		foreach ( $items as $key => $item ) {
 			if ( $item->type == 'taxonomy' ) {
 				$new_title = $wpdb->get_var(
@@ -1802,17 +2142,126 @@ if ( ! function_exists( 'mltlngg_nav_menu_items_filter' ) ) {
 				if ( isset( $new_title ) && "" != $new_title ) /* If translation is exist and not empty, filter menu item */
 					$item->title = $new_title;
 			}
+
+			/* split the language switcher menu item in several language menu items */	
+			if ( ! $is_admin && $mltlngg_language_switcher = get_post_meta( $item->ID, '_mltlngg_menu_item', true ) ) {
+
+				$i = 0;
+
+				$is_dropdown = in_array( $mltlngg_language_switcher, array( 'drop-down-icons', 'drop-down-list' ) );
+				$is_icon = in_array( $mltlngg_language_switcher, array( 'drop-down-icons', 'aligned-icons' ) );
+
+				$classes = array( 'mltlngg-menu-item' );
+				if ( 'drop-down-icons' == $mltlngg_language_switcher )
+					$classes[] = 'mltlngg-menu-item-icon';
+				$classes_current = array( 'mltlngg-menu-item-current' );
+				if ( ! $is_dropdown )
+					$classes_current[] = 'current-menu-item';
+
+				/* main li is a current language */
+				foreach ( $mltlngg_enabled_languages as $lang ) {
+					if ( $mltlngg_current_language == $lang['locale'] ) {
+						$mltlngg_current_language_name = $lang['name'];
+						break;
+					}
+				}
+
+				if ( $is_dropdown ) {
+					$flag_img = '<img class="mltlngg-lang" src="' . plugins_url( 'images/flags/' , __FILE__ ) . $mltlngg_current_language . '.png' . '" alt="' . $mltlngg_current_language_name . '">';
+					$main_id = $item->ID;
+					$lang_item = clone $item;				
+					$lang_item->title = ( $is_icon ) ? $flag_img : $flag_img . '&nbsp;' . esc_html( $mltlngg_current_language_name );
+					$lang_item->classes = array_merge( $classes, $classes_current );
+					$lang_item->url = '#';
+					$lang_item->menu_order += $offset + $i++;
+					$new_items[] = $lang_item;
+					$offset += $i - 1;	
+				}
+
+				/* add other languages */	
+				$is_custom_permalink = get_option( 'permalink_structure' );
+
+				$home_url = mltlngg_home_url();
+				if ( is_array( $home_url ) ) {
+					$home_url       = $home_url[0];
+					$is_subfolder   = true;
+				} else {
+					$is_subfolder   = false;
+				}				
+
+				foreach ( $mltlngg_enabled_languages as $lang ) {
+					if ( $mltlngg_current_language == $lang['locale'] && $is_dropdown )
+						continue;
+
+					$flag_img = '<img class="mltlngg-lang" src="' . plugins_url( 'images/flags/' , __FILE__ ) . $lang['locale'] . '.png' . '" alt="' . $lang['name'] . '">';
+
+					if ( $is_custom_permalink ) {
+						$needle     = ( $mltlngg_current_language == $mltlngg_get_default_language && true === $mltlngg_options['hide_link_slug'] ) ? '' : $mltlngg_current_language;
+						$haystack   = $lang['locale'];
+
+						if ( $is_subfolder ) {
+							if ( $mltlngg_current_language == $mltlngg_get_default_language ) {
+								$params = explode( '/', trim( $_SERVER['REQUEST_URI'], '/' ) );
+								if ( is_array( $params ) && ! empty( $params ) ) {
+									$folder = $params[0];
+									unset( $params[0] );
+									foreach ( $mltlngg_enabled_languages_locale as $locale ) {
+										$key = array_search( $locale, $params );
+										if ( $key ) {
+											unset( $params[ $key ] );
+											break;
+										}
+									}
+									$params = empty( $params ) ? '' : implode( '/', $params );
+								}
+								$link_param    = '/' . $lang['locale'];
+								$language_link = $home_url . '/' . $folder . $link_param . '/' . $params;
+							} else {
+								$language_link = $home_url . str_replace( $needle, $haystack, $_SERVER['REQUEST_URI'] );
+							}
+						} else  {
+							$language_link = empty( $needle ) ? $home_url . '/' . $lang['locale'] . $_SERVER['REQUEST_URI'] : $home_url . str_replace( $needle, $haystack, $_SERVER['REQUEST_URI'] );
+						}
+					} else {
+						$language_link = add_query_arg( 'lang', $lang['locale'], $home_url . $_SERVER['REQUEST_URI'] );
+					}
+					$language_link = esc_url( $language_link );
+
+					$lang_item = clone $item;
+					$lang_item->ID = $lang_item->ID . '-' . $lang['locale'];
+					$lang_item->db_id = $lang_item->ID . '-' . $lang['locale'];
+					$lang_item->title = ( $is_icon ) ? $flag_img : $flag_img . '&nbsp;' . esc_html( $lang['name'] );
+					if ( $mltlngg_current_language == $lang['locale'] )
+						$lang_item->classes = array_merge( $classes, $classes_current );
+					else
+						$lang_item->classes = $classes;
+					$lang_item->url = $language_link;
+					if ( $is_dropdown )
+						$lang_item->menu_item_parent = $main_id;					
+					$lang_item->lang = $lang['locale'];
+					$lang_item->menu_order += $offset + $i++;	
+
+								
+					$new_items[] = $lang_item;			
+				}
+				$offset += $i - 1;
+			} else {
+				$item->menu_order += $offset;
+				$new_items[] = $item;
+			}
 		}
-		return $items;
+		return $new_items;
 	}
 }
 
 /* Display post_content in the selected language */
 if ( ! function_exists( 'mltlngg_the_content_filter' ) ) {
-	function mltlngg_the_content_filter( $content ) {
-		global $hook_suffix, $post, $wpdb, $mltlngg_table_translate, $mltlngg_current_language, $mltlngg_active_language, $mltlngg_options, $mltlngg_wp_providers;
+	function mltlngg_the_content_filter( $content, $more_link_text = null, $strip_teaser = false ) {
+		global $hook_suffix, $post, $wpdb, $wp_current_filter, $mltlngg_table_translate, $mltlngg_current_language, $mltlngg_active_language, $mltlngg_options, $mltlngg_wp_providers;
+
 		if ( is_admin() && ! ( 'post.php' == $hook_suffix || 'post-new.php' == $hook_suffix ) )
 			return $content;
+
 		$mltlngg_post_type = get_post_type( $post->ID );
 		/* If current post type enabled to translation */
 		if ( $mltlngg_post_type == 'post' || $mltlngg_post_type == 'page' ) {
@@ -1823,26 +2272,28 @@ if ( ! function_exists( 'mltlngg_the_content_filter' ) ) {
 			if ( ! empty( $new_content ) ) {
 				if ( ! is_admin() ) {
 					if ( ! post_password_required() ) {
-						$noteaser = ( ( false !== strpos( $new_content, '<!--noteaser-->' ) ) ? true : false );
-						$extends = get_extended( $new_content );
-						$extended = $extends['extended'];
+						$noteaser    = ( ( false !== strpos( $new_content, '<!--noteaser-->' ) ) ? true : false );
+						$extends     = get_extended( $new_content );
+						$extended    = $extends['extended'];
 						$new_content = $extends['main'];
-						if ( ! empty( $mltlngg_wp_providers ) ) {
-							foreach ( $mltlngg_wp_providers as $template ) {
-								if ( false !== preg_match( $template, $extends['extended'] ) ) {
-									$extended = preg_replace_callback( $template, 
-										"mltlngg_videos_filter",
-										$extended
-									);
+						
+						if ( ! empty( $mltlngg_options['video_providers'] ) ) {
+							foreach( $mltlngg_options['video_providers'] as $reg_exp ) {
+								preg_match( $reg_exp, $new_content, $matches ); 
+								if ( ! empty( $matches[0] ) ) {
+									$string      = strstr( $matches[0], '<', true );
+									$match       = $string ? '[(' . preg_quote( $string ) . ')]' : '[(' . preg_quote( $matches[0] ) . ')]';
+									$new_content = preg_replace_callback( $match, "mltlngg_videos_filter", $new_content );
 								}
-								if ( false !== preg_match( $template, $extends['main'] ) ) {
-									$new_content = preg_replace_callback( $template, 
-										"mltlngg_videos_filter",
-										$new_content
-									);
+								preg_match( $reg_exp, $new_content, $matches ); 
+								if ( ! empty( $matches[0] ) ) {
+									$string   = strstr( $matches[0], '<', true );
+									$match    = $string ? '[(' . preg_quote( $string ) . ')]' : '[(' . preg_quote( $matches[0] ) . ')]';
+									$extended = preg_replace_callback( $match, "mltlngg_videos_filter", $extended );
 								}
 							}
-						}				
+						}
+
 						if ( ! is_single() && ! is_page() && ! is_search() ) {					
 							$more_link_text = __( '(more&hellip;)' );
 							$more_link = apply_filters( 'the_content_more_link', ' <a href="' . get_permalink() . "#more-{$post->ID}\" class=\"more-link\">$more_link_text</a>", $more_link_text );
@@ -1858,18 +2309,29 @@ if ( ! function_exists( 'mltlngg_the_content_filter' ) ) {
 							$new_content .= ( 0 != strlen( $new_content ) ) ? '<span id="more-' . $post->ID . '"></span>' . $extended : $extended;
 						}
 
-						if ( 0 != strlen( $new_content ) ) {
-							return $new_content;
+						/* if it is the_excerpt - remove shortcodes */
+						if ( ! empty( $wp_current_filter ) && in_array( 'get_the_excerpt', $wp_current_filter ) )
+							$new_content = strip_shortcodes( $new_content );
+
+						if ( 0 != strlen( $new_content ) ) {	
+							return force_balance_tags( $new_content );
 						}
 					} else {
 						$content = get_the_password_form();
 					}
 				/* If translation is exist and not empty, filter content */
-				} else
+				} else {
 					$content = $new_content;
+				}
 			}
 		}
 		return $content;
+	}
+}
+
+if ( ! function_exists( 'mltlngg_providers_filter' ) ) {
+	function mltlngg_providers_filter ( $matches ) {
+		return $matches[1];
 	}
 }
 
@@ -1880,22 +2342,123 @@ if ( ! function_exists( 'mltlngg_videos_filter' ) ) {
 	}
 }
 
+if ( ! function_exists( 'mltlngg_update_video_options' ) ) {
+	function mltlngg_update_video_options() {
+		if ( ! is_network_admin() ) {
+			global $mltlngg_options;
+
+			if ( empty( $mltlngg_options ) ) {
+				$mltlngg_options = get_option( 'mltlngg_options' );
+				if ( empty( $mltlngg_options ) )
+					mltlngg_register_settings();
+			}
+
+			require_once( ABSPATH . WPINC . '/class-oembed.php' );
+			$oembed = _wp_oembed_get_object();
+			
+			if ( ! empty( $oembed->providers ) && is_array( $oembed->providers ) ) {
+				$mltlngg_options['video_providers'] = array();
+				foreach( $oembed->providers as $provider => $url ) {
+					$reg_exp = preg_replace_callback( '/^#(.*)((\.\*\#\i)|(\.\*\#)|(\*\#))$/', 'mltlngg_providers_filter', $provider );
+					$reg_exp = preg_replace_callback( '/^(.*)(\*)$/', 'mltlngg_providers_filter', $reg_exp );
+					$reg_exp = '[(' . $reg_exp . ")(([^\s]*)|([^\t]*)|([^\n]*)|([^\<]*))]i";
+					$mltlngg_options['video_providers'][] = $reg_exp;
+				}
+			}
+		}
+	}
+}
+
+/** 
+ * Filter the search of terms during the post editing
+ * @param    array      $cache      cached array of terms for the given taxonomy
+ * @return   array      $cache      extended array of terms 
+ */
+
+if ( ! function_exists( 'mltlngg_fiter_terms_search' ) ) {
+	function mltlngg_fiter_terms_search( $cache ) { 
+
+		if ( 
+			isset( $_GET['action'] ) && 'ajax-tag-search' == $_GET['action'] &&
+			isset( $_GET['q'] )      && ! empty( $_GET['q'] ) &&
+			isset( $_GET['tax'] )    && ! empty( $_GET['tax'] )
+		) {
+			global $wpdb;
+
+			$term_name = esc_sql( $_GET[ 'q' ] );
+			$tax_name  = esc_sql( $_GET[ 'tax' ] );
+
+			/* looking for the term in accordance with the entered value for the current taxonomy */
+			$terms = $wpdb->get_col( 
+				"SELECT DISTINCT `name` 
+				FROM `{$wpdb->terms}` 
+				WHERE `term_id` IN ( 
+					SELECT DISTINCT `{$wpdb->prefix}mltlngg_terms_translate`.`term_ID` 
+					FROM `{$wpdb->prefix}mltlngg_terms_translate`
+					LEFT JOIN `{$wpdb->term_taxonomy }`
+						ON `taxonomy`='{$tax_name}'
+					WHERE `name` LIKE '%{$term_name}%' AND `{$wpdb->prefix}mltlngg_terms_translate`.`term_ID`=`{$wpdb->term_taxonomy }`.`term_ID`
+				);" 
+			);
+
+			if ( empty( $terms ) || ! is_array( $terms ) )
+				return $cache;
+			
+			$cache = array_merge( $cache, array_filter( $terms ) );
+			$cache = array_unique( $cache );
+		}
+
+		return $cache; 
+	} 
+}
+
 /* Display categories list & tags cloud & categories/tags of posts in the selected language */
 if ( ! function_exists( 'mltlngg_terms_filter' ) ) {
 	function mltlngg_terms_filter( $terms ) {
 		global $mltlngg_terms_table_translate, $wpdb, $mltlngg_current_language;
-		foreach ( $terms as $mltlngg_one_term ) {
-			if ( isset( $mltlngg_one_term->term_id ) ) {
-				$mltlngg_one_term_name = $wpdb->get_var(
-					$wpdb->prepare(
-						"SELECT `name`
-						 FROM $mltlngg_terms_table_translate
-						 WHERE `term_ID` = %d AND `language` = '%s'
-						", $mltlngg_one_term->term_id, $mltlngg_current_language
-					)
-				);
-				if ( isset( $mltlngg_one_term_name ) && "" != $mltlngg_one_term_name ) /* If translation is exist and not empty, filter terms */
-					$mltlngg_one_term->name = $mltlngg_one_term_name;
+		
+		/* Filter the search of terms during the post editing */
+		if ( 
+			isset( $_GET['action'] ) && 'ajax-tag-search' == $_GET['action'] &&
+			isset( $_GET['q'] )      && ! empty( $_GET['q'] ) &&
+			isset( $_GET['tax'] )    && ! empty( $_GET['tax'] )
+		) {
+			$term_name = esc_sql( $_GET[ 'q' ] );
+			$tax_name  = esc_sql( $_GET[ 'tax' ] );
+
+			/* looking for the term in accordance with the entered value for the current taxonomy */
+			$terms_array = $wpdb->get_col( 
+				"SELECT DISTINCT `name` 
+				FROM `{$wpdb->terms}` 
+				WHERE `term_id` IN ( 
+					SELECT DISTINCT `{$wpdb->prefix}mltlngg_terms_translate`.`term_ID` 
+					FROM `{$wpdb->prefix}mltlngg_terms_translate`
+					LEFT JOIN `{$wpdb->term_taxonomy }`
+						ON `taxonomy`='{$tax_name}'
+					WHERE `name` LIKE '%{$term_name}%' AND `{$wpdb->prefix}mltlngg_terms_translate`.`term_ID`=`{$wpdb->term_taxonomy }`.`term_ID`
+				);" 
+			);
+
+			if ( empty( $terms_array ) || ! is_array( $terms_array ) )
+				return $terms;
+			
+			$terms = array_merge( $terms, array_filter( $terms_array ) );
+			$terms = array_unique( $terms );
+		} else {
+			/* Filter terms before the displaying in the frontend */
+			foreach ( $terms as $mltlngg_one_term ) {
+				if ( isset( $mltlngg_one_term->term_id ) ) {
+					$mltlngg_one_term_name = $wpdb->get_var(
+						$wpdb->prepare(
+							"SELECT `name`
+							 FROM {$mltlngg_terms_table_translate}
+							 WHERE `term_ID`=%d AND `language`='%s'
+							", $mltlngg_one_term->term_id, $mltlngg_current_language
+						)
+					);
+					if ( isset( $mltlngg_one_term_name ) && "" != $mltlngg_one_term_name ) /* If translation is exist and not empty, filter terms */
+						$mltlngg_one_term->name = $mltlngg_one_term_name;
+				}
 			}
 		}
 		return $terms;
@@ -1994,6 +2557,182 @@ if ( ! function_exists( 'mltlngg_search_where' ) ) {
 	}
 }
 
+/*
+* Add language columns in the taxonomy wp_list_table
+*
+* @param array $columns list of terms table columns
+* @return array modified list of columns
+*/
+if ( ! function_exists( 'mltlngg_add_term_column' ) ) {
+	function mltlngg_add_term_column( $columns ) {
+		return mltlngg_add_column( $columns, 'posts' );
+	}
+}
+
+/*
+* Add language columns in the posts wp_list_table
+*
+* @param array $columns list of posts table columns
+* @return array modified list of columns
+*/
+if ( ! function_exists( 'mltlngg_add_post_column' ) ) {
+	function mltlngg_add_post_column( $columns ) {
+		return mltlngg_add_column( $columns );
+	}
+}
+
+/*
+* Fill language column in the taxonomy wp_list_table
+*
+* @param string $out
+* @param string $column column name
+* @param int term_id
+*/
+if ( ! function_exists( 'mltlngg_term_column' ) ) {
+	function mltlngg_term_column( $out, $column, $term_id ) {
+		if ( false === strpos( $column, 'mltlngg_language_' ) )
+			return $out;
+
+		$post_type = isset( $GLOBALS['post_type'] ) ? $GLOBALS['post_type'] : $_REQUEST['post_type'];
+		$taxonomy = isset( $GLOBALS['taxonomy'] ) ? $GLOBALS['taxonomy'] : $_REQUEST['taxonomy'];
+
+		if ( ! post_type_exists( $post_type ) || ! taxonomy_exists( $taxonomy ) )
+			return $out;
+
+		global $wpdb, $mltlngg_terms_table_translate;
+
+		$language = str_replace( 'mltlngg_language_', '', $column );
+
+		/* Get term translation from database */
+		$term_translation = $wpdb->get_var( $wpdb->prepare(
+			"SELECT `name`
+			 FROM $mltlngg_terms_table_translate
+			 WHERE `term_ID` = %d AND `language` = %s
+			", $term_id, $language
+		) );
+
+		if ( ! empty( $term_translation ) ) {
+			$out .= '<span class="dashicons dashicons-yes"></span>';
+		}
+
+		return $out;
+	}
+}
+
+/*
+* Fill language column in the posts wp_list_table
+*
+* @param string $column column name
+* @param int $post_id
+*/
+if ( ! function_exists( 'mltlngg_post_column' ) ) {
+	function mltlngg_post_column( $column, $post_id ) {
+		if ( defined( 'DOING_AJAX' ) || false === strpos( $column, 'mltlngg_language_' ) )
+			return;
+
+		global $wpdb, $mltlngg_table_translate;
+
+		$language = str_replace( 'mltlngg_language_', '', $column );
+
+		/* Get post translation from database */
+		$translation = $wpdb->get_var( $wpdb->prepare(
+			"SELECT `post_content`
+			 FROM $mltlngg_table_translate
+			 WHERE `post_ID` = %d AND `language` = %s
+			", $post_id, $language
+		) );
+
+		if ( ! empty( $translation ) ) {
+			echo '<span class="dashicons dashicons-yes"></span>';
+		}
+	}
+}
+
+/*
+ * adds languages and translations columns
+ *
+ * @param array $columns list of table columns
+ * @param string $before the column before which we want to add our languages
+ * @return array modified list of columns
+ */
+if ( ! function_exists( 'mltlngg_add_column' ) ) {
+	function mltlngg_add_column( $columns, $before = false ) {
+		global $mltlngg_enabled_languages, $mltlngg_current_language;
+		
+		if ( $before && $n = array_search( $before, array_keys( $columns ) ) ) {
+			$end = array_slice( $columns, $n );
+			$columns = array_slice( $columns, 0, $n );
+		}
+
+		foreach ( $mltlngg_enabled_languages as $language ) {
+			/* don't add the column for default language */
+			if ( $language['locale'] != $mltlngg_current_language ) {
+
+				$columns[ 'mltlngg_language_' . $language['locale'] ] = '<img class="mltlngg-lang" src="' . plugins_url( 'images/flags/' , __FILE__ ) . $language['locale'] . '.png' . '" alt="' . $language['name'] . '"><span class="screen-reader-text">' . $language['name'] . '</span>';
+			}
+		}
+		return isset( $end ) ? array_merge( $columns, $end ) : $columns;
+	}
+}
+
+/*
+* 	Add language switcher metabox
+*/
+if ( ! function_exists( 'mltlngg_language_switcher_box' ) ) {
+	function mltlngg_language_switcher_box() {
+		global $_nav_menu_placeholder, $nav_menu_selected_id;
+		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1; ?>
+
+		<div id="posttype-mltlngg-switcher" class="posttypediv">
+			<div id="tabs-panel-mltlngg-switcher" class="tabs-panel tabs-panel-active">
+				<ul id="mltlngg-switcher-checklist" class="categorychecklist form-no-clear">
+					<li>
+						<label class="menu-item-title">
+							<input type="checkbox" class="menu-item-checkbox" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-object-id]" value="-1"> <?php _e( 'Multilanguage switcher', 'multilanguage' ); ?>
+						</label>
+						<input type="hidden" class="menu-item-type" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-type]" value="custom">
+						<input type="hidden" class="menu-item-title" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-title]" value="<?php _e( 'Multilanguage switcher', 'multilanguage' ); ?>">
+						<input type="hidden" class="menu-item-url" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" value="#mltlngg-switcher">
+						<input type="hidden" class="menu-item-classes" name="menu-item[-1][menu-item-classes]" value="mltlngg-menu-switcher">
+					</li>
+				</ul>
+			</div>
+			<p class="button-controls">
+				<span class="add-to-menu">
+					<input type="submit" class="button-secondary submit-add-to-menu right" value="<?php esc_attr_e( 'Add to Menu' ); ?>" name="add-post-type-menu-item" id="submit-posttype-mltlngg-switcher">
+					<span class="spinner"></span>
+				</span>
+			</p>
+		</div>
+	<?php }
+}
+
+/*
+ * Save nav menu options
+ *
+ * @param int $menu_id not used
+ * @param int $menu_item_db_id
+ */
+if ( ! function_exists( 'mltlngg_wp_update_nav_menu_item' ) ) {
+	function mltlngg_wp_update_nav_menu_item( $menu_id = 0, $menu_item_db_id = 0 ) {
+		if ( empty( $_POST['menu-item-url'][ $menu_item_db_id ] ) || '#mltlngg-switcher' != $_POST['menu-item-url'][ $menu_item_db_id ] )
+			return;
+
+		if ( current_user_can( 'edit_theme_options' ) ) {
+			check_admin_referer( 'update-nav_menu', 'update-nav-menu-nonce' );			
+
+			/* js form has not been displayed */
+			if ( empty( $_POST['menu-item-mltlngg-nonce'][ $menu_item_db_id ] ) ) {
+				if ( ! get_post_meta( $menu_item_db_id, '_mltlngg_menu_item', true ) )
+					update_post_meta( $menu_item_db_id, '_mltlngg_menu_item', 'drop-down-list' );
+			} else {
+				$value = ( ! empty( $_POST[ 'menu-item-mltlngg-switcher' ][ $menu_item_db_id ] ) && in_array( $_POST[ 'menu-item-mltlngg-switcher' ][ $menu_item_db_id ], array( 'drop-down-list', 'drop-down-icons', 'aligned-icons', 'aligned-list' ) ) ) ? $_POST[ 'menu-item-mltlngg-switcher' ][ $menu_item_db_id ] : 'drop-down-list';
+				update_post_meta( $menu_item_db_id, '_mltlngg_menu_item', $value );
+			}
+		}
+	}
+}
+
 /* add help tab  */
 if ( ! function_exists( 'mltlngg_add_tabs' ) ) {
 	function mltlngg_add_tabs() {
@@ -2086,6 +2825,10 @@ if ( ! function_exists( 'mltlngg_delete_options' ) ) {
 			return;
 		}
 		_mltlngg_delete_options();
+
+		require_once( dirname( __FILE__ ) . '/bws_menu/bws_include.php' );
+		bws_include_init( plugin_basename( __FILE__ ) );
+		bws_delete_plugin( plugin_basename( __FILE__ ) );
 	}
 }
 
@@ -2126,13 +2869,16 @@ if ( ! function_exists( '_mltlngg_delete_options' ) ) {
 
 if ( ! function_exists ( 'mltlngg_plugin_banner' ) ) {
 	function mltlngg_plugin_banner() {
-		global $hook_suffix;	
+		global $hook_suffix, $mltlngg_plugin_info, $mltlngg_options;
 		if ( 'plugins.php' == $hook_suffix ) {
-			global $mltlngg_plugin_info, $mltlngg_options;
 			if ( isset( $mltlngg_options['first_install'] ) && strtotime( '-1 week' ) > $mltlngg_options['first_install'] )
 				bws_plugin_banner( $mltlngg_plugin_info, 'mltlngg', 'multilanguage', '0419dafcc237fe35489c8db63c899a38', '143', '//ps.w.org/multilanguage/assets/icon-128x128.png' );
-			
+	
 			bws_plugin_banner_to_settings( $mltlngg_plugin_info, 'mltlngg_options', 'multilanguage', 'admin.php?page=mltlngg_settings' );
+		}
+
+		if ( isset( $_GET['page'] ) && 'mltlngg_settings' == $_GET['page'] ) {
+			bws_plugin_suggest_feature_banner( $mltlngg_plugin_info, 'mltlngg_options', 'multilanguage' );
 		}
 	}
 }
@@ -2150,6 +2896,7 @@ add_filter( 'query_vars', 'mltlngg_add_query_vars' );
 add_action( 'admin_menu', 'mltlngg_admin_menu' );
 add_action( 'init', 'mltlngg_init', 9 );
 add_action( 'admin_init', 'mltlngg_admin_init' );
+add_action( 'wp_head', 'mltlngg_alternate_links' );
 add_action( 'admin_enqueue_scripts', 'mltlngg_script_style' );
 add_action( 'wp_enqueue_scripts', 'mltlngg_script_style' );
 add_action( 'widgets_init', 'register_mltlngg_widget' );
@@ -2167,6 +2914,9 @@ if ( is_admin() )
 	add_action( 'the_editor_content', 'mltlngg_the_content_filter' );
 add_action( 'save_post', 'mltlngg_save_post' );	/* Saving changes in posts translations */
 add_action( 'deleted_post', 'mltlngg_delete_post' );	/* Delete posts translations from database */
+
+/* add language name as class to body tag */
+add_filter( 'body_class', 'mltlngg_add_body_classes' );
 
 /* Filters for display frontend content language */
 add_filter( 'the_title', 'mltlngg_the_title_filter', 10, 2 );

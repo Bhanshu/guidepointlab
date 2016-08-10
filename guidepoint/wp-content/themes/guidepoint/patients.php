@@ -8,6 +8,10 @@
  */
 
 get_header(); ?>
+
+<?php 
+  $post_id =210;
+  ?>
 <section class="banner">
             <figure><img src="<?php the_field('banner_image'); ?>" alt="" title=""></figure>
             <div class="banner-caption">
@@ -81,7 +85,21 @@ get_header(); ?>
                 </div>
             </div>
         </section>
+		<section class="for-paragraph" >
+		
+		<div>
+		<?php if (is_page($post_id ) ):?>
+             <h2><?php the_title();?></h2>
+             <?php endif; ?>
+		
+		<?php the_content();?>
+		</div>
+		
+		</section>
         <section class="for-patients-points" data-speed="2" data-type="background">
+            <h2>ADVANTAGES</h2>
+            
+
             <div class="container">
                 <div class="for-patients-points-inner">
                     <div class="for-patients-points-box">

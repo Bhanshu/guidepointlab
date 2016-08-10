@@ -42,7 +42,7 @@ class MC4WP_Form_Manager {
 		add_action( 'init', array( $this, 'initialize' ) );
 
 		// forms
-		add_action( 'template_redirect', array( $this, 'init_asset_manager' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'init_asset_manager' ), 1 );
 		add_action( 'template_redirect', array( 'MC4WP_Form_Previewer', 'init' ) );
 
 		// widget
@@ -88,13 +88,19 @@ class MC4WP_Form_Manager {
 	 * @hooked `init`
 	 */
 	public function init_form_listener() {
+		$request = $this->get_request();
 		$this->listener = new MC4WP_Form_Listener();
-		$this->listener->listen( $_POST );
+		$this->listener->listen( $request );
 	}
 
+	/**
+	 * Initialise asset manager
+	 *
+	 * @hooked `template_redirect`
+	 */
 	public function init_asset_manager() {
-		$assets = new MC4WP_Form_Asset_Manager( $this->output_manager );
-		$assets->initialize();
+		$assets = new MC4WP_Form_Asset_Manager();
+		$assets->hook();
 	}
 
 	/**
@@ -135,5 +141,12 @@ class MC4WP_Form_Manager {
 	 */
 	public function get_tags() {
 		return $this->tags->get();
+	}
+
+	/**
+	 * @return MC4WP_Request
+	 */
+	private function get_request() {
+		return mc4wp('request');
 	}
 }

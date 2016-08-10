@@ -61,9 +61,16 @@ class MC4WP_Usage_Tracking {
 
 	/**
 	 * Enable usage tracking
+	 *
+	 * @return bool
 	 */
 	public function enable() {
-		return wp_schedule_event( time(), 'monthly', 'mc4wp_usage_tracking' );
+		// only schedule if not yet scheduled
+		if( ! wp_next_scheduled( 'mc4wp_usage_tracking' ) ) {
+			return wp_schedule_event( time(), 'monthly', 'mc4wp_usage_tracking' );
+		}
+
+		return true;
 	}
 
 	/**
@@ -91,7 +98,7 @@ class MC4WP_Usage_Tracking {
 		$data = $this->get_tracking_data();
 
 		// send non-blocking request and be done with it
-		$response = wp_remote_post( $this->tracking_url, array(
+		wp_remote_post( $this->tracking_url, array(
 				'body' => json_encode( $data ),
 				'headers' => array(
 					'Content-Type' => 'application/json',

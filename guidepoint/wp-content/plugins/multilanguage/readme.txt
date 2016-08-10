@@ -1,14 +1,14 @@
 ﻿=== Multilanguage by BestWebSoft ===
 Contributors: bestwebsoft
 Donate link: http://bestwebsoft.com/donate/
-Tags: add translation, add translations, best multilanguage plugin, bilingual, free multilanguage plugin, free plugin, globalization, international, international plugin, language, language switcher, localization, multilanguage, multi language, multilanguage plugin, multilingual, plugin, simple multilanguage plugin, simple language switcher, switcher, translate, translation, translations, translation-ready, widget, wordpress multilanguage plugin, wp multilanguage plugin, wordpress plugin, wp plugin
+Tags: add translation, bilingual, multilanguage, multilanguage plugin, translate, translate posts, international, international plugin, multilingual, language switcher, switcher, translation-ready
 Requires at least: 3.8
-Tested up to: 4.4-RC1
-Stable tag: 1.1.3
+Tested up to: 4.5.3
+Stable tag: 1.1.8
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-This plugin allows you to create content on a Wordpress site in different languages.
+Translate WordPress website content to other languages manually. Create multilingual pages, posts, widgets, menus, etc.
 
 == Description ==
 
@@ -16,7 +16,7 @@ Multilanguage allows you to create a multilingual WordPress website. Hence, you 
 
 NOTE: This plugin will only work with the themes and plugins, which were developed according to Wordpress Codex standards. Also, it uses standard filters (the_title, the_content, get_terms, get_the_terms, get_term, wp_get_nav_menu_items).
 
-http://www.youtube.com/watch?v=Si6ulEWuY1E 
+http://www.youtube.com/watch?v=Si6ulEWuY1E
 
 <a href="http://wordpress.org/plugins/multilanguage/faq/" target="_blank">Multilanguage by BestWebSoft FAQ</a>
 
@@ -26,25 +26,32 @@ http://www.youtube.com/watch?v=Si6ulEWuY1E
 
 = Features =
 
-* Use as many languages as you want. By default, you can choose one of 76 pre-installed languages. However, you can add any number of languages to list of pre-installed languages in "include/languages.php" file.
+* Use as many languages as you want. By default, you can choose one of 87 pre-installed languages. However, you can add any number of languages to list of pre-installed languages in "includes/languages.php" file.
 * Add translations for posts, pages, categories, and post tags.
 * The language is either set by the language switcher or by the language code in url (as directory).
 * A customizable language switcher is provided as a widget, which can be displayed in the form of a Drop-down list of languages, Drop-down list of flags icons or Flags icons.
+* Add languages switcher into site menu.
 * Default searching by the language which is currently selected for the site or all available languages.
 * You can determine the priority of language display ​​in the switcher by changing the priority of language display on the plugin settings page.
 * The admin interface is translation-ready.
+* Add links to your current page for each language from your site into the tag <head>.
+* Hide link slug for default language.
+* Displaying availability of translation in the general posts and taxonomies list.
+
+If you have a feature, suggestion or idea you'd like to see in the plugin, we'd love to hear about it! <a href="http://support.bestwebsoft.com/hc/en-us/requests/new" target="_blank">Suggest a Feature</a>
 
 = Translation =
 
+* Czech (cs_CZ) (thanks to <a href="mailto:info@pamadessoft.cz">PaMaDeSSoft</a>, www.pamadessoft.cz)
 * Polish (pl_PL) (thanks to <a href="mailto:emiljo@tlen.pl">Emil Król</a>)
 * Russian (ru_RU)
 * Ukrainian (uk)
 
-If you would like to create your own language pack or update the existing one, you can send <a href="http://codex.wordpress.org/Translating_WordPress" target="_blank">the text of PO and MO files</a> for <a href="http://support.bestwebsoft.com" target="_blank">BestWebSoft</a> and we'll add it to the plugin. You can download the latest version of the program for work with PO and MO files <a href="http://www.poedit.net/download.php" target="_blank">Poedit</a>.
+Some of these translations are not complete. We are constantly adding new features which should be translated. If you would like to create your own language pack or update the existing one, you can send <a href="http://codex.wordpress.org/Translating_WordPress" target="_blank">the text of PO and MO files</a> for <a href="http://support.bestwebsoft.com/hc/en-us/requests/new" target="_blank">BestWebSoft</a> and we'll add it to the plugin. You can download the latest version of the program for work with PO and MO files <a href="http://www.poedit.net/download.php" target="_blank">Poedit</a>.
 
 = Technical support =
 
-Dear users, our plugins are available for free download. If you have any questions or recommendations regarding the functionality of our plugins (existing options, new options, current issues), please feel free to contact us. Please note that we accept requests in English only. All messages in another languages won't be accepted.
+Dear users, our plugins are available for free download. If you have any questions or recommendations regarding the functionality of our plugins (existing options, new options, current issues), please feel free to contact us. Please note that we accept requests in English only. All messages in other languages won't be accepted.
 
 If you notice any bugs in the plugin's work, you can notify us about it and we'll then investigate and fix the issue. Your request should contain URL of the website, issues description and WordPress admin panel credentials.
 Moreover, we can customize the plugin according to your requirements. It's a paid service (as a rule it costs $40, but the price can vary depending on the amount of the necessary changes and their complexity). Please note that we could also include this or that feature (developed for you) in the next release and then share it with other users.
@@ -54,7 +61,7 @@ We can fix some things for free for the users who provide a translation of our p
 
 1. Upload the `multilanguage` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin using the 'Plugins' menu in your WordPress admin panel.
-3. You can adjust the necessary settings using your WordPress admin panel in "BWS Plugins" > "Multilanguage".
+3. You can adjust the necessary settings using your WordPress admin panel in "BWS Panel" > "Multilanguage".
 4. Plugin page is located in main menu.
 
 <a href="https://docs.google.com/document/d/1018gX-8ggRs180LT2B90q0zhEJ7EewDOckpwmkJYb5Y/edit" target="_blank">View a Step-by-step Instruction on Multilanguage Installation</a>.
@@ -69,9 +76,9 @@ No, it will not. It manages relationships between sites and translations, but it
 
 No, it will not. All translations must be done manually.
 
-= Can I add more than 76 ​​pre-installed languages? =
+= Can I add more than 87 ​​pre-installed languages? =
 
-Yes, you can add any number of languages to the list of pre-installed languages in file "include/languages.php".
+Yes, you can add any number of languages to the list of pre-installed languages in file "includes/languages.php".
 
 = How can I change content display language? =
 
@@ -85,9 +92,9 @@ In the plugin settings, you can enable/disable an option to switch Wordpress loc
 
 You can find all official translation files in WordPress [language repository](http://i18n.svn.wordpress.org/).
 
-= Can I use Multilanguage on a single-site? =
+= There is no adding block for Multilanguage switcher in Edit Menus =
 
-Yes, you can use Multilanguage in a single-site without any problems.
+It seems like this block is disabled in Screen Options of your page. Please open Screen Options on the page (in the upper right corner of the screen) and enable Multilanguage checkbox.
 
 = Can I use Multilanguage on a multi-site? =
 
@@ -96,6 +103,35 @@ Yes, you can use Multilanguage on a multi-site without any problems as well. The
 = When I try to update the post after editing, changes are not saved if I have not filled the title and content fields. Why? =
 
 When Title and Content fields in active language tab are empty, if you try to update the post after editing, the changes will not be saved and an error message will appear. You need to fill at least one field or switch to another language tab, on which the fields are filled, and try to update again.
+
+= How can I add more alternate links for current page? =
+
+You can use 'bwsplgns_mltlngg_add_alt_links' filter to do that. For example, you want that search engines firstly indexed exactly English-language pages of your site for people from New Zealand and South Africa. Just add the following code into funcions.php of your theme:
+
+`function get_additional_links( $links_attr ) {
+	/* English for New Zealand */
+	$links_attr[] = array( 'hreflang' => 'en_NZ', 'link_param' => 'en_GB' );
+	/* English for South Africa */
+	$links_attr[] = array( 'hreflang' => 'en_ZA', 'link_param' => 'en_GB' );
+	return $links_attr;
+}
+add_filter( 'bwsplgns_mltlngg_add_alt_links', 'get_additional_links' );`
+
+But note: before you have to choose English ( for England ) as one of languages of your website.
+
+= I added several whitespaces between words during the post content editing in the text mode. They are gone after I switched to the visual mode. Why? =
+
+After the mode switching, the post content has been automatically filtered to remove all odd symbols or HTML tags which can disrupt the pages layout on your website. This functionality is related to WordPress core and our plugin does not affect on it in any way.
+
+= How can I change element's style in the frontend for certain language? =
+
+"mltlngg-{current language slug}" class type has been added to <body> tag for an ability to stylize content of certain language. For example, if you want to set green color for <p> when English language is selected, it is necessary to:
+1. Go to WordPress admin panel "BWS Panel" > "Multilanguage" -> "Custom code";
+2. Check off "Activate" in "Editing bws-custom-code.css" block and enter the following code:
+`.mltlngg-en_US p {
+	color: green;
+}`
+3. Save changes. 
 
 = I have some problems with the plugin's work. What Information should I provide to receive proper support? =
 
@@ -108,19 +144,44 @@ Please make sure that the problem hasn't been discussed yet on our forum (<a hre
 
 == Screenshots ==
 
-1. Plugin setting page with a table of languages ​​that have been added to the translation.
-2. Plugin setting page with a form to add a language.
-3. Plugin setting page with the main plugin settings.
-4. Post/page editor with translation tabs.
-5. Translation form for adding a new category.
-6. Translation form for editing a category.
-7. Translation form for adding a new tag.
-8. Adding and settings language switcher widget in admin panel.
-9. Language switcher widget in frontend (Drop-down languages list).
-10. Language switcher widget in frontend (Drop-down flag icons).
-11. Language switcher widget in frontend (Flag icons).
+1. Language switcher widgets in frontend.
+2. Language switcher in site menu.
+3. Plugin setting page with a table of languages ​​that have been added to the translation.
+4. Plugin setting page with a form to add a language.
+5. Plugin setting page with the main plugin settings.
+6. Post/page editor with translation tabs.
+7. Translation form for adding a new category.
+8. Translation form for editing a category.
+9. Translation form for adding a new tag.
+10. Adding and settings language switcher widget in admin panel.
+11. Adding language switcher into site menu.
 
 == Changelog ==
+
+= V1.1.8 - 15.07.2016 =
+* Update : BWS panel section was updated.
+
+= V1.1.7 - 28.06.2016 =
+* Bugfix : Bug with displaying the list of languages was fixed.
+* NEW : "mltlngg-{current language slug}" class type has been added to <body> tag for an ability to stylize content of certain language.
+
+= V1.1.6 - 30.05.2016 =
+* NEW : Ability to display aligned languages switcher in the site menu has been added.
+* Bugfix : Bug with displaying alternative page links was fixed.
+* Bugfix : The conflict with WooCommerce REST API was resolved.
+
+= V1.1.5 - 04.04.2016 =
+* NEW : Ability to add languages switcher into site menu.
+* NEW : The column which displays translation availability has been added to the posts and taxonomies list.
+* Update : Displaying Language switcher widget as Drop-down languages list was changed.
+* NEW : Ability to add custom styles.
+* NEW : The Czech language file was added.
+* Update : Saving data for languages in admin panel has been improved.
+
+= V1.1.4 - 22.02.2016 =
+* NEW : Ability to add links to your current page for each language from your site into the tag <head> has been added.
+* NEW : Ability to hide link slug for default language has been added.
+* Update : Widget with languages switcher has been updated.
 
 = V1.1.3 - 04.12.2015 =
 * Bugfix : The bug with default searching was fixed.
@@ -189,6 +250,21 @@ Please make sure that the problem hasn't been discussed yet on our forum (<a hre
 * Release date of Multilanguage.
 
 == Upgrade Notice ==
+
+= V1.1.8 =
+Usability improved.
+
+= V1.1.7 =
+Bug with displaying the list of languages was fixed. "mltlngg-{current language slug}" class type has been added to <body> tag for an ability to stylize content of certain language.
+
+= V1.1.6 =
+Ability to display aligned languages switcher in the site menu has been added. Bug with displaying alternative page links was fixed. The conflict with WooCommerce REST API was resolved.
+
+= V1.1.5 =
+Ability to add languages switcher into site menu. The column which displays translation availability has been added to the posts and taxonomies list. Displaying Language switcher widget as Drop-down languages list was changed. Ability to add custom styles. The Czech language file was added. Saving data for languages in admin panel has been improved.
+
+= V1.1.4 =
+Ability to add links to your current page for each language from your site into the tag <head> has been added. Ability to hide link slug for default language has been added. Widget with languages switcher has been updated.
 
 = V1.1.3 =
 The bug with default searching was fixed. The bug with plugin menu duplicating was fixed.

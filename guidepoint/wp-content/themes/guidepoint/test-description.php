@@ -142,7 +142,7 @@ get_header(); ?>
             <div class="container">
                 <div class="see-video-inner">
                     <div class="video-box-main">
-                        <div class="video-heading">See Video</div>
+                        <div class="video-heading"><a href="#">See Video</a></div>
                         <div class="video-box"><img src="<?php bloginfo('template_directory'); ?>/images/video-img.jpg" alt="" title=""></div>
                         <div class="video-subheading">Pellentesque quis vehicula lectus. Phasellus</div>
                         <p>Vivamus sed semper ipsum. Donec consequat, mi eget finibus sollicitudin, mauris quam tincidunt dui, vel iaculis diam nibh at risus. Proin eu sollicitudin ligula.</p>

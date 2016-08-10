@@ -1342,6 +1342,25 @@ a.post-thumbnail:focus {
     color: #333;
 }
 
+.footer .widget .footer-contactus-btn{
+        background-color: #85b044 !important;
+    min-width: 164px;
+    padding: 13px 20px;
+    border: none;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.footer .widget .footer-contactus-btn:hover{
+        background-color: #35404f !important;
+    color: #fff;
+}
+
+
 .sticky-post {
     background-color: #333;
     color: #fff;

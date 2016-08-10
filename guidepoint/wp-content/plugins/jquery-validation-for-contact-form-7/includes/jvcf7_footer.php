@@ -51,6 +51,24 @@
             <table class="wp-list-table widefat fixed bookmarks">
             	<thead>
                 <tr>
+                	<th><strong>Real Email Validation</strong></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                	<td>
+                    <p>Allow only real email address to pass the validation. Email checker is advance email validation rules that can detect only genuine and deliverable email addresses. No more spam email submission.</p>
+                    <div align="center">
+                    <a href="https://wordpress.org/plugins/email-checker/"  target="_blank" class="jvcf7_btn">Get It Now.</a></div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <br/>
+            
+            <table class="wp-list-table widefat fixed bookmarks">
+            	<thead>
+                <tr>
                 	<th><strong>Plugins You May Like</strong></th>
                 </tr>
                 </thead>

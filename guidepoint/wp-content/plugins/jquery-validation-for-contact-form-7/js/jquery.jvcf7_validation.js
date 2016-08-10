@@ -426,6 +426,7 @@
 jQuery(document).ready(function(){	
 	jQuery('.wpcf7-validates-as-required').addClass('required');
 	jQuery('.wpcf7-email').addClass('email');
+	jQuery('.wpcf7-checkbox.wpcf7-validates-as-required input').addClass('required');
 	
 	jQuery('form.wpcf7-form').each(function(){
 		jQuery(this).validate();
@@ -433,3 +434,9 @@ jQuery(document).ready(function(){
 		jQuery(this).addClass(jvcf7_show_label_error);
 	});	
 });
+
+jQuery.validator.addMethod("email2", 
+    function(value, element) {
+        return /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i.test(value);
+    },"Please enter a valid email address"
+);

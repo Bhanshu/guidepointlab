@@ -4,11 +4,25 @@ add_action('admin_menu', 'jvcf7_create_menu');
 add_action('admin_notices', 'jvcf7_pro_notification');
 
 if (isset($_GET['hidemsg']) == 1){
-	update_option('jvcf7_hide_pro_notice','yes');
+	update_option('jvcf7_hide_pro_notice','yes_4');
 }
 
+if (isset($_GET['hidemsg_emailchecker']) == 1){
+	update_option('jvcf7_hide_email_checker_notice','yes_4');
+}
+
+
 function jvcf7_pro_notification(){
-	if (get_option('jvcf7_hide_pro_notice') != 'yes'){
+	if (get_option('jvcf7_hide_email_checker_notice') != 'yes_4'){
+		 echo '<div class="updated">
+       <p><b>Real Email Validation Plugin</b></p>
+	   <p>
+	   Allow only real email address to pass the validation. Email checker is advance email validation rules that can detect only genuine and deliverable email addresses. No more spam email submission.</p><p>
+	   Click <a href="http://dnesscarkey.com/email-checker/demo/contact-form-7/" target="_blank"><strong>HERE</strong></a> for demo<br/><a style="display:block;text-align:right;" href="options-general.php?page=jquery-validation-for-contact-form-7/plugin_interface.php&hidemsg_emailchecker=1">Hide This Message</a></p>
+	   </div>';
+	}
+	
+	if (get_option('jvcf7_hide_pro_notice') != 'yes_4'){
 		 echo '<div class="updated">
        <p><b>Jquery Validation for Contact Form 7 Pro</b> now has<br/>
 	   <ol>

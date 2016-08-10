@@ -10,6 +10,10 @@ a.wp-helpdesk-logo:focus {
   -moz-box-shadow:none !important;
 }
 
+.goog-te-gadget-simple {
+  margin:4px 0;
+}
+
 select.goog-te-combo { 
   width:143px !important;
   background:#fff;

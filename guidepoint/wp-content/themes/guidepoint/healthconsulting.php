@@ -152,7 +152,7 @@ get_header(); ?>
         <h4 class="modal-title">SCHEDULE CONSULTATION</h4>
       </div>
       <div class="modal-body">
-       <?php echo do_shortcode('[contact-form-7 id="222" title="Schedule consultation"]'); ?>
+       <?php echo do_shortcode('[contact-form-7 id="387" title="SCHEDULE CONSULTATION"]'); ?>
       </div>
     </div>
 

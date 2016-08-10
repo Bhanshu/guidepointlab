@@ -21,10 +21,11 @@
     <link href="<?php bloginfo('template_directory'); ?>/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	<?php wp_head(); ?>
 	 <link href="<?php bloginfo('template_directory'); ?>/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 	<link href="<?php bloginfo('template_directory'); ?>/css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body <?php body_class(); ?>>
     <div class="main">
         <header class="header">
             <div class="header-top">

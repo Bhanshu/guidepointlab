@@ -17,9 +17,11 @@ get_header(); ?>
         <div class="display-table">
           <div class="display-table-cell">
             <div class="text">
-              <div class="title">
+            <div class="wow slideInLeft">
+              <div class="title ">
                 <?php the_field('banner_heading'); ?>
               </div>
+                </div>
               <?php the_field('banner_text'); ?>
               <a href="<?php the_field('banner_button_link'); ?>" class="button-transparent">
               <?php the_field('banner_button_text'); ?>
@@ -88,6 +90,9 @@ get_header(); ?>
 						}       
 					}
 					?>
+    </ul>    
+   <a href="#"> <button class="test-categories-list-button" type="submit">ORDER ONLINE NOW!</button></a>
+    
 </div>
 </div>
 </div>

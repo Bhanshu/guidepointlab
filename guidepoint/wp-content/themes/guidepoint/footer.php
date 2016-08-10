@@ -32,7 +32,7 @@
                         </div>
                         <div class="col-md-3 col-xs-6">
                             <div class="widget">
-                                <h6>Our categories</h6>
+                                <h6>Test categories</h6>
                                 <ul class="footer-link">
 							<?php 	$args = array(
 								'number'     => $number,
@@ -177,9 +177,12 @@ jQuery(".close").on("click",function(){
   jQuery('form').trigger( 'reset' );
 });
 		
-        
+       jQuery(".banner-caption .text").addClass('wow slideInLeft'); 
     </script>
-    
+    	 <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+      <script>
+       new WOW().init();
+      </script>
     
     
 

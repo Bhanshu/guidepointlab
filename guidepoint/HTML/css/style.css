@@ -1,0 +1,4079 @@
+/*****  Fonts  *****/
+
+
+/*
+
+font-family: 'Open Sans', sans-serif;
+
+font-family: 'Roboto', sans-serif;
+
+*/
+
+
+/*****  Global Style  *****/
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: none !important;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: #404d5f;
+    -webkit-text-stroke: rgba(255, 255, 255, 0.01) 0.1px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: normal;
+}
+
+h1 {
+    font-size: 48px;
+    color: #85b044;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+h2 {}
+
+h3 {
+    font-size: 34px;
+    color: #525c6b;
+    font-weight: 300;
+}
+
+h4 {
+    font-size: 24px;
+    color: #404d5f;
+    font-weight: 700;
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+h4:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 90px;
+    height: 1px;
+    background-color: #2986e2;
+}
+
+h5 {
+    font-size: 20px;
+    color: #000;
+    font-weight: 400;
+}
+
+h6 {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+img {
+    max-width: 100%;
+    vertical-align: top;
+}
+
+a,
+button,
+input[type="submit"] {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+a,
+a:hover,
+a:focus {
+    text-decoration: none;
+}
+
+a {
+    color: #85b044;
+}
+
+a:hover,
+a:hover {
+    color: #35404f;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+input[type="tel"],
+input[type="number"],
+textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+
+/*****  Main CSS  *****/
+
+
+/**************/
+
+.main {
+    width: 100%;
+    overflow: hidden;
+}
+
+.pull-center {
+    display: inline-block;
+}
+
+.display-table {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+
+.display-table-cell {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.icons,
+.for-patients-points ul li::after,
+.benefits-gp ul li::after,
+.gp-health-consultant ul li::after,
+.labs-different ul li::after,
+.our-success-box ul li::after,
+.licensures-box ul li::after,
+.privacy-practices ul li::after,
+.test-description .text ul li::after,
+.test-description-tabs .tab-content ul ul li::after {
+    background: url("../images/icons.png") no-repeat;
+}
+
+
+/*****  Header  *****/
+
+.header.header {
+    border-top: 6px solid #85b044;
+}
+
+.header-top {
+    background-color: #f2f7f9;
+    min-height: 52px;
+}
+
+.header-top-inner {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+}
+
+.top-social > ul {
+    list-style: none;
+    margin: 17px 0 0;
+    overflow: hidden;
+}
+
+.top-social > ul > li {
+    float: left;
+    margin-right: 6px;
+}
+
+.top-social > ul > li > a {
+    background-color: #cccccc;
+    border-radius: 1px;
+    color: #ffffff;
+    display: block;
+    font-size: 12px;
+    height: 16px;
+    line-height: 14px;
+    padding: 1px 0 0;
+    text-align: center;
+    width: 16px;
+}
+
+.top-social > ul > li > a:hover,
+.top-social > ul > li > a:focus {
+    background-color: #85b044;
+    color: #fff;
+}
+
+.top-info > ul {
+    display: inline-block;
+    list-style: none;
+    margin: 14px 0 0;
+    vertical-align: top;
+}
+
+.top-info > ul > li {
+    float: left;
+    padding: 0 15px;
+    border-right: 1px solid #cdd6da;
+}
+
+.top-info > ul > li:last-child {
+    border-right: none;
+    padding-right: 0;
+}
+
+.top-info > ul > li > a {
+    color: #312f37;
+    display: block;
+    font-size: 13px;
+    line-height: 22px;
+    text-align: center;
+}
+
+.top-info > ul > li > a:hover,
+.top-info > ul > li > a:focus {
+    color: #85b044;
+}
+
+.mail-icon {
+    background-position: 0 0;
+    width: 17px;
+    height: 12px;
+}
+
+.top-info .mail-icon {
+    display: inline-block;
+    margin: 5px 13px 0 0;
+    vertical-align: top;
+}
+
+.top-info .dropdown button {
+    background-color: transparent;
+    padding: 0;
+    border: none;
+    line-height: 22px;
+}
+
+.top-info .dropdown button i {
+    margin-left: 15px;
+}
+
+.top-info .dropdown.open button {
+    color: #6a922d;
+}
+
+.top-info .dropdown-menu {
+    left: inherit;
+    min-width: 120px;
+    padding: 0;
+    right: 0;
+    overflow: hidden;
+}
+
+.top-info .dropdown-menu > li {
+    border-top: 1px solid #6a922d;
+}
+
+.top-info .dropdown-menu > li:first-child {
+    border: none;
+}
+
+.top-info .dropdown-menu > li > a {
+    background-color: #85b044;
+    color: #ffffff;
+    font-size: 13px;
+    line-height: normal;
+    padding: 5px 12px;
+}
+
+.top-info .dropdown-menu > li > a:focus,
+.top-info .dropdown-menu > li > a:hover {
+    background-color: #6a922d;
+    color: #fff;
+}
+
+.header-bottom {
+    background-color: #fff;
+    min-height: 109px;
+}
+
+.header-bottom-inner {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    padding: 14px 0 20px
+}
+
+.contact-info > ul {
+    display: inline-block;
+    list-style: none;
+    margin: 16px 0 0;
+    vertical-align: top;
+}
+
+.contact-info > ul > li {
+    float: left;
+    margin-left: 11px;
+}
+
+.contact-info > ul > li:last-child {
+    border-right: none;
+    padding-right: 0;
+}
+
+.contact-info > ul > li > a {
+    color: #312f37;
+    display: block;
+    font-size: 13px;
+    line-height: normal;
+    text-align: center;
+    padding: 15px;
+}
+
+.contact-info > ul > li > a:hover,
+.contact-info > ul > li > a:focus {
+    color: #85b044;
+}
+
+.contact-info > ul > li.phone a {
+    border: 1px solid #cdd6da;
+    border-radius: 100px;
+    min-height: 50px;
+    min-width: 205px;
+    overflow: hidden;
+}
+
+.contact-info > ul > li.phone a:hover,
+.contact-info > ul > li.phone a:focus {
+    border-color: #85b044;
+}
+
+.phone-icon {
+    background-position: -40px 0;
+    height: 14px;
+    width: 9px;
+}
+
+.mobile-icon {
+    background-position: -73px 0;
+    height: 16px;
+    width: 9px;
+}
+
+.contact-info i {
+    display: inline-block;
+    margin: 2px 13px 0 0;
+    vertical-align: top;
+}
+
+.contact-info > ul > li.top-cart a {
+    padding-right: 0;
+}
+
+.basket-icon {
+    background-position: -108px 0;
+    height: 14px;
+    width: 18px;
+}
+
+.contact-info > ul > li.top-cart a span {
+    background-color: #85b044;
+    border-radius: 3px;
+    color: #ffffff;
+    display: inline-block;
+    height: 22px;
+    margin-top: -1px;
+    min-width: 24px;
+    position: relative;
+    vertical-align: top;
+    padding: 1px 4px;
+}
+
+.contact-info > ul > li.top-cart a span:before {
+    border-bottom: 5px solid rgba(0, 0, 0, 0);
+    border-right: 5px solid #85b044;
+    border-top: 5px solid rgba(0, 0, 0, 0);
+    content: "";
+    left: -5px;
+    position: absolute;
+    top: 6px;
+}
+
+
+/*****  Top Menu  *****/
+
+.sticky-wrapper {
+    height: auto !important;
+}
+
+nav.navbar-default {
+    background-color: #85b044;
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    min-height: 60px;
+    width: 100%;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.sticky-wrapper.is-sticky nav.navbar-default {
+    border-bottom: 1px solid #9cc55e;
+    width: 100% !important;
+    z-index: 9999;
+}
+
+nav.navbar-default .logo {
+    height: auto;
+    margin: 0 0 5px;
+    padding: 0 15px;
+}
+
+nav.navbar-default .navbar-collapse {
+    padding: 0;
+}
+
+nav.navbar-default .navbar-nav > li {
+    margin: 0 46px 0 0;
+}
+
+nav.navbar-default .navbar-nav > li > a {
+    background-color: transparent;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff !important;
+    padding: 20px 0;
+    letter-spacing: 0.010em;
+    text-transform: uppercase;
+}
+
+nav.navbar-default .navbar-nav > li > a:focus,
+nav.navbar-default .navbar-nav > li > a:hover,
+nav.navbar-default .navbar-nav > .active > a,
+nav.navbar-default .navbar-nav > .active > a:focus,
+nav.navbar-default .navbar-nav > .active > a:hover {
+    background-color: transparent;
+    color: #505051 !important;
+}
+
+
+/*****  Banner  *****/
+
+.banner {
+    position: relative;
+    margin-top: 1px;
+}
+
+.banner figure img {
+    width: 100%;
+}
+
+.banner-caption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.banner-caption .container,
+.banner .figcaption {
+    height: 100%;
+}
+
+.banner .text {
+    /*max-width: 640px;*/
+}
+
+.banner .title {
+    color: #fff;
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-shadow: 0 1px 0 #000;
+    text-transform: uppercase;
+}
+
+.banner p {
+    color: #fff;
+    font-size: 16px;
+    line-height: 26px;
+    text-shadow: 0 1px 0 #aaa;
+}
+
+.button-transparent {
+    background-color: transparent;
+    min-width: 132px;
+    padding: 13px 18px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    margin: 10px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    overflow: hidden;
+}
+
+.button-transparent:hover,
+.button-transparent:focus {
+    background-color: #85b044;
+    border-color: #85b044;
+    color: #fff;
+}
+
+.banner .button-transparent {
+    margin: 18px 0 0;
+}
+
+.search-category {
+    max-width: 840px;
+    margin-top: 50px;
+}
+
+.search-category-inner {
+    background-color: #fff;
+    border-radius: 5px;
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.search-category .dropdown,
+.search-category .button-gray {
+    float: left;
+    margin: 0;
+}
+
+.search-category .dropdown {
+    width: 40%;
+}
+
+.search-category .dropdown button {
+    background-color: transparent;
+    border: none;
+    color: #676767;
+    padding: 17px 43px 16px;
+    text-align: left;
+    width: 100%;
+    position: relative;
+}
+
+.search-category .dropdown button i {
+    font-size: 18px;
+    height: 8px;
+    line-height: 7px;
+    margin-top: -4px;
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    width: 10px;
+    color: #a6a6a6;
+}
+
+.search-category .dropdown #dropdownMenu1 {
+    background-image: url("../images/dropdown-icon.png");
+    background-position: 16px center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.search-category .dropdown #dropdownMenu1 i:after {
+    background-color: #dadada;
+    content: "";
+    height: 40px;
+    position: absolute;
+    right: -26px;
+    top: -15px;
+    width: 1px;
+}
+
+.search-category .dropdown ul {
+    border-color: #ffffff;
+    border-radius: 0 0 5px 5px;
+    border-top: medium none #ffffff;
+    box-shadow: 0 2px 2px #ccc;
+    left: 0;
+    margin-top: 0;
+    overflow: hidden;
+    padding: 0;
+    width: 100%;
+}
+
+.search-category .dropdown ul > li {}
+
+.search-category .dropdown ul > li > a {
+    padding: 6px 12px;
+    color: #35404f;
+}
+
+.search-category .dropdown ul > li > a:hover,
+.search-category .dropdown ul > li > a:focus {
+    background-color: #35404f;
+    color: #fff;
+}
+
+.search-category .button-gray {
+    width: 20%;
+    border-radius: 0 5px 5px 0;
+}
+
+.button-gray {
+    background-color: #35404f;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.024em;
+    text-transform: uppercase;
+    overflow: hidden;
+    min-height: 53px;
+}
+
+.button-gray:hover,
+.button-gray:focus {
+    background-color: #85b044;
+    border-color: #85b044;
+    color: #fff;
+}
+
+.search-category .note {
+    font-size: 13px;
+    font-style: italic;
+    font-weight: 300;
+    color: #fff;
+    margin-top: 16px
+}
+
+
+/*****  Test Categories  *****/
+
+.test-categories {
+    text-align: center;
+    padding: 60px 0 54px;
+    border-bottom: 1px solid #dfdfdf;
+}
+
+.test-categories .text,
+.featured-tests .text,
+.aboutus-area .text {
+    max-width: 820px;
+    margin: 0 auto;
+}
+
+.test-categories .text p,
+.featured-tests .text p,
+.aboutus-area .text p {
+    font-size: 16px;
+    color: #404d5f;
+    line-height: 26px;
+}
+
+.test-categories-list {
+    margin: 56px 0 0;
+}
+
+.test-categories-list ul {
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    margin: 0;
+}
+
+.test-categories-list ul li {
+    display: inline-block;
+    vertical-align: top;
+    width: 236px;
+    border: 1px solid #fff;
+    padding: 10px;
+    margin: 20px 0;
+    border-radius: 2px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.test-categories-list ul li:hover {
+    border-color: #8fbfb1;
+}
+
+.test-categories-list ul li figure {
+    height: 94px;
+}
+
+.test-categories-list .icons {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.biobanking-icon {
+    background-position: 0 -50px;
+    height: 82px;
+    width: 80px;
+}
+
+.genetic-testing-icon {
+    background-position: -132px -50px;
+    height: 84px;
+    width: 86px;
+}
+
+.non-invasive-testing-icon {
+    background-position: -264px -50px;
+    height: 87px;
+    width: 83px;
+}
+
+.immunology-icon {
+    background-position: -396px -50px;
+    height: 82px;
+    width: 85px;
+}
+
+.infectious-disease-icon {
+    background-position: -528px -50px;
+    height: 94px;
+    width: 102px;
+}
+
+.saliva-testing-icon {
+    background-position: -660px -50px;
+    height: 76px;
+    width: 62px;
+}
+
+.health-wellness-icon {
+    background-position: 0 -172px;
+    height: 84px;
+    width: 88px;
+}
+
+.oncology-icon {
+    background-position: -137px -172px;
+    height: 83px;
+    width: 83px;
+}
+
+.miscellaneous-icon {
+    background-position: -273px -172px;
+    height: 42px;
+    width: 138px;
+}
+
+.test-categories-list h5 a {
+    font-size: 19px;
+    line-height: 26px;
+    color: #000;
+}
+
+.test-categories-list h5 a:hover,
+.test-categories-list h5 a:focus {
+    color: #8fbfb1;
+}
+
+.test-categories-list p {
+    font-size: 13px;
+    color: #898e95;
+    line-height: 22px;
+}
+
+
+/*****  Featured Tests  *****/
+
+.featured-tests {
+    text-align: center;
+    padding: 55px 0 100px;
+}
+
+.featured-tests-list {
+    margin: 56px 0 0;
+}
+
+.featured-tests-list ul {
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    margin: 0;
+}
+
+.featured-tests-list ul li {
+    display: inline-block;
+    vertical-align: top;
+    width: 196px;
+    margin: 20px 14px 0;
+}
+
+.featured-tests-list ul li .featured-tests-list-box {
+    border: 1px solid #dce9f5;
+    border-radius: 2px;
+    height: 106px;
+    position: relative;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.featured-tests-list ul li:hover .featured-tests-list-box {
+    border-color: #85b044;
+}
+
+.featured-tests-list ul li .featured-tests-list-box a {
+    display: block;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+
+.featured-tests-list ul li figure {
+    min-height: 80px;
+    margin-top: -40px;
+    margin-bottom: 15px;
+}
+
+.featured-tests-list figure span {
+    background-color: #e5f0fb;
+    border: 10px solid #ffffff;
+    display: block;
+    height: 80px;
+    margin: 0 auto;
+    width: 76px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.featured-tests-list ul li:hover figure span {
+    background-color: #85b044;
+}
+
+.featured-tests-list .icons {
+    display: inline-block;
+    vertical-align: top;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.crp-icon {
+    background-position: 0 -280px;
+    height: 40px;
+    width: 40px;
+}
+
+.hemoglobin-icon {
+    background-position: -63px -280px;
+    height: 37px;
+    width: 26px;
+}
+
+.hiv-icon {
+    background-position: -127px -280px;
+    height: 34px;
+    width: 34px;
+}
+
+.gonorrhea-chlamydia-icon {
+    background-position: -190px -280px;
+    height: 40px;
+    width: 41px;
+}
+
+.blood-count-icon {
+    background-position: -643px -280px;
+    height: 24px;
+    width: 34px;
+}
+
+.metabolic-profile-icon {
+    background-position: -730px -280px;
+    height: 30px;
+    width: 20px;
+}
+
+.featured-tests-list .icons.crp-icon {
+    margin-top: 10px;
+}
+
+.featured-tests-list .icons.hemoglobin-icon {
+    margin-top: 11px;
+}
+
+.featured-tests-list .icons.hiv-icon {
+    margin-top: 12px;
+}
+
+.featured-tests-list .icons.gonorrhea-chlamydia-icon {
+    margin-top: 9px;
+}
+
+.featured-tests-list .icons.blood-count-icon {
+    margin-top: 18px;
+}
+
+.featured-tests-list .icons.metabolic-profile-icon {
+    margin-top: 14px;
+}
+
+.featured-tests-list ul li:hover .icons.crp-icon {
+    background-position: 0 -341px;
+}
+
+.featured-tests-list ul li:hover .icons.hemoglobin-icon {
+    background-position: -63px -341px;
+}
+
+.featured-tests-list ul li:hover .icons.hiv-icon {
+    background-position: -127px -341px;
+}
+
+.featured-tests-list ul li:hover .icons.gonorrhea-chlamydia-icon {
+    background-position: -190px -341px;
+}
+
+.featured-tests-list ul li:hover .icons.blood-count-icon {
+    background-position: -643px -341px;
+}
+
+.featured-tests-list ul li:hover .icons.metabolic-profile-icon {
+    background-position: -730px -341px;
+}
+
+.featured-tests-list p {
+    font-size: 14px;
+    font-weight: 600;
+    color: #404d5f;
+}
+
+.health-consulting {
+    margin: 84px auto 0;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.health-consulting figure {
+    position: relative;
+    margin-left: 30px;
+}
+
+.health-consulting .figure-inner {
+    position: relative;
+    padding: 0 35px;
+}
+
+.health-consulting figure:before {
+    border: 12px solid #404d5f;
+    content: "";
+    height: 84%;
+    left: 0;
+    position: absolute;
+    top: 8%;
+    width: 100%;
+}
+
+.health-consulting figure .overlay {
+    background-color: #2986e2;
+    min-width: 170px;
+    min-height: 38px;
+    position: absolute;
+    right: 0;
+    bottom: 80px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    padding: 9px;
+    text-transform: uppercase;
+}
+
+.health-consulting .text {
+    text-align: left;
+    padding-left: 30px;
+    padding-top: 10px;
+}
+
+.health-consulting h4 {
+    margin-bottom: 25px;
+}
+
+.health-consulting .text p {
+    font-size: 16px;
+    line-height: 26px;
+    color: #404d5f;
+    margin-bottom: 25px;
+}
+
+.button-green {
+    background-color: #85b044;
+    min-width: 164px;
+    padding: 13px 20px;
+    border: none;
+    border-radius: 1px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    margin: 10px 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    overflow: hidden;
+}
+
+.button-green:hover,
+.button-green:focus {
+    background-color: #35404f;
+    color: #fff;
+}
+
+.health-consulting .button-green {
+    margin-top: 18px;
+}
+
+
+/*****  About Us Area  *****/
+
+.aboutus-area {
+    background: url("../images/about-us-bg.jpg") no-repeat 50% 0 fixed;
+    background-size: cover;
+    padding: 58px 0 98px;
+    text-align: center;
+}
+
+.aboutus-area h1 {
+    color: #fff;
+}
+
+.aboutus-area .text p {
+    color: #fff;
+}
+
+.aboutus-tabs {
+    margin: 46px auto 0;
+    max-width: 1200px;
+    text-align: center;
+    width: 100%;
+}
+
+.aboutus-tabs .nav-tabs {
+    border: none;
+    margin-bottom: 40px;
+}
+
+.aboutus-tabs .nav-tabs > li {
+    display: inline-block;
+    float: none;
+    margin: 0;
+    vertical-align: top;
+    margin: 0 10px;
+}
+
+.aboutus-tabs .nav-tabs > li > a {
+    border: none;
+    border-radius: 1px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    padding: 13px 14px;
+}
+
+.aboutus-tabs .nav-tabs > li > a:hover,
+.aboutus-tabs .nav-tabs > li > a:focus,
+.aboutus-tabs .nav-tabs > li.active > a,
+.aboutus-tabs .nav-tabs > li.active > a:focus,
+.aboutus-tabs .nav-tabs > li.active > a:hover {
+    background-color: #fff;
+    color: #404d5f;
+    border: none;
+}
+
+.aboutus-tabs .tab-content > .tab-pane {
+    background-color: #fff;
+    text-align: left;
+}
+
+.aboutus-tabs .tab-content > .tab-pane .text {
+    height: 422px;
+    margin: 24px 30px 24px 0;
+    overflow-y: auto;
+    padding: 0 24px;
+}
+
+.aboutus-tabs .tab-content > .tab-pane .text .title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #404d5f;
+    line-height: 32px;
+    text-transform: uppercase;
+    margin-bottom: 13px;
+    margin-top: 16px;
+}
+
+.aboutus-tabs .tab-content > .tab-pane .text p {
+    font-size: 16px;
+    font-weight: 400;
+    color: #404d5f;
+    line-height: 26px;
+}
+
+.aboutus-tabs .tab-content > .tab-pane .text .button-green {
+    margin: 18px 0 0;
+}
+
+
+/*****  Subscribe Area  *****/
+
+.subscribe-area {
+    background-color: #f4f4f4;
+    padding: 40px 0 75px;
+    text-align: center;
+}
+
+.subscribe-area h3 {
+    margin-bottom: 18px;
+}
+
+.subscribe-form {
+    display: inline-block;
+    max-width: 460px;
+    vertical-align: top;
+    width: 100%;
+}
+
+.subscribe-form input[type="text"],
+.subscribe-form input[type="email"] {
+    background-color: #f4f4f4;
+    box-shadow: none;
+    border: 1px solid #b4b4b4;
+    border-radius: 1px;
+    height: 45px;
+    float: left;
+    width: 310px;
+    color: #5b6675;
+}
+
+.subscribe-form .form-control::-moz-placeholder {
+    color: #5b6675;
+    opacity: 1;
+}
+
+.subscribe-form .form-control:-ms-input-placeholder {
+    color: #5b6675;
+}
+
+.subscribe-form .form-control::-webkit-input-placeholder {
+    color: #5b6675;
+}
+
+.subscribe-form input[type="text"]:focus,
+.subscribe-form input[type="email"]:focus {
+    border-color: #85b044;
+}
+
+.subscribe-form .button-green {
+    border-radius: 3px;
+    float: left;
+    margin: 0 0 0 5px;
+    min-width: 20px;
+    width: 145px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+
+/*****  Footer  *****/
+
+footer.footer {
+    background-color: #222;
+    position: relative;
+}
+
+.widgets {
+    padding: 58px 0 36px;
+    display: inline-block;
+    width: 100%;
+}
+
+.widgets h6 {
+    color: #fff;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+}
+
+.widgets p {
+    font-size: 14px;
+    color: #95999e;
+    line-height: 30px;
+    letter-spacing: 0.010em;
+}
+
+.widgets p a {
+    color: #95999e;
+}
+
+.footer-link,
+.footer-link ul {
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    margin: 0;
+}
+
+.footer-link li a {
+    font-size: 14px;
+    color: #95999e;
+    line-height: 30px;
+    letter-spacing: 0.010em;
+}
+
+.footer-link li a:hover,
+.footer-link li a:focus,
+.footer-link li.active a,
+.widgets p a:hover,
+.widgets p a:focus {
+    color: #85b044;
+}
+
+.widgets address {
+    position: relative;
+    margin: 0;
+    padding-left: 30px;
+}
+
+.widgets address:before,
+.widgets address:before {
+    font-family: 'FontAwesome';
+    content: "\f041";
+    color: #85b044;
+    font-size: 20px;
+    left: 0;
+    position: absolute;
+    top: 1px;
+}
+
+.social,
+.social ul {
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+}
+
+.social li {
+    float: left;
+    margin-right: 30px;
+}
+
+.social li:last-child {
+    margin-right: 0;
+}
+
+.social li a {
+    color: #85b044;
+    display: block;
+    font-size: 14px;
+}
+
+.social li a:hover,
+.social li a:focus {
+    border-radius: 0 12px;
+    color: #fff;
+}
+
+.widgets .social,
+.widgets .social ul {
+    margin: 26px 0 0 30px;
+}
+
+.footer-inner {
+    padding: 0 0 44px;
+    position: relative;
+}
+
+.copyright {
+    font-size: 13px;
+    color: #909090;
+    line-height: 22px;
+    letter-spacing: 0.010em;
+}
+
+.copyright span {
+    color: #85b044;
+}
+
+
+/*****  Inner Pages  *****/
+
+.for-patients-banner,
+.for-providers-banner,
+.health-consulting-banner,
+.education-center-banner {
+    margin: 0;
+}
+
+.for-patients-banner .title,
+.for-providers-banner .title,
+.health-consulting-banner .title,
+.education-center-banner .title {
+    line-height: 55px;
+    margin-bottom: 10px;
+}
+
+.for-patients-banner .text,
+.for-providers-banner .text,
+.health-consulting-banner .text,
+.education-center-banner .text {
+    text-align: center;
+    max-width: 100%;
+}
+
+
+/*****  For Patients Page  *****/
+
+.for-patients-points {
+    background: url("../images/for-patients-points-bg.jpg") no-repeat 0 0 fixed;
+    background-size: cover;
+    padding: 72px 0 84px;
+}
+
+.for-patients-points-box {
+    border-bottom: 1px solid #9cc55e;
+    margin-bottom: 75px;
+    padding-bottom: 74px;
+}
+
+.for-patients-points-box:last-child {
+    border: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.for-patients-points h4 {
+    color: #ffffff;
+    margin-bottom: 36px;
+}
+
+.for-patients-points h4:before {
+    background-color: #fff;
+}
+
+.for-patients-points .text {
+    margin-bottom: 20px;
+}
+
+.for-patients-points .text p {
+    font-size: 16px;
+    color: #fff;
+    line-height: 26px;
+    text-transform: uppercase;
+}
+
+.for-patients-points ul {
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
+    width: 100%;
+}
+
+.for-patients-points ul li {
+    font-size: 18px;
+    color: #fff;
+    line-height: 40px;
+    padding-left: 38px;
+    position: relative;
+}
+
+.for-patients-points ul li:after {
+    background-position: -296px -290px;
+    content: "";
+    height: 19px;
+    left: 0;
+    position: absolute;
+    top: 12px;
+    width: 16px;
+}
+
+.for-patients-knowledge {
+    background: url("../images/for-patients-knowledge-bg.jpg") no-repeat;
+    background-size: cover;
+    padding: 62px 0 44px;
+    text-align: right;
+}
+
+.for-patients-knowledge-inner {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    max-width: 830px;
+    text-align: left;
+}
+
+.for-patients-knowledge h4 {
+    margin-bottom: 26px;
+}
+
+.for-patients-knowledge p {
+    color: #404d5f;
+    font-size: 16px;
+    line-height: 26px;
+    margin-bottom: 40px;
+}
+
+.for-patients-knowledge p a {
+    font-weight: 600;
+}
+
+
+/*****  For Providers Page  *****/
+
+.become-gp,
+.knowmore,
+.community-service-part,
+.hipaa-compliance,
+.qus-conc {
+    background: url("../images/become-gp-bg.jpg") no-repeat 50% 0 fixed;
+    background-size: cover;
+    padding: 75px 0 80px;
+    text-align: center;
+}
+
+.become-gp-inner,
+.knowmore-inner,
+.community-service-part-inner,
+.hipaa-compliance-inner,
+.qus-conc-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.become-gp h4,
+.knowmore h4,
+.community-service-part h4,
+.hipaa-compliance h4,
+.qus-conc h4 {
+    color: #fff;
+    margin-bottom: 26px;
+}
+
+.become-gp h4:before,
+.knowmore h4:before,
+.community-service-part h4:before,
+.hipaa-compliance h4:before,
+.qus-conc h4:before {
+    background-color: #fff;
+    left: 50%;
+    margin-left: -45px;
+}
+
+.become-gp p,
+.knowmore p,
+.community-service-part p,
+.hipaa-compliance p,
+.qus-conc p {
+    font-size: 16px;
+    color: #fff;
+    line-height: 26px;
+    margin-bottom: 26px;
+}
+
+.become-gp p a,
+.knowmore p a,
+.community-service-part p a,
+.hipaa-compliance p a,
+.qus-conc p a {
+    color: #fff;
+}
+
+.become-gp p a:hover,
+.become-gp p a:focus,
+.knowmore p a:hover,
+.knowmore p a:focus,
+.community-service-part p a:hover,
+.community-service-part p a:focus,
+.hipaa-compliance p a:hover,
+.hipaa-compliance p a:focus,
+.qus-conc p a:hover,
+.qus-conc p a:focus {
+    color: #404d5f;
+}
+
+.become-gp p strong,
+.knowmore p strong {
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.button-transparent1 {
+    background-color: transparent;
+    min-width: 202px;
+    min-height: 44px;
+    padding: 9px 20px;
+    border: 1px solid #fff;
+    border-radius: 100px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    text-transform: uppercase;
+    overflow: hidden;
+}
+
+.button-transparent1:hover,
+.button-transparent1:focus {
+    background-color: #fff;
+    border-color: #85b044;
+    color: #85b044;
+}
+
+.become-gp .button-transparent1 {
+    margin: 28px 0 0;
+}
+
+.benefits-gp {
+    background: url("../images/benefits-gp-bg.jpg") no-repeat;
+    background-size: cover;
+    padding: 88px 0 95px;
+}
+
+.benefits-gp-inner {
+    max-width: 1250px;
+    margin: 0 auto;
+}
+
+.benefits-gp h4 {
+    margin-bottom: 55px;
+}
+
+.benefits-gp-box {
+    padding: 0 25px;
+    position: relative;
+}
+
+.benefits-gp .col-sm-6:first-child .benefits-gp-box:after {
+    content: "";
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    right: -15px;
+    background-color: #e9e9e9;
+    top: 0;
+}
+
+.benefits-gp ul,
+.gp-health-consultant ul,
+.labs-different ul,
+.licensures-box ul,
+.privacy-practices ul {
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
+    width: 100%;
+}
+
+.benefits-gp ul li,
+.gp-health-consultant ul li,
+.labs-different ul li,
+.licensures-box ul li,
+.privacy-practices ul li,
+.test-description-tabs .tab-content ul ul li {
+    font-size: 16px;
+    color: #404d5f;
+    line-height: 26px;
+    padding-left: 30px;
+    position: relative;
+}
+
+.benefits-gp ul li::after,
+.gp-health-consultant ul li::after,
+.labs-different ul li::after,
+.licensures-box ul li::after,
+.privacy-practices ul li::after,
+.test-description-tabs .tab-content ul ul li::after {
+    background-position: -353px -296px;
+    content: "";
+    height: 10px;
+    left: 0;
+    position: absolute;
+    top: 10px;
+    width: 10px;
+}
+
+.support-services {
+    background-color: #fff;
+    padding: 80px 0 90px;
+}
+
+.support-services-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.support-services h4,
+.gp-health-consultant h4 {
+    margin-bottom: 42px;
+}
+
+.support-services-box {
+    min-height: 202px;
+    padding: 0 45px;
+    position: relative;
+}
+
+.support-services .col-sm-6:nth-of-type(1) .support-services-box:after,
+.gp-health-consultant .col-sm-6:nth-of-type(1) .gp-health-consultant-box:after {
+    content: "";
+    width: 3px;
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    background-color: #85b044;
+    top: 0;
+}
+
+.support-services .col-sm-6:nth-of-type(2) .support-services-box:after,
+.gp-health-consultant .col-sm-6:nth-of-type(2) .gp-health-consultant-box:after {
+    content: "";
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    left: -15px;
+    background-color: #e9e9e9;
+    top: 0;
+}
+
+.support-services ul,
+.education-center ul,
+.directions-gainesville ul {
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
+    width: 100%;
+}
+
+.support-services ul li,
+.support-services p,
+.education-center ul li,
+.education-center p,
+.directions-gainesville ul li {
+    font-size: 16px;
+    color: #404d5f;
+    line-height: 26px;
+    padding-left: 24px;
+    position: relative;
+}
+
+.support-services ul li:after,
+.education-center ul li:after,
+.directions-gainesville ul li:after {
+    content: "-";
+    font-size: 16px;
+    color: #404d5f;
+    left: 0;
+    position: absolute;
+    top: -1px;
+}
+
+.support-services p {
+    padding-left: 0;
+}
+
+
+/*****  Health Consulting  *****/
+
+.gp-health-consultant {
+    padding: 0 0 104px;
+}
+
+.gp-health-consultant-box {
+    min-height: 295px;
+    padding: 0 42px;
+    position: relative;
+}
+
+.gp-health-consultant-box .button-green {
+    margin-top: 65px;
+}
+
+.types-of-telemedicine {
+    background-color: #e5f0fb;
+    position: relative;
+}
+
+.types-of-telemedicine-inner {}
+
+.types-of-telemedicine h4 {
+    margin: 0 0 46px;
+}
+
+.types-of-telemedicine .left-side h4 {
+    color: #fff;
+}
+
+.types-of-telemedicine p {
+    font-size: 16px;
+    line-height: 26px;
+    color: #404d5f;
+    margin-bottom: 30px;
+}
+
+.types-of-telemedicine .left-side p {
+    color: #fff;
+}
+
+.types-of-telemedicine .text1 {
+    margin-top: 20px;
+}
+
+.types-of-telemedicine .left-side .text1 {
+    max-width: 440px;
+}
+
+.types-of-telemedicine .right-side p strong {
+    font-weight: 700;
+    font-style: italic;
+}
+
+.types-of-telemedicine-box {
+    padding: 80px 0;
+}
+
+.types-of-telemedicine .left-side {
+    background: url("../images/types-of-telemedicine-bg.png") no-repeat;
+    background-color: #54667a;
+    background-position: right bottom;
+    position: relative;
+    min-height: 618px;
+    padding-right: 0;
+}
+
+.types-of-telemedicine .left-side:before {
+    background-color: #54667a;
+    content: "";
+    position: absolute;
+    right: 100%;
+    top: 0;
+    width: 5000px;
+    height: 100%;
+}
+
+.types-of-telemedicine .left-side .types-of-telemedicine-box-inner {
+    max-width: 80%;
+}
+
+.types-of-telemedicine .right-side {
+    padding-left: 28px;
+}
+
+.cb-medical-records {
+    padding: 70px 0 75px;
+}
+
+.cb-medical-records-inner {}
+
+.cb-medical-records-box {}
+
+.cb-medical-records h4 {
+    margin-bottom: 84px;
+}
+
+.cb-medical-records p {
+    font-size: 16px;
+    color: #404d5f;
+    line-height: 26px;
+}
+
+.cb-medical-records-box figure {
+    margin-bottom: -90px;
+}
+
+
+/*****  Education Center  *****/
+
+.education-center {
+    background: url("../images/education-center-bg.jpg") no-repeat;
+    background-position: right bottom;
+    padding: 60px 0 72px;
+}
+
+.education-center-inner {
+    max-width: 1200px;
+}
+
+.education-center p {
+    margin-bottom: 25px;
+    padding-left: 0;
+}
+
+.education-center ul {
+    margin-top: 20px;
+}
+
+.patient-stories {
+    background: url("../images/patient-stories-bg.jpg") no-repeat #e2e2e0;
+    background-position: left bottom;
+    padding: 95px 0 72px;
+}
+
+.patient-stories-inner {
+    float: right;
+    max-width: 950px;
+    width: 100%;
+}
+
+.patient-stories h4 {
+    margin-bottom: 38px;
+}
+
+.patient-stories-slider-main {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 35px 50px 0;
+    position: relative;
+}
+
+.patient-stories-slider-main:after {
+    content: "";
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.9);
+    width: 2000px;
+    height: 100%;
+    left: 100%;
+    top: 0;
+}
+
+.owl-carousel {
+    display: none;
+    position: relative;
+    width: 100%;
+    -ms-touch-action: pan-y;
+}
+
+.owl-carousel .owl-wrapper {
+    display: none;
+    position: relative;
+    -webkit-transform: translate3d(0px, 0px, 0px);
+}
+
+.owl-carousel .owl-wrapper-outer {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.owl-carousel .owl-wrapper-outer.autoHeight {
+    -webkit-transition: height 500ms ease-in-out;
+    -moz-transition: height 500ms ease-in-out;
+    -ms-transition: height 500ms ease-in-out;
+    -o-transition: height 500ms ease-in-out;
+    transition: height 500ms ease-in-out;
+}
+
+.owl-carousel .owl-item {
+    float: left;
+    padding: 0 5px;
+}
+
+.owl-controls .owl-page,
+.owl-controls .owl-buttons div {
+    cursor: pointer;
+}
+
+.owl-controls {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.owl-carousel .owl-wrapper,
+.owl-carousel .owl-item {
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+}
+
+.owl-pagination {
+    bottom: 44px;
+    font-size: 0;
+    padding: 0 5px;
+    position: absolute;
+}
+
+.owl-pagination .owl-page {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 10px 0 0;
+}
+
+.owl-pagination .owl-page span {
+    background-color: #dfdfdf;
+    border-radius: 100px;
+    display: block;
+    height: 9px;
+    width: 9px;
+}
+
+.owl-pagination .owl-page.active span,
+.owl-pagination .owl-page:hover span {
+    background-color: #c0c0c0;
+}
+
+.patient-stories-slide {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    padding-bottom: 94px;
+}
+
+.patient-stories-slide h4 {
+    color: #000000;
+    font-style: italic;
+    font-weight: 300;
+    margin-bottom: 10px;
+    text-transform: none;
+}
+
+.patient-stories-slide h4:before {
+    content: none;
+}
+
+.patient-stories-slide p {
+    font-size: 14px;
+    font-weight: 300;
+    font-style: italic;
+    color: #000;
+    line-height: 28px;
+    letter-spacing: 0.0050em;
+}
+
+.patient-stories-slide p strong {
+    font-size: 24px;
+    font-weight: 300;
+}
+
+.read-more {
+    font-size: 16px;
+    font-weight: 300;
+    font-style: italic;
+    color: #000;
+    line-height: 28px;
+    letter-spacing: 0.0050em;
+}
+
+.read-more:hover,
+.read-more:focus {
+    color: #85b044;
+}
+
+.patient-stories-slide .name {
+    font-family: 'Roboto', sans-serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: #000;
+    line-height: 28px;
+    letter-spacing: 0.0050em;
+    font-style: italic;
+    position: absolute;
+    right: 0;
+    bottom: 44px;
+}
+
+.medical-news,
+.our-Partners-3boxs {
+    text-align: center;
+    padding: 72px 0 68px;
+}
+
+.heading {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.medical-news h4 {
+    margin-bottom: 60px;
+}
+
+.medical-news-box,
+.our-Partners-3box {
+    padding: 0 30px;
+}
+
+.medical-news-box h5,
+.our-Partners-3box h5 {
+    color: #4f4f4f;
+    font-weight: 900;
+    letter-spacing: 0.005em;
+    margin: 20px 0 15px;
+    text-transform: uppercase;
+}
+
+.medical-news-box h5 a,
+.our-Partners-3box h5 a {
+    color: #4f4f4f;
+}
+
+.medical-news-box h5 a:hover,
+.medical-news-box h5 a:focus,
+.our-Partners-3box h5 a:hover,
+.our-Partners-3box h5 a:focus {
+    color: #85b044;
+}
+
+.medical-news-box .meta,
+.our-Partners-3box .meta {
+    color: #979797;
+    font-size: 12px;
+    letter-spacing: 0.005em;
+    line-height: 34px;
+    margin-bottom: 3px;
+}
+
+.medical-news-box .meta span,
+.our-Partners-3box .meta span {
+    margin: 0 10px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.medical-news-box p,
+.our-Partners-3box p {
+    color: #666666;
+    font-size: 13px;
+    letter-spacing: 0.005em;
+    line-height: 22px;
+    margin-bottom: 25px;
+}
+
+.medical-news-box p a,
+.our-Partners-3box p a {
+    white-space: nowrap;
+}
+
+.medical-news-box p strong,
+.our-Partners-3box p strong {
+    font-weight: 700;
+    color: #333333;
+}
+
+.line-icon {
+    background-position: -418px -295px;
+    display: inline-block;
+    height: 8px;
+    vertical-align: top;
+    width: 150px;
+}
+
+
+/*****  About Us Page  *****/
+
+.labs-different {
+    padding: 88px 0 98px;
+}
+
+.labs-different h4 {
+    margin-bottom: 35px;
+}
+
+.labs-different-inner {}
+
+.labs-different-box {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.labs-different-box figure {
+    background-color: #85b044;
+    float: left;
+    height: 60px;
+    text-align: center;
+    width: 56px;
+}
+
+.labs-different-box figure i {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.guided-diagnostics-icon {
+    background-position: 0 -415px;
+    height: 39px;
+    width: 40px;
+}
+
+.comprehensive-clinically-icon {
+    background-position: -75px -415px;
+    height: 45px;
+    width: 33px;
+}
+
+.genetic-icon {
+    background-position: -150px -415px;
+    height: 47px;
+    width: 48px;
+}
+
+.non-invasive-laboratory-icon {
+    background-position: -225px -415px;
+    height: 39px;
+    width: 41px;
+}
+
+.enhanced-reports-icon {
+    background-position: -300px -415px;
+    height: 35px;
+    width: 25px;
+}
+
+.dna-risk-icon {
+    background-position: -375px -415px;
+    height: 37px;
+    width: 20px;
+}
+
+.personal-health-plans-icon {
+    background-position: -450px -415px;
+    height: 38px;
+    width: 31px;
+}
+
+.dietary-counseling-icon {
+    background-position: -525px -415px;
+    height: 41px;
+    width: 26px;
+}
+
+.medically-relevant-icon {
+    background-position: -600px -415px;
+    height: 37px;
+    width: 28px;
+}
+
+.labs-different-box .text {
+    margin: 12px 0 0 94px;
+}
+
+.labs-different-box h6 {
+    font-size: 16px;
+    color: #404d5f;
+    line-height: 26px;
+    text-transform: uppercase;
+}
+
+.labs-different ul {
+    margin: 15px 0 58px;
+}
+
+
+/*****  Contact Page  *****/
+
+.contact-page {
+    background: url("../images/contact-bg.jpg") no-repeat fixed;
+    background-size: cover;
+    background-position: center;
+    padding: 75px 0 95px;
+}
+
+.contact-page-inner {}
+
+.contact-heading {
+    margin-bottom: 66px;
+}
+
+.heading-line {
+    background-color: #fff;
+    height: 4px;
+    margin-right: 5px;
+    margin-top: 25px;
+    width: 84px;
+}
+
+.contact-heading h4 {
+    color: #ffffff;
+    padding-bottom: 0;
+}
+
+.contact-heading h4::before {
+    content: none;
+}
+
+.contact-heading p {
+    font-size: 16px;
+    line-height: 25px;
+    letter-spacing: 0.050em;
+    color: #fff;
+}
+
+.contact-infofor {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #464e57;
+    margin-bottom: 60px;
+}
+
+.contact-infofor .title {
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 28px;
+    margin-bottom: 30px;
+    margin-top: -4px;
+}
+
+.contact-infofor p {
+    color: #ffffff;
+    font-size: 15px;
+    letter-spacing: 0.005em;
+    line-height: 24px;
+    margin-bottom: 40px;
+}
+
+.contact-infofor p strong {
+    color: #ffffff;
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.contact-infofor p a {
+    color: #fff;
+}
+
+.contact-infofor p a:hover,
+.contact-infofor p a:focus {
+    color: #85b044;
+}
+
+.contact-infofor .map iframe {
+    width: 100%;
+    height: 415px;
+    vertical-align: top;
+}
+
+.contact-form {
+    border-bottom: 1px solid #464e57;
+    margin-bottom: 58px;
+    padding-bottom: 60px;
+}
+
+.contact-form p {
+    color: #ffffff;
+    font-size: 15px;
+    line-height: 24px;
+    margin: 0;
+}
+
+.contact-form p a {
+    color: #fff;
+}
+
+.contact-form p a:hover,
+.contact-form p a:focus {
+    color: #85b044;
+}
+
+.contact-form p strong {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.contact-form .form-control {
+    border: none;
+    border-bottom: 1px solid #fff;
+    border-radius: 0;
+    padding: 10px 18px;
+    background-color: transparent;
+    box-shadow: none;
+    font-size: 18px;
+    font-weight: 600;
+    height: 82px;
+    color: #fff;
+}
+
+.contact-form .form-control::-moz-placeholder {
+    color: #fff;
+    opacity: 1;
+}
+
+.contact-form .form-control:-ms-input-placeholder {
+    color: #fff;
+}
+
+.contact-form .form-control::-webkit-input-placeholder {
+    color: #fff;
+}
+
+.action-button {
+    margin-top: 58px;
+    overflow: hidden;
+}
+
+.action-button .button-green {
+    float: left;
+    margin: 0;
+}
+
+.action-button .button-green:hover,
+.action-button .button-green:focus {
+    color: #85b044;
+    background-color: #fff;
+}
+
+.action-button .schedule-call {
+    float: left;
+    border-left: 1px solid #95999f;
+    padding-left: 30px;
+    margin-left: 30px;
+}
+
+.directions-gainesville {}
+
+.directions-gainesville h5 {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+}
+
+.directions-gainesville p {
+    color: #ffffff;
+    font-size: 16px;
+    line-height: 26px;
+    text-transform: uppercase;
+}
+
+.directions-gainesville-box {
+    max-width: 575px;
+}
+
+.directions-gainesville ul {
+    margin-top: 42px;
+}
+
+.directions-gainesville ul li {
+    color: #fff;
+}
+
+.directions-gainesville ul li:after {
+    color: #fff;
+}
+
+
+/*****  Our Partners Page  *****/
+
+.our-Partners-3boxs {
+    padding: 94px 0 58px;
+}
+
+.our-Partners-3box h5 {
+    min-height: 56px;
+}
+
+.laboratory-partners,
+.licensures {
+    background: url("../images/laboratory-partners-bg.jpg") no-repeat;
+    background-position: right top;
+    background-color: #fdfdfd;
+    padding: 72px 0 78px;
+}
+
+.laboratory-partners h4,
+.licensures h4 {
+    margin-bottom: 35px;
+}
+
+.laboratory-partners-box figure {
+    padding: 8px 24px;
+    border-left: 3px solid #85b044;
+}
+
+.laboratory-partners-box .text {
+    border-bottom: 1px solid #efefef;
+    margin-bottom: 15px;
+    padding-top: 10px;
+}
+
+.laboratory-partners-box p,
+.laboratory-partners-box .title {
+    font-size: 16px;
+    line-height: 26px;
+    color: #404d5f;
+    margin-bottom: 26px;
+}
+
+.laboratory-partners-box .title {
+    text-transform: uppercase;
+}
+
+.our-awards {
+    background-color: #fff;
+    padding: 70px 0 0;
+}
+
+.our-awards-inner {}
+
+.our-awards-box {}
+
+.our-awards-box h4 {
+    margin: 5px 0 30px;
+}
+
+.our-awards-box .text {
+    margin-bottom: 50px;
+}
+
+.our-awards-box .text p {
+    font-size: 16px;
+    line-height: 26px;
+    color: #404d5f;
+    margin-bottom: 26px;
+}
+
+
+/*****  Our People  *****/
+
+.our-success,
+.whats-new {
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #dcdcdc;
+    padding: 90px 0 116px;
+}
+
+.our-success-inner,
+.whats-new-inner {}
+
+.our-success-box {
+    border-bottom: 1px solid #d9d9d9;
+    margin-bottom: 68px;
+    padding-bottom: 48px;
+}
+
+.our-success-box h4 {
+    margin-bottom: 32px;
+}
+
+.our-success-box ul {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    margin: 0;
+    list-style: none;
+}
+
+.our-success-box ul li {
+    position: relative;
+    padding: 0 0 0 25px;
+    font-size: 16px;
+    line-height: 26px;
+    color: #404d5f;
+    margin-bottom: 26px;
+}
+
+.our-success-box ul li::after {
+    background-position: -608px -295px;
+    content: "";
+    height: 9px;
+    left: 0;
+    position: absolute;
+    top: 10px;
+    width: 9px;
+}
+
+.our-success-tabs,
+.whats-new-tabs {}
+
+.our-success-tabs .nav-tabs,
+.whats-new-tabs .nav-tabs {
+    border: none;
+    margin-bottom: 56px;
+    border-bottom: 1px solid #bcbcbc;
+}
+
+.our-success-tabs .nav-tabs > li,
+.whats-new-tabs .nav-tabs > li {
+    display: inline-block;
+    float: none;
+    margin: 0 65px 0 0;
+    vertical-align: top;
+}
+
+.our-success-tabs .nav-tabs > li:last-child,
+.whats-new-tabs .nav-tabs > li:last-child {
+    margin: 0;
+}
+
+.our-success-tabs .nav-tabs > li > a,
+.whats-new-tabs .nav-tabs > li > a {
+    border: none;
+    border-radius: 0;
+    color: #404d5f;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    padding: 0 0 14px 0;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.our-success-tabs .nav-tabs > li > a:hover,
+.our-success-tabs .nav-tabs > li > a:focus,
+.our-success-tabs .nav-tabs > li.active > a,
+.our-success-tabs .nav-tabs > li.active > a:focus,
+.our-success-tabs .nav-tabs > li.active > a:hover,
+.whats-new-tabs .nav-tabs > li > a:hover,
+.whats-new-tabs .nav-tabs > li > a:focus,
+.whats-new-tabs .nav-tabs > li.active > a,
+.whats-new-tabs .nav-tabs > li.active > a:focus,
+.whats-new-tabs .nav-tabs > li.active > a:hover {
+    background-color: transparent;
+    color: #404d5f;
+    border: none;
+}
+
+.our-success-tabs .nav-tabs > li > a:hover::after,
+.our-success-tabs .nav-tabs > li > a:focus::after,
+.our-success-tabs .nav-tabs > li.active > a::after,
+.our-success-tabs .nav-tabs > li.active > a:focus::after,
+.our-success-tabs .nav-tabs > li.active > a:hover::after,
+.whats-new-tabs .nav-tabs > li > a:hover::after,
+.whats-new-tabs .nav-tabs > li > a:focus::after,
+.whats-new-tabs .nav-tabs > li.active > a::after,
+.whats-new-tabs .nav-tabs > li.active > a:focus::after,
+.whats-new-tabs .nav-tabs > li.active > a:hover::after {
+    content: "";
+    background-color: #85b044;
+    width: 100%;
+    height: 5px;
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+}
+
+.our-success-tabs .tab-content > .tab-pane {
+    background-color: transparent;
+}
+
+.our-success-tabs .tab-content > .tab-pane .text {
+    max-width: 765px;
+    padding-top: 16px;
+}
+
+.our-success-tabs .tab-content > .tab-pane .text p {
+    color: #404d5f;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 34px;
+    margin-bottom: 34px;
+}
+
+
+/*****  Quality Compliance  *****/
+
+.compliance-statements,
+.privacy-practices {
+    border-top: 1px solid #dfdfdf;
+    padding: 64px 0 48px;
+}
+
+.compliance-statements h4,
+.quality-assurance h4,
+.privacy-practices h4 {
+    margin-bottom: 22px;
+}
+
+.compliance-statements h6,
+.privacy-practices h6,
+.compliance-statements p,
+.privacy-practices p,
+.quality-assurance p,
+.licensures-box p {
+    color: #404d5f;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px;
+    margin-bottom: 26px;
+}
+
+.compliance-statements h6,
+.privacy-practices h6 {
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 10px;
+    margin: 48px 0 16px;
+}
+
+.compliance-statements h6:nth-of-type(1),
+.privacy-practices h6:nth-of-type(1) {
+    margin-top: 0;
+}
+
+.compliance-statements h6:before,
+.privacy-practices h6:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 1px;
+    background-color: #90b756;
+}
+
+.quality-assurance {
+    padding: 64px 0 54px;
+}
+
+.licensures-box p {
+    text-transform: uppercase;
+}
+
+.privacy-practices ul li {
+    margin-bottom: 20px;
+    padding-left: 56px;
+}
+
+
+/*****  Whats New Page  *****/
+
+.whats-new {
+    padding: 66px 0 38px;
+}
+
+.whats-new-inner {}
+
+.whats-new h4 {
+    margin-bottom: 54px;
+}
+
+.whats-new-tabs .nav-tabs > li {
+    margin-right: 100px;
+}
+
+.whats-new-box {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.whats-new-box figure {
+    position: relative;
+    border-radius: 1px;
+    overflow: hidden;
+}
+
+.whats-new-box figure img {
+    width: 100%;
+}
+
+.whats-new-box .overlay {
+    background-color: rgba(133, 176, 68, 0.9);
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.whats-new-box .overlay i {
+    display: inline-block;
+    height: 44px;
+    margin: 0 0 10px;
+    position: relative;
+    width: 44px;
+}
+
+.whats-new-box .overlay i::after {
+    content: "+";
+    background-color: #fff;
+    border-radius: 100px;
+    color: #7ba246;
+    font-size: 50px;
+    font-weight: 600;
+    height: 100%;
+    left: 0;
+    line-height: 42px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    text-indent: -1px;
+}
+
+.see-now {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.010em;
+    line-height: 24px;
+    text-transform: uppercase;
+}
+
+.whats-new-box:hover .overlay {
+    top: 0;
+}
+
+.whats-new-box h5 {
+    color: #4f4f4f;
+    font-size: 18px;
+    letter-spacing: 0.005em;
+    margin: 22px 0 15px;
+    text-transform: uppercase;
+}
+
+.whats-new-box a {
+    color: #4f4f4f;
+}
+
+.whats-new-box h5 a:hover,
+.whats-new-box h5 a:focus {
+    color: #85b044;
+}
+
+
+/*****  Search Tests  *****/
+
+.search-tests {}
+
+.featured-tests-list ul li .price {
+    color: #404d5f;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 16px;
+}
+
+.featured-tests-list ul li .price .old-price,
+.featured-tests-list ul li .price .new-price {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 2px;
+    position: relative;
+}
+
+.featured-tests-list ul li .price .old-price:after {
+    background-color: #404d5f;
+    content: "";
+    height: 1px;
+    left: 0;
+    position: absolute;
+    top: 13px;
+    width: 100%;
+}
+
+.featured-tests-list ul li .price .new-price {
+    color: #85b044;
+    font-size: 22px;
+    line-height: 24px;
+}
+
+.add-cart-btn {
+    background-color: #b9d293;
+    color: #ffffff;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 20px 0;
+    min-height: 45px;
+    min-width: 165px;
+    padding: 12px 15px;
+    text-transform: uppercase;
+    vertical-align: top;
+    border-radius: 1px;
+    text-align: center;
+}
+
+.add-cart-btn:hover,
+.add-cart-btn:focus {
+    background-color: #85b044;
+    color: #fff;
+}
+
+.featured-tests .search-category {
+    margin: 52px auto 30px;
+}
+
+.featured-tests .search-category-inner {
+    background-color: #e5f0fb;
+}
+
+.featured-tests .search-category .dropdown .dropdown-toggle {
+    color: #35404f;
+}
+
+.featured-tests .search-category .dropdown button i {
+    color: #b4b6b9;
+}
+
+.featured-tests .search-category .dropdown ul {
+    border-color: #e5f0fb;
+    background-color: #e5f0fb;
+    box-shadow: 0 2px 2px #a9a9a9;
+}
+
+
+/*****  Test Description  *****/
+
+.test-description {
+    margin: 95px 0;
+}
+
+.test-description-inner {}
+
+.test-description figure {
+    position: relative;
+}
+
+.test-description .figure-inner {
+    position: relative;
+    padding: 0 38px;
+}
+
+.test-description figure:before {
+    border: 12px solid #404d5f;
+    content: "";
+    height: 84%;
+    left: 0;
+    position: absolute;
+    top: 8%;
+    width: 100%;
+}
+
+.test-description figure .overlay {
+    background-color: #2986e2;
+    bottom: 80px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    min-height: 38px;
+    padding: 9px 30px;
+    position: absolute;
+    right: 0;
+    text-transform: uppercase;
+}
+
+.test-description .text {
+    padding: 20px 0 0 54px;
+    text-align: left;
+}
+
+.test-description h4 {
+    margin-bottom: 30px;
+    padding-right: 90px;
+}
+
+.test-description-social {
+    float: right;
+    margin-top: -67px;
+    position: relative;
+    z-index: 1;
+}
+
+.test-description-social a {
+    color: #cacaca;
+    display: inline-block;
+    font-size: 16px;
+    margin-left: 5px;
+    vertical-align: top;
+}
+
+.test-description-social a:hover,
+.test-description-social a:focus {
+    color: #85b044;
+    text-decoration: none;
+}
+
+.test-description .price {
+    color: #404d5f;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.test-description .price .old-price,
+.test-description .price .new-price {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 2px;
+    position: relative;
+}
+
+.test-description .price .new-price {
+    color: #85b044;
+    font-size: 29px;
+    line-height: 31px;
+    margin-bottom: 26px;
+}
+
+.test-description .price .old-price:after {
+    background-color: #404d5f;
+    content: "";
+    height: 1px;
+    left: 0;
+    position: absolute;
+    top: 17px;
+    width: 100%;
+}
+
+.test-description .text p {
+    color: #404d5f;
+    font-size: 16px;
+    line-height: 26px;
+    margin-bottom: 26px;
+}
+
+.test-description .text ul {
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
+    width: 100%;
+}
+
+.test-description .text ul li {
+    font-size: 18px;
+    color: #404d5f;
+    line-height: 40px;
+    padding-left: 35px;
+    position: relative;
+}
+
+.test-description .text ul li:after {
+    background-position: -296px -350px;
+    content: "";
+    height: 19px;
+    left: 0;
+    position: absolute;
+    top: 12px;
+    width: 16px;
+}
+
+.test-description .button-action {
+    margin-top: 0;
+}
+
+.test-description .button-action .quantity {
+    color: #404d5f;
+    display: inline-block;
+    font-size: 16px;
+    margin-right: 40px;
+    margin-top: 27px;
+    vertical-align: top;
+}
+
+.test-description .button-action .quantity input[type="number"] {
+    background-color: #f4f4f4;
+    border: medium none;
+    height: 32px;
+    margin-left: 32px;
+    padding: 1px 1px 1px 14px;
+    width: 98px;
+}
+
+.test-description .button-action .add-cart-btn {
+    background-color: #85b044;
+}
+
+.test-description .button-action .add-cart-btn:hover,
+.test-description .button-action .add-cart-btn:focus {
+    background-color: #628a26;
+}
+
+.test-description-tabs {}
+
+.test-description-tabs-inner {
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.test-description-tabs ul.panel-tabs {
+    background-color: #ffffff;
+    border-top: 1px solid #dddddd;
+    float: left;
+    margin-right: -1px;
+    width: 215px;
+    z-index: 1;
+}
+
+.test-description-tabs ul.panel-tabs li {
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+.test-description-tabs ul.panel-tabs li.active {
+    border-right-color: #fff;
+}
+
+.test-description-tabs ul.panel-tabs li a {
+    color: #979ba1;
+    letter-spacing: 0.025em;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.test-description-tabs ul.panel-tabs li.active a,
+.test-description-tabs ul.panel-tabs li.active a:hover,
+.test-description-tabs ul.panel-tabs li.active a:focus,
+.test-description-tabs ul.panel-tabs li a:hover,
+.test-description-tabs ul.panel-tabs li a:focus {
+    background-color: transparent;
+    color: #404d5f;
+}
+
+.test-description-tabs .tab-content {
+    border-left: 1px solid #dddddd;
+    overflow: hidden;
+    padding-left: 54px;
+}
+
+.test-description-tabs .tab-content h6 {
+    color: #85b044;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.test-description-tabs .tab-content ul {
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 0 26px 0;
+    width: 100%;
+}
+
+.test-description-tabs .tab-content ul li,
+.test-description-tabs .tab-content ul li p {
+    font-size: 16px;
+    color: #404d5f;
+    line-height: 26px;
+    margin-bottom: 26px;
+    padding-left: 30px;
+    position: relative;
+    text-transform: uppercase;
+}
+
+.test-description-tabs .tab-content ul li:after {
+    content: "";
+    left: 3px;
+    position: absolute;
+    top: 14px;
+    width: 8px;
+    height: 1px;
+    background-color: #85b044;
+}
+
+.test-description-tabs .tab-content ul li p {
+    padding: 0;
+    margin: 26px 0;
+    text-transform: none;
+}
+
+.test-description-tabs .tab-content ul ul {
+    margin-bottom: 0;
+    margin-top: 26px;
+}
+
+.test-description-tabs .tab-content ul ul li {
+    text-transform: none;
+    padding-left: 36px;
+    margin-bottom: 0;
+}
+
+.see-video {
+    margin-top: 95px;
+    text-align: center;
+}
+
+.see-video-inner {
+    border-top: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.video-box-main {
+    margin: 0 auto;
+    max-width: 700px;
+    padding-bottom: 32px;
+}
+
+.video-heading {
+    color: #404d5f;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 26px;
+    margin: 46px 0 38px;
+    text-transform: uppercase;
+}
+
+.video-subheading {
+    color: #222222;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 0.005em;
+    line-height: 34px;
+    margin: 42px 0 18px;
+    text-transform: uppercase;
+}
+
+.video-box-main p {
+    color: #666;
+    font-size: 16px;
+    line-height: 26px;
+    margin-bottom: 26px;
+}
+
+
+/*****  process  *****/
+
+.process {
+    border-top: 1px solid #cccccc;
+    padding: 54px 0 0;
+}
+
+.process:first-child {
+    border-bottom: none;
+}
+
+.process-inner {
+    max-width: 1050px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.process h1 {
+    margin-bottom: 26px;
+}
+
+.process p {
+    color: #404d5f;
+    font-size: 16px;
+    line-height: 26px;
+    margin-bottom: 26px;
+}
+
+.process-box {
+    background: url("../images/process-bg.png") no-repeat;
+    position: relative;
+    height: 730px;
+    text-align: left;
+    margin-top: 88px;
+}
+
+.process-box .step {
+    position: absolute;
+    width: 460px;
+}
+
+.process-box .step.one {
+    left: 108px;
+    top: 18px;
+    width: 425px;
+}
+
+.process-box .step.two {
+    left: 568px;
+    top: 230px;
+}
+
+.process-box .step.three {
+    left: 32px;
+    top: 450px;
+    width: 450px;
+}
+
+.process-box .step.order-via {
+    left: 855px;
+    top: 15px;
+    width: auto;
+}
+
+.process-box .step-heading {
+    margin-bottom: 20px;
+    overflow: hidden;
+    padding-bottom: 12px;
+    position: relative;
+}
+
+.process-box .step-heading::after {
+    position: absolute;
+    content: "";
+    width: 294px;
+    height: 1px;
+    background-color: #42c1c7;
+    left: 0;
+    bottom: 0;
+}
+
+.process-box .step-heading .count {
+    border-right: 1px solid #42c1c7;
+    color: #42c1c7;
+    float: left;
+    font-size: 52px;
+    line-height: 42px;
+    margin-right: 12px;
+    width: 64px;
+}
+
+.process-box .step-heading .text {
+    olor: #404d5f;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 26px;
+    margin-left: 64px;
+    margin-top: -6px;
+    text-transform: uppercase;
+}
+
+.process-box ul {
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 0 26px 0;
+    width: 100%;
+}
+
+.process-box ul li {
+    font-size: 16px;
+    color: #404d5f;
+    line-height: 26px;
+    padding-left: 44px;
+    position: relative;
+}
+
+.process-box ul li:after {
+    content: "";
+    left: 0;
+    position: absolute;
+    top: 14px;
+    width: 5px;
+    height: 1px;
+    background-color: #404d5f;
+}
+
+.process-box ul li small {
+    font-size: 14px;
+}
+
+.process-box .via-online {
+    margin-bottom: 77px;
+}
+
+
+/**********  Responsive  **********/
+
+@media (min-width: 1500px) {
+    .container {
+        width: 1470px;
+    }
+}
+
+@media (max-width: 1499px) {
+    h1 {
+        font-size: 42px;
+    }
+    h2 {}
+    h3 {
+        font-size: 30px;
+    }
+    h4 {
+        font-size: 22px;
+    }
+    h4:before {}
+    h5 {
+        font-size: 18px;
+    }
+    h6 {}
+    /*****  Main CSS  *****/
+    /*****  Header  *****/
+    .header.header {}
+    .header-top {}
+    .header-top-inner {}
+    .top-social > ul {}
+    .top-social > ul > li {}
+    .top-social > ul > li > a {}
+    .top-social > ul > li > a:hover,
+    .top-social > ul > li > a:focus {}
+    .top-info > ul {}
+    .top-info > ul > li {}
+    .top-info > ul > li:last-child {}
+    .top-info > ul > li > a {}
+    .top-info > ul > li > a:hover,
+    .top-info > ul > li > a:focus {}
+    .mail-icon {}
+    .top-info .mail-icon {}
+    .top-info .dropdown button {}
+    .top-info .dropdown button i {}
+    .top-info .dropdown.open button {}
+    .top-info .dropdown-menu {}
+    .top-info .dropdown-menu > li {}
+    .top-info .dropdown-menu > li:first-child {}
+    .top-info .dropdown-menu > li > a {}
+    .top-info .dropdown-menu > li > a:focus,
+    .top-info .dropdown-menu > li > a:hover {}
+    .header-bottom {}
+    .header-bottom-inner {}
+    .contact-info > ul {}
+    .contact-info > ul > li {}
+    .contact-info > ul > li:last-child {}
+    .contact-info > ul > li > a {}
+    .contact-info > ul > li > a:hover,
+    .contact-info > ul > li > a:focus {}
+    .contact-info > ul > li.phone a {}
+    .contact-info > ul > li.phone a:hover,
+    .contact-info > ul > li.phone a:focus {}
+    .phone-icon {}
+    .mobile-icon {}
+    .contact-info i {}
+    .contact-info > ul > li.top-cart a {}
+    .basket-icon {}
+    .contact-info > ul > li.top-cart a span {}
+    .contact-info > ul > li.top-cart a span:before {}
+    /*****  Top Menu  *****/
+    .sticky-wrapper {}
+    nav.navbar-default {}
+    .sticky-wrapper.is-sticky nav.navbar-default {}
+    nav.navbar-default .logo {}
+    nav.navbar-default .navbar-collapse {}
+    nav.navbar-default .navbar-nav > li {}
+    nav.navbar-default .navbar-nav > li > a {}
+    nav.navbar-default .navbar-nav > li > a:focus,
+    nav.navbar-default .navbar-nav > li > a:hover,
+    nav.navbar-default .navbar-nav > .active > a,
+    nav.navbar-default .navbar-nav > .active > a:focus,
+    nav.navbar-default .navbar-nav > .active > a:hover {}
+    /*****  Banner  *****/
+    .banner {}
+    .banner figure img {}
+    .banner-caption {}
+    .banner-caption .container,
+    .banner .figcaption {}
+    .banner .text {}
+    .banner .title {
+        font-size: 32px;
+        margin-bottom: 0;
+    }
+    .banner p {
+        font-size: 15px;
+    }
+    .button-transparent {}
+    .button-transparent:hover,
+    .button-transparent:focus {}
+    .banner .button-transparent {
+        margin-top: 5px
+    }
+    .search-category {
+        margin-top: 20px;
+    }
+    .search-category-inner {}
+    .search-category .dropdown,
+    .search-category .button-gray {}
+    .search-category .dropdown {}
+    .search-category .dropdown button {}
+    .search-category .dropdown button i {}
+    .search-category .dropdown ul {}
+    .search-category .dropdown ul > li {}
+    .search-category .dropdown ul > li > a {}
+    .search-category .dropdown ul > li > a:hover,
+    .search-category .dropdown ul > li > a:focus {}
+    .search-category .button-gray {}
+    .button-gray {}
+    .button-gray:hover,
+    .button-gray:focus {}
+    .search-category .note {
+        margin-top: 5px;
+    }
+    /*****  Test Categories  *****/
+    .test-categories {
+        padding: 50px 0 34px;
+    }
+    .test-categories .text,
+    .featured-tests .text,
+    .aboutus-area .text {}
+    .test-categories .text p,
+    .featured-tests .text p,
+    .aboutus-area .text p {}
+    .test-categories-list {
+        margin-top: 40px;
+    }
+    .test-categories-list ul {}
+    .test-categories-list ul li {
+        width: 224px;
+    }
+    .test-categories-list ul li:hover {}
+    .test-categories-list ul li figure {}
+    .test-categories-list .icons {}
+    .biobanking-icon {}
+    .genetic-testing-icon {}
+    .non-invasive-testing-icon {}
+    .immunology-icon {}
+    .infectious-disease-icon {}
+    .saliva-testing-icon {}
+    .health-wellness-icon {}
+    .oncology-icon {}
+    .miscellaneous-icon {}
+    .test-categories-list h5 a {}
+    .test-categories-list h5 a:hover,
+    .test-categories-list h5 a:focus {}
+    .test-categories-list p {}
+    /*****  Featured Tests  *****/
+    .featured-tests {
+        padding: 35px 0 60px;
+    }
+    .featured-tests-list {}
+    .featured-tests-list ul {}
+    .featured-tests-list ul li {
+        margin: 20px 14px;
+    }
+    .featured-tests-list ul li .featured-tests-list-box {}
+    .featured-tests-list ul li:hover .featured-tests-list-box {}
+    .featured-tests-list ul li .featured-tests-list-box a {}
+    .featured-tests-list ul li figure {}
+    .featured-tests-list figure span {}
+    .featured-tests-list ul li:hover figure span {}
+    .featured-tests-list .icons {}
+    .crp-icon {}
+    .hemoglobin-icon {}
+    .hiv-icon {}
+    .gonorrhea-chlamydia-icon {}
+    .blood-count-icon {}
+    .metabolic-profile-icon {}
+    .featured-tests-list .icons.crp-icon {}
+    .featured-tests-list .icons.hemoglobin-icon {}
+    .featured-tests-list .icons.hiv-icon {}
+    .featured-tests-list .icons.gonorrhea-chlamydia-icon {}
+    .featured-tests-list .icons.blood-count-icon {}
+    .featured-tests-list .icons.metabolic-profile-icon {}
+    .featured-tests-list ul li:hover .icons.crp-icon {}
+    .featured-tests-list ul li:hover .icons.hemoglobin-icon {}
+    .featured-tests-list ul li:hover .icons.hiv-icon {}
+    .featured-tests-list ul li:hover .icons.gonorrhea-chlamydia-icon {}
+    .featured-tests-list ul li:hover .icons.blood-count-icon {}
+    .featured-tests-list ul li:hover .icons.metabolic-profile-icon {}
+    .featured-tests-list p {}
+    .health-consulting {
+        margin-top: 64px;
+    }
+    .health-consulting figure {}
+    .health-consulting .figure-inner {}
+    .health-consulting figure:before {}
+    .health-consulting figure .overlay {}
+    .health-consulting .text {}
+    .health-consulting h4 {}
+    .health-consulting .text p {}
+    .button-green {}
+    .button-green:hover,
+    .button-green:focus {}
+    .health-consulting .button-green {}
+    /*****  About Us Area  *****/
+    .aboutus-area {
+        padding: 38px 0 78px;
+    }
+    .aboutus-area h1 {}
+    .aboutus-area .text p {}
+    .aboutus-tabs {}
+    .aboutus-tabs .nav-tabs {}
+    .aboutus-tabs .nav-tabs > li {}
+    .aboutus-tabs .nav-tabs > li > a {}
+    .aboutus-tabs .nav-tabs > li > a:hover,
+    .aboutus-tabs .nav-tabs > li > a:focus,
+    .aboutus-tabs .nav-tabs > li.active > a,
+    .aboutus-tabs .nav-tabs > li.active > a:focus,
+    .aboutus-tabs .nav-tabs > li.active > a:hover {}
+    .aboutus-tabs .tab-content > .tab-pane {}
+    .aboutus-tabs .tab-content > .tab-pane .text {
+        height: 416px;
+        margin: 15px 20px 15px 0;
+        padding: 0 15px;
+    }
+    .aboutus-tabs .tab-content > .tab-pane .text .title {}
+    .aboutus-tabs .tab-content > .tab-pane .text p {}
+    .aboutus-tabs .tab-content > .tab-pane .text .button-green {}
+    /*****  Subscribe Area  *****/
+    .subscribe-area {
+        padding: 20px 0 55px;
+    }
+    .subscribe-area h3 {}
+    .subscribe-form {}
+    .subscribe-form input[type="text"],
+    .subscribe-form input[type="email"] {}
+    .subscribe-form input[type="text"]:focus,
+    .subscribe-form input[type="email"]:focus {}
+    .subscribe-form .button-green {}
+    /*****  Footer  *****/
+    footer.footer {}
+    .widgets {}
+    .widgets h6 {}
+    .widgets p {}
+    .widgets p a {}
+    .footer-link,
+    .footer-link ul {}
+    .footer-link li a {}
+    .footer-link li a:hover,
+    .footer-link li a:focus,
+    .footer-link li.active a,
+    .widgets p a:hover,
+    .widgets p a:focus {}
+    .widgets address {}
+    .widgets address:before,
+    .widgets address:before {}
+    .social,
+    .social ul {}
+    .social li {}
+    .social li:last-child {}
+    .social li a {}
+    .social li a:hover,
+    .social li a:focus {}
+    .widgets .social,
+    .widgets .social ul {}
+    .footer-inner {}
+    .copyright {}
+    .copyright span {}
+    /*****  Inner Pages  *****/
+    .for-patients-banner,
+    .for-providers-banner,
+    .health-consulting-banner,
+    .education-center-banner {}
+    .for-patients-banner .title,
+    .for-providers-banner .title,
+    .health-consulting-banner .title,
+    .education-center-banner .title {}
+    .for-patients-banner .text,
+    .for-providers-banner .text,
+    .health-consulting-banner .text,
+    .education-center-banner .text {}
+    /*****  For Patients Page  *****/
+    .for-patients-points {}
+    .for-patients-points-box {
+        margin-bottom: 55px;
+        padding-bottom: 54px;
+    }
+    .for-patients-points-box:last-child {}
+    .for-patients-points h4 {}
+    .for-patients-points h4:before {}
+    .for-patients-points .text {}
+    .for-patients-points .text p {}
+    .for-patients-points ul {}
+    .for-patients-points ul li {}
+    .for-patients-points ul li:after {}
+    .for-patients-knowledge {
+        padding: 42px 0 24px;
+    }
+    .for-patients-knowledge-inner {
+        max-width: 750px;
+    }
+    .for-patients-knowledge h4 {}
+    .for-patients-knowledge p {}
+    .for-patients-knowledge p a {}
+    /*****  For Providers Page  *****/
+    .become-gp,
+    .knowmore,
+    .community-service-part,
+    .hipaa-compliance,
+    .qus-conc {
+        padding: 55px 0 60px;
+    }
+    .become-gp-inner,
+    .knowmore-inner,
+    .community-service-part-inner,
+    .hipaa-compliance-inner,
+    .qus-conc-inner {}
+    .become-gp h4,
+    .knowmore h4,
+    .community-service-part h4,
+    .hipaa-compliance h4,
+    .qus-conc h4 {}
+    .become-gp h4:before,
+    .knowmore h4:before,
+    .community-service-part h4:before,
+    .hipaa-compliance h4:before,
+    .qus-conc h4:before {}
+    .become-gp p,
+    .knowmore p,
+    .community-service-part p,
+    .hipaa-compliance p,
+    .qus-conc p {}
+    .become-gp p a,
+    .knowmore p a,
+    .community-service-part p a,
+    .hipaa-compliance p a,
+    .qus-conc p a {}
+    .become-gp p a:hover,
+    .become-gp p a:focus,
+    .knowmore p a:hover,
+    .knowmore p a:focus,
+    .community-service-part p a:hover,
+    .community-service-part p a:focus,
+    .hipaa-compliance p a:hover,
+    .hipaa-compliance p a:focus,
+    .qus-conc p a:hover,
+    .qus-conc p a:focus {}
+    .become-gp p strong,
+    .knowmore p strong {}
+    .button-transparent1 {}
+    .button-transparent1:hover,
+    .button-transparent1:focus {}
+    .become-gp .button-transparent1 {}
+    .benefits-gp {
+        padding: 68px 0 75px;
+    }
+    .benefits-gp-inner {}
+    .benefits-gp h4 {
+        margin-bottom: 35px;
+    }
+    .benefits-gp-box {
+        background-color: rgba(253, 253, 253, 0.8);
+        padding: 5px 20px 15px;
+    }
+    .benefits-gp .col-sm-6:first-child .benefits-gp-box:after {}
+    .benefits-gp ul,
+    .labs-different ul,
+    .licensures-box ul,
+    .privacy-practices ul {}
+    .benefits-gp ul li,
+    .labs-different ul li,
+    .licensures-box ul li,
+    .privacy-practices ul li,
+    .test-description-tabs .tab-content ul ul li {}
+    .benefits-gp ul li::after,
+    .labs-different ul li::after,
+    .licensures-box ul li::after,
+    .privacy-practices ul li::after,
+    .test-description-tabs .tab-content ul ul li::after {}
+    .support-services {
+        padding: 60px 0 70px;
+    }
+    .support-services-inner {}
+    .support-services h4,
+    .gp-health-consultant h4 {
+        margin-bottom: 22px;
+    }
+    .support-services-box {}
+    .support-services .col-sm-6:nth-of-type(1) .support-services-box:after,
+    .gp-health-consultant .col-sm-6:nth-of-type(1) .gp-health-consultant-box:after {}
+    .support-services .col-sm-6:nth-of-type(2) .support-services-box:after,
+    .gp-health-consultant .col-sm-6:nth-of-type(2) .gp-health-consultant-box:after {}
+    .support-services ul,
+    .gp-health-consultant ul,
+    .education-center ul,
+    .directions-gainesville ul {}
+    .support-services ul li,
+    .support-services p,
+    .gp-health-consultant ul li,
+    .gp-health-consultant p,
+    .education-center ul li,
+    .education-center p,
+    .directions-gainesville ul li {}
+    .support-services ul li:after,
+    .gp-health-consultant ul li:after,
+    .education-center ul li:after,
+    .directions-gainesville ul li:after {}
+    .support-services p,
+    .gp-health-consultant p {}
+    /*****  Health Consulting  *****/
+    .gp-health-consultant {
+        padding-bottom: 84px;
+    }
+    .gp-health-consultant-box {}
+    .gp-health-consultant-box .button-green {}
+    .types-of-telemedicine {}
+    .types-of-telemedicine-inner {}
+    .types-of-telemedicine h4 {}
+    .types-of-telemedicine .left-side h4 {}
+    .types-of-telemedicine p {}
+    .types-of-telemedicine .left-side p {}
+    .types-of-telemedicine .text1 {}
+    .types-of-telemedicine .left-side .text1 {}
+    .types-of-telemedicine .right-side p strong {}
+    .types-of-telemedicine-box {
+        padding: 60px 0;
+    }
+    .types-of-telemedicine .left-side {}
+    .types-of-telemedicine .left-side .types-of-telemedicine-box-inner {
+        background-color: rgba(84, 102, 122, 0.6);
+        max-width: 80%;
+        padding: 5px 10px 1px 0;
+    }
+    .types-of-telemedicine .left-side:before {}
+    .types-of-telemedicine .right-side {}
+    .cb-medical-records {
+        padding: 50px 0 36px;
+    }
+    .cb-medical-records-inner {}
+    .cb-medical-records-box {}
+    .cb-medical-records h4 {
+        margin-bottom: 44px;
+    }
+    .cb-medical-records p {}
+    .cb-medical-records-box figure {}
+    /*****  Education Center  *****/
+    .education-center {
+        padding: 40px 0 52px;
+    }
+    .education-center-inner {
+        max-width: 840px;
+    }
+    .education-center p {}
+    .education-center ul {}
+    .patient-stories {
+        padding: 85px 0 72px;
+    }
+    .patient-stories-inner {
+        max-width: 1000px;
+    }
+    .patient-stories h4 {}
+    .patient-stories-slider-main {}
+    .patient-stories-slider-main:after {}
+    .owl-carousel {}
+    .owl-carousel .owl-wrapper {}
+    .owl-carousel .owl-wrapper-outer {}
+    .owl-carousel .owl-wrapper-outer.autoHeight {}
+    .owl-carousel .owl-item {}
+    .owl-controls .owl-page,
+    .owl-controls .owl-buttons div {}
+    .owl-controls {}
+    .owl-carousel .owl-wrapper,
+    .owl-carousel .owl-item {}
+    .owl-pagination {}
+    .owl-pagination .owl-page {}
+    .owl-pagination .owl-page span {}
+    .owl-pagination .owl-page.active span,
+    .owl-pagination .owl-page:hover span {}
+    .patient-stories-slide {}
+    .patient-stories-slide h4 {}
+    .patient-stories-slide h4:before {}
+    .patient-stories-slide p {}
+    .patient-stories-slide p strong {}
+    .read-more:hover,
+    .read-more:focus {}
+    .patient-stories-slide .name {}
+    .medical-news,
+    .our-Partners-3boxs {
+        padding: 52px 0 48px;
+    }
+    .heading {}
+    .medical-news h4 {}
+    .medical-news-box,
+    .our-Partners-3box {
+        padding: 0;
+    }
+    .medical-news-box h5,
+    .our-Partners-3box h5 {}
+    .medical-news-box h5 a,
+    .our-Partners-3box h5 a {}
+    .medical-news-box .meta,
+    .our-Partners-3box .meta {}
+    .medical-news-box .meta span,
+    .our-Partners-3box .meta span {}
+    .medical-news-box p,
+    .our-Partners-3box p {}
+    .medical-news-box p strong,
+    .our-Partners-3box p strong {}
+    .line-icon {}
+    /*****  About Us Page  *****/
+    .labs-different {}
+    .labs-different h4 {}
+    .labs-different-inner {}
+    .labs-different-box {}
+    .labs-different-box figure {}
+    .labs-different-box figure i {}
+    .guided-diagnostics-icon {}
+    .comprehensive-clinically-icon {}
+    .genetic-icon {}
+    .non-invasive-laboratory-icon {}
+    .enhanced-reports-icon {}
+    .dna-risk-icon {}
+    .personal-health-plans-icon {}
+    .dietary-counseling-icon {
+        width: 26px;
+    }
+    .medically-relevant-icon {}
+    .labs-different-box .text {}
+    .labs-different-box h6 {}
+    .labs-different ul {}
+    /*****  Contact Page  *****/
+    .contact-page {}
+    .contact-page-inner {}
+    .contact-heading {}
+    .heading-line {}
+    .contact-heading h4 {}
+    .contact-heading h4::before {}
+    .contact-heading p {}
+    .contact-infofor {}
+    .contact-infofor .title {}
+    .contact-infofor p {}
+    .contact-infofor p strong {}
+    .contact-infofor p a {}
+    .contact-infofor p a:hover,
+    .contact-infofor p a:focus {}
+    .contact-infofor .map iframe {}
+    .contact-form {}
+    .contact-form p {}
+    .contact-form p strong {}
+    .contact-form .form-control {}
+    .action-button {}
+    .action-button .button-green {}
+    .action-button .button-green:hover,
+    .action-button .button-green:focus {}
+    .action-button .schedule-call {}
+    .directions-gainesville {}
+    .directions-gainesville h5 {}
+    .directions-gainesville p {}
+    .directions-gainesville-box {}
+    .directions-gainesville ul {}
+    .directions-gainesville ul li {}
+    .directions-gainesville ul li:after {}
+    /*****  Our Partners Page  *****/
+    .our-Partners-3boxs {}
+    .our-Partners-3box h5 {}
+    .laboratory-partners,
+    .licensures {
+        background-size: cover;
+        padding: 52px 0 58px;
+    }
+    .laboratory-partners h4,
+    .licensures h4 {}
+    .laboratory-partners-box figure {}
+    .laboratory-partners-box .text {}
+    .laboratory-partners-box p,
+    .laboratory-partners-box .title {}
+    .laboratory-partners-box .title {}
+    /*****  Our People  *****/
+    .our-success,
+    .whats-new {
+        padding: 70px 0 96px;
+    }
+    .our-success-inner,
+    .whats-new-inner {}
+    .our-success-box {}
+    .our-success-box h4 {}
+    .our-success-box ul {}
+    .our-success-box ul li {}
+    .our-success-box ul li::after {}
+    .our-success-tabs,
+    .whats-new-tabs {}
+    .our-success-tabs .nav-tabs,
+    .whats-new-tabs .nav-tabs {
+        margin-bottom: 40px;
+    }
+    .our-success-tabs .nav-tabs > li,
+    .whats-new-tabs .nav-tabs > li {
+        margin-right: 21.9px;
+    }
+    .our-success-tabs .nav-tabs > li:last-child,
+    .whats-new-tabs .nav-tabs > li:last-child {}
+    .our-success-tabs .nav-tabs > li > a,
+    .whats-new-tabs .nav-tabs > li > a {
+        font-size: 16px;
+    }
+    .our-success-tabs .nav-tabs > li > a:hover::after,
+    .our-success-tabs .nav-tabs > li > a:focus::after,
+    .our-success-tabs .nav-tabs > li.active > a::after,
+    .our-success-tabs .nav-tabs > li.active > a:focus::after,
+    .our-success-tabs .nav-tabs > li.active > a:hover::after,
+    .whats-new-tabs .nav-tabs > li > a:hover::after,
+    .whats-new-tabs .nav-tabs > li > a:focus::after,
+    .whats-new-tabs .nav-tabs > li.active > a::after,
+    .whats-new-tabs .nav-tabs > li.active > a:focus::after,
+    .whats-new-tabs .nav-tabs > li.active > a:hover::after {}
+    .our-success-tabs .tab-content > .tab-pane {}
+    .our-success-tabs .tab-content > .tab-pane .text {}
+    .our-success-tabs .tab-content > .tab-pane .text p {}
+    /*****  Quality Compliance  *****/
+    .compliance-statements,
+    .privacy-practices {
+        padding: 44px 0 28px;
+    }
+    .compliance-statements h4,
+    .quality-assurance h4,
+    .privacy-practices h4 {}
+    .compliance-statements h6,
+    .privacy-practices h6,
+    .compliance-statements p,
+    .privacy-practices p,
+    .quality-assurance p,
+    .licensures-box p {}
+    .compliance-statements h6,
+    .privacy-practices h6 {}
+    .compliance-statements h6:nth-of-type(1),
+    .privacy-practices h6:nth-of-type(1) {}
+    .compliance-statements h6:before,
+    .privacy-practices h6:before {}
+    .quality-assurance {
+        padding: 44px 0 34px;
+    }
+    .licensures-box p {}
+    .privacy-practices ul li {
+        padding-left: 40px;
+    }
+    /*****  Whats New Page  *****/
+    .whats-new {
+        padding: 46px 0 18px;
+    }
+    .whats-new-inner {}
+    .whats-new h4 {}
+    .whats-new-tabs .nav-tabs > li {
+        margin-right: 65px;
+    }
+    .whats-new-box {}
+    .whats-new-box figure {}
+    .whats-new-box figure img {}
+    .whats-new-box .overlay {}
+    .whats-new-box .overlay i {}
+    .whats-new-box .overlay i::after {}
+    .see-now {}
+    .whats-new-box:hover .overlay {}
+    .whats-new-box h5 {}
+    .whats-new-box a {}
+    .whats-new-box h5 a:hover,
+    .whats-new-box h5 a:focus {}
+    /*****  Search Tests  *****/
+    .search-tests {}
+    .featured-tests-list ul li .price {}
+    .featured-tests-list ul li .price .old-price,
+    .featured-tests-list ul li .price .new-price {}
+    .featured-tests-list ul li .price .new-price {}
+    .add-cart-btn {}
+    .add-cart-btn:hover,
+    .add-cart-btn:focus {}
+    .featured-tests .search-category {
+        margin: 32px auto 10px;
+    }
+    .featured-tests .search-category-inner {}
+    .featured-tests .search-category .dropdown .dropdown-toggle {}
+    .featured-tests .search-category .dropdown #dropdownMenu1 {}
+    .featured-tests .search-category .dropdown #dropdownMenu1 i:after {}
+    .featured-tests .search-category .dropdown button i {}
+    .featured-tests .search-category .dropdown ul {}
+    /*****  Test Description  *****/
+    .test-description {
+        margin: 75px 0;
+    }
+    .test-description-inner {}
+    .test-description figure {}
+    .test-description .figure-inner {}
+    .test-description figure:before {}
+    .test-description figure .overlay {}
+    .test-description .text {
+        padding-left: 30px;
+    }
+    .test-description h4 {}
+    .test-description .price {}
+    .test-description .price .old-price,
+    .test-description .price .new-price {}
+    .test-description .price .new-price {}
+    .test-description .text p {}
+    .test-description .text ul {}
+    .test-description .text ul li {}
+    .test-description .text ul li:after {}
+    .test-description .button-action {}
+    .test-description .button-action .quantity {}
+    .test-description .button-action .quantity input[type="number"] {}
+    .test-description .button-action .add-cart-btn {}
+    .test-description .button-action .add-cart-btn:hover,
+    .test-description .button-action .add-cart-btn:focus {}
+    .test-description-tabs {}
+    .test-description-tabs-inner {}
+    .test-description-tabs ul.panel-tabs {}
+    .test-description-tabs ul.panel-tabs li {}
+    .test-description-tabs ul.panel-tabs li.active {}
+    .test-description-tabs ul.panel-tabs li a {}
+    .test-description-tabs ul.panel-tabs li.active a,
+    .test-description-tabs ul.panel-tabs li.active a:hover,
+    .test-description-tabs ul.panel-tabs li.active a:focus,
+    .test-description-tabs ul.panel-tabs li a:hover,
+    .test-description-tabs ul.panel-tabs li a:focus {}
+    .test-description-tabs .tab-content {
+        padding-left: 45px;
+    }
+    .test-description-tabs .tab-content h6 {}
+    .test-description-tabs .tab-content ul {}
+    .test-description-tabs .tab-content ul li,
+    .test-description-tabs .tab-content ul li p {}
+    .test-description-tabs .tab-content ul li:after {}
+    .test-description-tabs .tab-content ul li p {}
+    .test-description-tabs .tab-content ul ul {}
+    .test-description-tabs .tab-content ul ul li {}
+    .see-video {}
+    .see-video-inner {}
+    .video-box-main {}
+    .video-heading {}
+    .video-subheading {}
+    .video-box-main p {}
+    /*****  process  *****/
+    .process {}
+    .process:first-child {}
+    .process-inner {}
+    .process h1 {}
+    .process p {}
+    .process-box {}
+    .process-box .step {}
+    .process-box .step.one {}
+    .process-box .step.two {}
+    .process-box .step.three {}
+    .process-box .step.order-via {}
+    .process-box .step-heading {}
+    .process-box .step-heading::after {}
+    .process-box .step-heading .count {}
+    .process-box .step-heading .text {}
+    .process-box ul {}
+    .process-box ul li {}
+    .process-box ul li:after {}
+    .process-box ul li small {}
+    .process-box .via-online {}
+}
+
+@media (max-width: 1199px) {}
+
+@media (max-width: 991px) {}
+
+@media (max-width: 767px) {}
+
+@media (max-width: 479px) {}

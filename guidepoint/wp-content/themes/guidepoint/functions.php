@@ -627,7 +627,89 @@ function codex_people() {
 add_action( 'init', 'codex_people' );
 
 
+// Creates most popular Custom Post Type
+function popular_init() {
+    $args = array(
+      'label' => 'most popular test',
+        'public' => true,
+        'show_ui' => true,
+        'capability_type' => 'post',
+        'hierarchical' => false,
+        'rewrite' => array('slug' => 'popular_test'),
+        'query_var' => true,
+        
+        'supports' => array(
+            'title',
+            'editor',
+            'excerpt',
+            'trackbacks',
+            'custom-fields',
+            'comments',
+            'revisions',
+            'thumbnail',
+            'author',
+            'page-attributes',)
+        );
+    register_post_type( 'popular_test', $args );
+}
+add_action( 'init', 'popular_init' );
 
+
+// Creates Testimonials Custom Post Type
+function Testimonial_init() {
+    $args = array(
+      'label' => 'Testimonials',
+        'public' => true,
+        'show_ui' => true,
+        'capability_type' => 'post',
+        'hierarchical' => false,
+        'rewrite' => array('slug' => 'Testimonials'),
+        'query_var' => true,
+        
+        'supports' => array(
+            'title',
+            'editor',
+            'excerpt',
+            'trackbacks',
+            'custom-fields',
+            'comments',
+            'revisions',
+            'thumbnail',
+            'author',
+            'page-attributes',)
+        );
+    register_post_type( 'Testimonials', $args );
+}
+add_action( 'init', 'popular_init' );
+
+
+
+// Creates faq Custom Post Type
+function faq_init() {
+    $args = array(
+      'label' => 'faq',
+        'public' => true,
+        'show_ui' => true,
+        'capability_type' => 'post',
+        'hierarchical' => false,
+        'rewrite' => array('slug' => 'faq'),
+        'query_var' => true,
+        
+        'supports' => array(
+            'title',
+            'editor',
+            'excerpt',
+            'trackbacks',
+            'custom-fields',
+            'comments',
+            'revisions',
+            'thumbnail',
+            'author',
+            'page-attributes',)
+        );
+    register_post_type( 'faq', $args );
+}
+add_action( 'init', 'faq_init' );
 
 
 

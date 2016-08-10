@@ -18,10 +18,13 @@ get_header(); ?>
                             </div>
                             <div class="col-xs-11">
                                 <h4><?php the_title(); ?></h4>
+                                 <p>Get all of your questions answered!.  Call Us or Email Us Now!</p>
                                 <p><?php the_field('top_text'); ?></p>
                             </div>
                         </div>
                     </div>
+					
+
                     <div class="contact-infofor">
                         <div class="row">
                             <div class="col-sm-4">
@@ -40,6 +43,13 @@ get_header(); ?>
                             </div>
                         </div>
                     </div>
+					<?php
+ echo do_shortcode('[contact-form-7 id="388" title="contact page"]')?>
+                    
+                <div class="contact7-form">
+                   
+                </div>
+                    
                     <div class="contact-form">
                 
                             <div class="schedule-call">

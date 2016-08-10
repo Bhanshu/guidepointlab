@@ -24,10 +24,10 @@ $content= get_the_content();
       <div class="figcaption">
         <div class="display-table">
           <div class="display-table-cell">
-            <div class="text">
-              <div class="title"><?php echo $title; ?></div>
-              <p><?php echo $content; ?></p>
-            </div>
+           <div class="text">
+              <div class="title"><?php the_field('banner_heading'); ?></div>
+               <?php the_field('banner_text'); ?>
+                </div>
             <div class="search-category">
               <div class="search-category-inner">
                 <?php get_sidebar('product-form'); ?>
@@ -197,6 +197,106 @@ $content= get_the_content();
     </div>
   </div>
 </section>
+<section class="featured-tests">
+  <div class="container">
+    <div class="featured-tests-inner">
+      <?php /*?><div class="search-category">
+        <div class="search-category-inner">
+          <div class="dropdown">
+            <button class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">All Categories<i class="fa fa-angle-down"></i></button>
+            <ul class="dropdown-menu" id="myid" aria-labelledby="dropdownMenu1">
+              <?php
+
+					  $taxonomy     = 'product_cat';
+					  $orderby      = 'name';  
+					  $show_count   = 0;      // 1 for yes, 0 for no
+					  $pad_counts   = 0;      // 1 for yes, 0 for no
+					  $hierarchical = 1;      // 1 for yes, 0 for no  
+					  $title        = '';  
+					  $empty        = 0;
+					
+					  $args = array(
+							 'taxonomy'     => $taxonomy,
+							 'orderby'      => $orderby,
+							 'show_count'   => $show_count,
+							 'pad_counts'   => $pad_counts,
+							 'hierarchical' => $hierarchical,
+							 'title_li'     => $title,
+							 'hide_empty'   => $empty,
+							 'posts_per_page' => 3
+					  );
+					 $all_categories = get_categories( $args );
+					 foreach ($all_categories as $cat) {
+						if($cat->category_parent == 0) {
+							$category_id = $cat->term_id;       
+							//echo '<br /><a href="'. get_term_link($cat->slug, 'product_cat') .'">'. $cat->name .'</a>'; 
+							 $category_link = get_category_link( $category_id ); ?>
+              <li id="<?php echo $category_id; ?>"> <?php echo  $cat->name ;?> </li>
+              <?php   
+						
+						}       
+					}
+					?>
+            </ul>
+          </div>
+          <div class="dropdown">
+            <button class="dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Category<i class="fa fa-angle-down"></i></button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <li><a href="#">Category</a></li>
+              <li><a href="#">Category 1</a></li>
+              <li><a href="#">Category 2</a></li>
+              <li><a href="#">Category 3</a></li>
+              <li><a href="#">Category 4</a></li>
+            </ul>
+          </div>
+          <button class="button-gray">SEARCH</button>
+        </div>
+        <div class="note">Enter your desired category</div>
+      </div><?php */?>
+      <h1>Most Popular Test</h1>
+      <div class="text"> <?php echo ot_get_option("featured_test"); ?> </div>
+      <div class="featured-tests-list">
+        <ul>
+          <?php                    
+                        $args = array(
+                            'post_type' => 'product',
+                            'meta_key' => '_featured',
+                            'meta_value' => 'yes',
+                            'posts_per_page' => 4
+                        );
+                         
+                        $featured_query = new WP_Query( $args );
+                            
+                        if ($featured_query->have_posts()) : 
+                        
+                            while ($featured_query->have_posts()) : 
+                            
+                                $featured_query->the_post();
+                                
+                                $product = get_product( $featured_query->post->ID ); ?>
+          <li>
+            <div class="featured-tests-list-box"> <a href="<?php the_permalink(); ?>">
+              <figure><span><i class="icons <?php the_field('icon_class'); ?>"></i></span></figure>
+              <p>
+                <?php the_title(); ?>
+              </p>
+              </a> </div>
+          </li>
+          <?php   endwhile;
+                            
+                        endif;
+                        
+                        wp_reset_query(); 
+                        
+                        ?>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
 <script>
 		jQuery("#myid li").click(function() {
     //alert(this.id); // get id of clicked li

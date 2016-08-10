@@ -50,7 +50,7 @@ if ( ! empty( $tabs ) ) : ?>
             <div class="container">
                 <div class="see-video-inner">
                     <div class="video-box-main">
-                        <div class="video-heading">See Video</div>
+                        <a href="#"><div class="video-heading">See Video</div></a>
                      <?php the_field('video_section'); ?>
                     </div>
                 </div>

@@ -36,3 +36,17 @@ wc_print_notices(); ?>
 <?php wc_get_template( 'myaccount/my-address.php' ); ?>
 
 <?php do_action( 'woocommerce_after_my_account' ); ?>
+
+<?php global $current_user;
+      get_currentuserinfo();
+  $user_id = $current_user->ID;
+  $key = 'pdf';
+  $single = true;
+  $user_last = get_user_meta( $user_id, $key, $single ); 
+if($user_last!=""){
+?>
+<h4><a download href="<?php echo wp_get_attachment_url( $user_last ); ?>">Download Report</a></h4>
+<?php } ?>
+
+
+
